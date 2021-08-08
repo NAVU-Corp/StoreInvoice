@@ -1,3 +1,18 @@
+@font-face {
+  font-family: "Roboto", sans-serif;
+  src: url(./assets/fonts/Roboto-Regular.ttf);
+}
+
 body {
-  background-color: white;
+  background-color: #fbfbfb;
+  font-size: 100%;
+  font-family: "Roboto", sans-serif;
+  color: #242323;
+  margin: 0;
+  padding: 0;
+}
+
+ol,
+ul {
+  list-style: none;
 }

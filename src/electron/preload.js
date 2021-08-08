@@ -1,11 +1,13 @@
 const { ipcRenderer, contextBridge } = require("electron");
 
-contextBridge.exposeInMainWorld("electronApi", {
-  notificationApi: {
-    sendNotification(message) {
-      ipcRenderer.send("notify", message);
-    },
+contextBridge.exposeInMainWorld("apiElectron", {
+  sendMessages(event, message) {
+    ipcRenderer.send(event, message);
   },
-  batteryApi: {},
-  filesApi: {},
+
+  on(event, callback) {
+    ipcRenderer.on(event, (event, data) => {
+      callback(event, data);
+    });
+  },
 });

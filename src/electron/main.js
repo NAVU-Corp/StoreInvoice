@@ -1,4 +1,8 @@
 /* eslint-disable prefer-arrow-callback */
+require("./database");
+require("./database/table");
+require("./events/users");
+
 const { BrowserWindow, app, ipcMain, Notification } = require("electron");
 const path = require("path");
 const fs = require("fs");
@@ -7,6 +11,7 @@ const isDev = require("electron-is-dev");
 
 let mainWindow;
 
+//createWindow
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1000,
@@ -29,31 +34,15 @@ const createWindow = () => {
   }
 };
 
-ipcMain.on("notify", (_, message) => {
-  console.log("bundle");
-  new Notification({ title: "Test Notifiation", body: message }).show();
-});
-
+/// run app
 app
   .whenReady()
   .then(() => {
     createWindow();
   })
   .then(() => {
-    const dataBuffer = fs.readFileSync(path.join(__dirname, "sample.pdf"));
-    pdf(dataBuffer).then(function (data) {
-      // number of pages
-      console.log(data.numpages);
-      // number of rendered pages
-      console.log(data.numrender);
-      // PDF info
-      console.log(data.info);
-      // PDF metadata
-      console.log(data.metadata);
-      // PDF.js version
-      // check https://mozilla.github.io/pdf.js/getting_started/
-      console.log(data.version);
-      // PDF text
-      console.log(data.text);
-    });
+    // const dataBuffer = fs.readFileSync(path.join(__dirname, "sample.pdf"));
+    // pdf(dataBuffer).then(function (data) {
+    //   console.log("TEXT", data.text);
+    // });
   });
