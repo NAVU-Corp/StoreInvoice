@@ -8,28 +8,40 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /.js/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
+          // options: {
+          //   presets: [
+          //     [
+          //       "@babel/preset-env",
+          //       {
+          //         targets: {
+          //           esmodules: true,
+          //         },
+          //       },
+          //     ],
+          //     "@babel/preset-react",
+          //   ],
+          // },
           options: {
-            presets: [
-              [
-                "@babel/preset-env",
-                {
-                  targets: {
-                    esmodules: true,
-                  },
-                },
-              ],
-              "@babel/preset-react",
-            ],
+            presets: ["@babel/preset-env"],
           },
         },
       },
       {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: [/node_modules/, path.resolve(__dirname, "src/electron")],
+      },
+      {
         test: [/\.s[ac]ss$/i, /\.css$/i],
         use: ["style-loader", "css-loader", "sass-loader"],
+      },
+      {
+        test: /\.(png|jpe?g|gif|ico|ttf)$/i,
+        loader: "file-loader",
       },
     ],
   },
