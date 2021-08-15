@@ -1,0 +1,53 @@
+@import "../../assets/scss/variables";
+
+.select {
+  width: 100%;
+  max-width: 265px;
+  height: 38px;
+  background: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  position: relative;
+  margin-bottom: 16px;
+  &__header {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    justify-content: space-between;
+    padding: 8px;
+    p {
+      color: gray;
+    }
+  }
+  &__body {
+    background: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    height: 250px;
+    overflow: auto;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    z-index: 100;
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: white;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(128, 128, 128, 0.274);
+      border-radius: 100px;
+    }
+  }
+  &__item {
+    transition: all 0.4s;
+    padding: 10px;
+    &:hover {
+      transition: all 0.4s;
+      background-color: rgb(241, 241, 241);
+    }
+  }
+}

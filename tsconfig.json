@@ -14,8 +14,8 @@
     "jsx": "react",
     "sourceMap": true,
     "target": "es5",
-    "downlevelIteration": true
+    "downlevelIteration": true,
   },
   "include": ["src"],
-  "exclude": ["src/electron","src/constants"]
+  "exclude": ["src/**/*.js"]
 }
