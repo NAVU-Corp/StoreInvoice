@@ -1,5 +1,6 @@
 const sqlite3 = require("sqlite3").verbose();
 const isDev = require("electron-is-dev");
+
 // const { Notification } = require("electron");
 let db = new sqlite3.Database(
   isDev ? __dirname + "/app.db" : process.resourcesPath + "/app.db",

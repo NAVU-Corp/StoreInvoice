@@ -1,0 +1,16 @@
+@import "../../../../assets/scss/mixins";
+
+.company-card {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 20px 32px;
+  @include max-respond-to(md) {
+    padding: 20px;
+  }
+  p {
+    font-weight: 600;
+    font-size: 16px;
+    text-transform: uppercase;
+  }
+}

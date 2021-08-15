@@ -8,6 +8,7 @@ const path = require("path");
 const fs = require("fs");
 const pdf = require("pdf-parse");
 const isDev = require("electron-is-dev");
+const { WinEvent } = require("../constants/event");
 
 let mainWindow;
 
@@ -26,12 +27,42 @@ const createWindow = () => {
 
       preload: path.join(__dirname, "preload.js"),
     },
+    frame: false,
   });
+  mainWindow.setBackgroundColor("#fbfbfb");
 
   mainWindow.loadFile(path.join(__dirname, "../../public/index.html"));
   if (isDev) {
     mainWindow.webContents.openDevTools();
   }
+
+  // linster close windows
+  ipcMain.on(WinEvent.WIN_CLOSE, () => {
+    mainWindow.close();
+  });
+
+  // listener miniminze windows
+  ipcMain.on(WinEvent.WIN_MINIMIZE, () => {
+    mainWindow.minimize();
+  });
+  // listener zoom in
+
+  ipcMain.on(WinEvent.WIN_ZOOM, (event) => {
+    if (mainWindow.isMaximized()) {
+      event.reply(WinEvent.IS_MAXIMIZED, { isMaximized: true });
+      mainWindow.restore();
+    } else {
+      event.reply(WinEvent.IS_MAXIMIZED, { isMaximized: false });
+
+      mainWindow.maximize();
+    }
+  });
+
+  mainWindow.on("resize", function () {
+    let size = mainWindow.getSize();
+    let height = size[1];
+    mainWindow.webContents.send(WinEvent.WIN_SIZE, height);
+  });
 };
 
 /// run app
