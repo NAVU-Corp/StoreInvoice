@@ -1,7 +1,8 @@
 /* eslint-disable prefer-arrow-callback */
 require("./database");
-require("./database/table");
-require("./events/users");
+require("./events/company_event");
+require("./events/invoice_event");
+require("./events/media_event");
 
 const { BrowserWindow, app, ipcMain, Notification } = require("electron");
 const path = require("path");
@@ -24,7 +25,6 @@ const createWindow = () => {
       nodeIntegration: false,
       worldSafeExecuteJavaScript: true,
       contextIsolation: true,
-
       preload: path.join(__dirname, "preload.js"),
     },
     frame: false,

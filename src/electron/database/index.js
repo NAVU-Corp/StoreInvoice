@@ -1,20 +1,38 @@
-const sqlite3 = require("sqlite3").verbose();
-const isDev = require("electron-is-dev");
+const fs = require('fs');
+const path = require("path");
+const { app } = require("electron");
 
-// const { Notification } = require("electron");
-let db = new sqlite3.Database(
-  isDev ? __dirname + "/app.db" : process.resourcesPath + "/app.db",
-  (err) => {
-    if (err) {
-      // new Notification({ title: "ERRR", body: err.message }).show();
-      return console.error(err.message);
-    }
-    // new Notification({
-    //   title: "Successfull",
-    //   body: "Connected to the in-memory SQlite database",
-    // }).show();
-    console.log("Connected to the in-memory SQlite database.");
-  }
-);
+const { UtilsDB } = require('./ultilsdb');
 
-module.exports = db;
+const { CompanyRepository } = require('../repositories/company_repository');
+const { InvoiceRepository } = require('../repositories/invoice_repository');
+
+const { CompanyService } = require('../services/company_service');
+const { InvoiceService } = require('../services/invoice_service');
+
+const { MediaService } = require('../services/media_service');
+
+const storePdfPath = path.join(app.getPath('userData'), 'store-pdf');
+
+if (!fs.existsSync(storePdfPath)){
+  fs.mkdirSync(storePdfPath);
+}
+
+const utilsDB = new UtilsDB();
+
+const companyRepository = new CompanyRepository({ utilsDB });
+const invoiceRepository = new InvoiceRepository({ utilsDB });
+
+const companyService = new CompanyService({ companyRepository });
+const invoiceService = new InvoiceService({ invoiceRepository });
+
+const mediaService = new MediaService({ storePdfPath });
+
+companyRepository.createTable();
+invoiceRepository.createTable();
+
+module.exports = {
+  companyService,
+  invoiceService,
+  mediaService,
+};
