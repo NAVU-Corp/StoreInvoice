@@ -1,12 +1,27 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
-import { Home, Test } from "../containers";
+import { Switch } from "react-router-dom";
+
+import { Home, Login } from "../containers";
+import { BlankLayout } from "../layouts";
+import { PrivateRouter } from "./PrivateRouter";
 
 export const Routers = () => {
   return (
     <Switch>
-      <Route exact path="/" component={Home} />
-      <Route exact path="/test" component={Test} />
+      <PrivateRouter
+        exact
+        path="/"
+        component={Home}
+        layout={BlankLayout}
+        title={"HOÁ ĐƠN"}
+      />
+      <PrivateRouter
+        exact
+        path="/login"
+        component={Login}
+        layout={BlankLayout}
+        title="ĐĂNG NHẬP"
+      />
     </Switch>
   );
 };

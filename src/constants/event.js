@@ -38,9 +38,18 @@ const MediaEvent = {
   RESULT_STORE_MEDIA: "RESULT_STORE_MEDIA",
 };
 
+const WinEvent = {
+  WIN_CLOSE: "WIN_CLOSE",
+  WIN_ZOOM: "WIN_ZOOM",
+  WIN_MINIMIZE: "WIN_MINIMIZE",
+  IS_MAXIMIZED: "IS_MAXIMIZED",
+  WIN_SIZE: "WIN_SIZE",
+};
+
 module.exports = {
   UserEvent,
   CompanyEvent,
   InvoiceEvent,
   MediaEvent,
+  WinEvent,
 };

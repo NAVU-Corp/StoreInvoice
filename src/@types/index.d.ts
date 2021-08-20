@@ -1,3 +1,2 @@
-interface Data {
-  a: any;
-}
+declare module "*.png";
+declare module "*.ico";
