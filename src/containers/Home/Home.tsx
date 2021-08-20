@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Nav } from "../../components";
 import "./Home.scss";
 import { UserEvent } from "../../constants/event";
+import { Link } from "react-router-dom";
 
 export const Home: React.FC = () => {
   const [rows, setRows] = useState([]);
@@ -15,7 +16,7 @@ export const Home: React.FC = () => {
     <div className="home">
       <Nav />
       <h1>This is React inside Electron!</h1>
-
+      
       <button
         onClick={() => {
           apiElectron.sendMessages(UserEvent.INSERT_ONE_USER, {
