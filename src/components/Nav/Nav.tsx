@@ -14,6 +14,9 @@ export const Nav = () => {
         <li>
           <Link to="/test">Test</Link>
         </li>
+        <li>
+          <Link to="/register">register</Link>
+        </li>
       </ul>
     </div>
   );

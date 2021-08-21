@@ -1,7 +1,13 @@
 import React from "react";
 import { Switch } from "react-router-dom";
 
-import { Home, Login } from "../containers";
+import {
+  ChooseTypePage,
+  HomePage,
+  LoginPage,
+  RegisterPage,
+  InvoiceDetailPage,
+} from "../containers";
 import { BlankLayout } from "../layouts";
 import { PrivateRouter } from "./PrivateRouter";
 
@@ -11,16 +17,37 @@ export const Routers = () => {
       <PrivateRouter
         exact
         path="/"
-        component={Home}
+        component={HomePage}
         layout={BlankLayout}
         title={"HOÁ ĐƠN"}
       />
       <PrivateRouter
         exact
         path="/login"
-        component={Login}
+        component={LoginPage}
         layout={BlankLayout}
         title="ĐĂNG NHẬP"
+      />
+      <PrivateRouter
+        exact
+        path="/register"
+        component={RegisterPage}
+        layout={BlankLayout}
+        title="ĐĂNG KÝ THÔNG TIN DOANH NGHIỆP"
+      />
+      <PrivateRouter
+        exact
+        path="/choose-type-store"
+        component={ChooseTypePage}
+        layout={BlankLayout}
+        title="CHỌN KỲ LƯU TRỮ"
+      />
+      <PrivateRouter
+        exact
+        path="/invoice-detail"
+        component={InvoiceDetailPage}
+        layout={BlankLayout}
+        title="CHI TIẾT HÓA ĐƠN"
       />
     </Switch>
   );
