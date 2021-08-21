@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { SvgMinimize, SvgZoom, SvgClose, SvgZoomOut } from "../../assets/svg";
 import { WinEvent } from "../../constants/event";
 import { Avatar } from "../Avatar/Avatar";
@@ -20,6 +20,7 @@ export const TitleBar: React.FC<ITitleBar> = ({ title }) => {
     <div className="title-bar">
       <div className="title-bar__logo">
         <Logo />
+        <Link to={`/test-api`}>Test API</Link>
         <div
           className="title-bar__avatar"
           onClick={() => history.push("/login")}

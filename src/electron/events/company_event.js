@@ -5,7 +5,7 @@ const { ipcMain } = require("electron");
 
 // listener get companies
 ipcMain.on(CompanyEvent.GET_ALL_COMPANIES, (event, filter) => {
-  companyService.getCompanies()
+  companyService.getCompanies(filter)
     .then((companies) => {
       event.reply(CompanyEvent.RESULT_GET_ALL_COMPANIES, {
         result: 1,
@@ -18,8 +18,8 @@ ipcMain.on(CompanyEvent.GET_ALL_COMPANIES, (event, filter) => {
 });
 
 // listener get one company
-ipcMain.on(CompanyEvent.GET_ONE_COMPANY, (event, { id }) => {
-  companyService.getCompanyById(id)
+ipcMain.on(CompanyEvent.GET_ONE_COMPANY, (event, filter) => {
+  companyService.getCompanyById(filter)
     .then((company) => {
       event.reply(CompanyEvent.RESULT_GET_ONE_COMPANY, {
         result: 1,

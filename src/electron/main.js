@@ -3,6 +3,7 @@ require("./database");
 require("./events/company_event");
 require("./events/invoice_event");
 require("./events/media_event");
+require("./events/config_event");
 
 const { BrowserWindow, app, ipcMain, Notification } = require("electron");
 const path = require("path");

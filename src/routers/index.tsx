@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch } from "react-router-dom";
 
-import { Home, Login } from "../containers";
+import { Home, Login, Test } from "../containers";
 import { BlankLayout } from "../layouts";
 import { PrivateRouter } from "./PrivateRouter";
 
@@ -21,6 +21,13 @@ export const Routers = () => {
         component={Login}
         layout={BlankLayout}
         title="ĐĂNG NHẬP"
+      />
+      <PrivateRouter
+        exact
+        path="/test-api"
+        component={Test}
+        layout={BlankLayout}
+        title="TEST API"
       />
     </Switch>
   );
