@@ -29,6 +29,7 @@ export const Home: React.FC = () => {
         </div>
       </BoxShadow>
       <BoxShadow>
+        <LabelTitle title="Danh sách hoá đơn mua" />
         <Button>Xem</Button>
         <Table />
       </BoxShadow>

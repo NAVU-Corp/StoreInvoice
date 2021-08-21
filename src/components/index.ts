@@ -7,3 +7,4 @@ export * from "./LabelTitle/LabelTitle";
 export * from "./Select/Select";
 export * from "./ErrorMessage/ErrorMessage";
 export * from "./Button/Button";
+export * from "./Nav/Nav";
