@@ -45,7 +45,7 @@ class CompanyRepository {
         $district: district,
         $status: 10,
         $createdate: dateNow,
-        $createdate: dateNow,
+        $updatedate: dateNow,
       });
   }
 
@@ -88,18 +88,33 @@ class CompanyRepository {
       });
   }
 
-  getById(id) {
+  getById(filter) {
+    filter = filter || {};
+
+    let condition = ``;
+
+    if(filter.id && filter.id > 0) {
+      condition += ` and id = $id `;
+    }
+
+    if(filter.taxcode) {
+      condition += ` and taxcode like $taxcode `;
+    }
+
     return this.utilsDB.get(
       `SELECT id, taxcode, name, address, email, phone, fax, province, district, 
-        status, createdate, updatedate
+        status, createdate, updatedate 
       FROM company 
-      WHERE status != 90 and id = $updatedate`,
+      WHERE status != 90 ${condition}`,
       {
-        $id: id,
+        $id: filter.id,
+        $taxcode: filter.taxcode,
       });
   }
 
-  getList() {
+  getList(filter) {
+    filter = filter || {};
+
     let query =
       `SELECT id, taxcode, name, address, email, phone, fax, province, district, 
         status, createdate, updatedate

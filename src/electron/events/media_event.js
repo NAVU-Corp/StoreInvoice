@@ -7,8 +7,8 @@ const { ipcMain } = require("electron");
 ipcMain.on(MediaEvent.STORE_MEDIA, (event, input) => {
   console.log('pathfilepathfile', input);
   mediaService.storeFile(input)
-    .then((data) => event.reply(MediaEvent.RESULT_STORE_MEDIA, {
-      result: 1,
-    }))
-    .catch((err) => event.reply(MediaEvent.RESULT_STORE_MEDIA, err));
+    // .then((data) => event.reply(MediaEvent.RESULT_STORE_MEDIA, {
+    //   result: 1,
+    // }))
+    // .catch((err) => event.reply(MediaEvent.RESULT_STORE_MEDIA, err));
 });
