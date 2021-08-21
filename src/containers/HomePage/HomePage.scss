@@ -1,0 +1,11 @@
+.home-page {
+  margin: 32px;
+  &__from {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  &__inputs {
+    width: 100%;
+  }
+}
