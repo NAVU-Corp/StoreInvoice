@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Nav } from "../../components";
 import "./Test.scss";
-import { CompanyEvent, InvoiceEvent, MediaEvent } from "../../constants/event";
+import moment from 'moment';
+import { CompanyEvent, ConfigEvent, InvoiceEvent, MediaEvent } from "../../constants/event";
 
 export const Test: React.FC = () => {
   const [companies, setCompanies] = useState([]);
   const [invoices, setInvoices] = useState([]);
-  const [idCompanyDelete, setIdCompanyDelete] = useState<number>(0);
-  const [idInvoiceDelete, setIdInvoiceDelete] = useState<number>(0);
+  const [configs, setConfigs] = useState([]);
+  const [companyDeleteId, setCompanyDeleteId] = useState<number>(0);
+  const [invoiceDeleteId, setInvoiceDeleteId] = useState<number>(0);
+  const [configDeleteId, setConfigDeleteId] = useState<number>(0);
   const [fileName, setFileName] = useState<string>('');
 
   useEffect(() => {
@@ -28,6 +30,10 @@ export const Test: React.FC = () => {
       console.log(data);
     });
 
+    apiElectron.on(CompanyEvent.RESULT_GET_ONE_COMPANY, (_, data) => {
+      console.log(data);
+    });
+
     apiElectron.on(InvoiceEvent.RESULT_GET_ALL_INVOICES, (_, data) => {
       if(data.result === 1) {
         setInvoices(data.content.invoices);
@@ -41,11 +47,18 @@ export const Test: React.FC = () => {
       console.log(data);
     });
 
+    apiElectron.on(ConfigEvent.RESULT_GET_ALL_CONFIGS, (_, data) => {
+      if(data.result === 1) {
+        setConfigs(data.content.configs);
+        console.log(data);
+      } else {
+        console.log(data?.message);
+      }
+    });
   }, []);
 
   return (
     <div className="home">
-      <Nav />
       <h1>Test</h1>
 
       <button
@@ -82,19 +95,18 @@ export const Test: React.FC = () => {
             district: "Quận 1",
           };
 
-          console.log(company);
           apiElectron.sendMessages(CompanyEvent.UPDATE_ONE_COMPANY, company);
         }}
       >
         UPDATE COMPANY
       </button>
 
-      <input type="text" value={idCompanyDelete} onChange={(e) => setIdCompanyDelete(Number(e.target.value || 0))} />
+      <input type="text" value={companyDeleteId} onChange={(e) => setCompanyDeleteId(Number(e.target.value || 0))} />
 
       <button
         onClick={() => {
           apiElectron.sendMessages(CompanyEvent.DELETE_ONE_COMPANY, {
-            id: idCompanyDelete,
+            id: companyDeleteId,
           });
         }}
       >
@@ -112,6 +124,16 @@ export const Test: React.FC = () => {
       {companies.map((company: any, i) => {
         return <p key={company.id}>{JSON.stringify(company)}</p>;
       })}
+
+      <button
+        onClick={() => {
+          apiElectron.sendMessages(CompanyEvent.GET_ONE_COMPANY, {
+            taxcode: "0123456789"
+          });
+        }}
+      >
+        GET COMPANY BY TAX
+      </button>
 
       <button
         onClick={() => {
@@ -143,19 +165,18 @@ export const Test: React.FC = () => {
             namepdf: "pdf1.pdf",
           };
 
-          console.log(invoice);
           apiElectron.sendMessages(InvoiceEvent.UPDATE_ONE_INVOICE, invoice);
         }}
       >
         UPDATE INVOICE
       </button>
 
-      <input type="text" value={idInvoiceDelete} onChange={(e) => setIdInvoiceDelete(Number(e.target.value || 0))} />
+      <input type="text" value={invoiceDeleteId} onChange={(e) => setInvoiceDeleteId(Number(e.target.value || 0))} />
 
       <button
         onClick={() => {
           apiElectron.sendMessages(InvoiceEvent.DELETE_ONE_INVOICE, {
-            id: idInvoiceDelete,
+            id: invoiceDeleteId,
           });
         }}
       >
@@ -164,14 +185,21 @@ export const Test: React.FC = () => {
 
       <button
         onClick={() => {
-          apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES);
+          apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
+            groupmonth: 30,
+          });
         }}
       >
         GET ALL INVOICES
       </button>
 
       {invoices.map((invoice: any, i) => {
-        return <p key={invoice.id}>{JSON.stringify(invoice)}</p>;
+        return (
+          <div key={invoice.id}>
+            <p>{JSON.stringify(invoice)}</p>
+            <p>{moment(new Date(invoice.invoicedate)).format('DD/MM/yyyy HH:mm')}</p>
+          </div>
+        );
       })}
 
       <input type="text" value={fileName} onChange={(e) => setFileName(e.target.value || '')} />
@@ -188,6 +216,58 @@ export const Test: React.FC = () => {
         }}
       >
         STORE FILE
+      </button>
+
+      <button
+        onClick={() => {
+          let config = {
+            title: "Tên đơn vị",
+            type: 20,
+          };
+
+          apiElectron.sendMessages(ConfigEvent.INSERT_ONE_CONFIG, config);
+        }}
+      >
+        INSERT CONFIG
+      </button>
+
+      <button
+        onClick={() => {
+          apiElectron.sendMessages(ConfigEvent.GET_ALL_CONFIGS, {
+            type: 20,
+          });
+        }}
+      >
+        GET ALL CONFIGS
+      </button>
+
+      {configs.map((config: any, i) => {
+        return <p key={config.id}>{JSON.stringify(config)}</p>;
+      })}
+
+      <input type="text" value={configDeleteId} onChange={(e) => setConfigDeleteId(Number(e.target.value || 0))} />
+
+      <button
+        onClick={() => {
+          apiElectron.sendMessages(ConfigEvent.DELETE_ONE_CONFIG, {
+            id: configDeleteId,
+          });
+        }}
+      >
+        DELETE CONFIG
+      </button>
+
+      <button
+        onClick={() => {
+          let config = {
+            title: "Đơn vị:",
+            type: 10,
+          };
+
+          apiElectron.sendMessages(ConfigEvent.UPDATE_ONE_CONFIG, config);
+        }}
+      >
+        UPDATE CONFIG
       </button>
     </div>
   );

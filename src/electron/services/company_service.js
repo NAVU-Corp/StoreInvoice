@@ -25,12 +25,12 @@ class CompanyService {
     return this.companyRepository.delete(id, { dateNow });
   }
 
-  getCompanyById(id) {
-    return this.companyRepository.getById(id, { dateNow });
+  getCompanyById(filter) {
+    return this.companyRepository.getById(filter);
   }
 
-  getCompanies() {
-    return this.companyRepository.getList();
+  getCompanies(filter) {
+    return this.companyRepository.getList(filter);
   }
 
   checkValidInput(company) {

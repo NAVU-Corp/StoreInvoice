@@ -1,11 +1,11 @@
-const { storePdfPath } = require('../database/index');
-const fs = require('fs');
-const path = require("path");
-const uuid = require('uuid');
+
 
 class MediaService {
-  constructor({ storePdfPath }) {
+  constructor({ storePdfPath, fs, path, uuid }) {
     this.storePdfPath = storePdfPath;
+    this.fs = fs;
+    this.path = path;
+    this.uuid = uuid;
   }
 
   // The function triggered by your button
@@ -14,13 +14,13 @@ class MediaService {
 
     filePath.forEach(file => {
       // get file name
-      const fileName = path.basename(file);
-      const extension = path.extname(fileName);
-      const fileNameWithoutExtension = path.parse(fileName).name;
-      const fileNameBuilder = fileNameWithoutExtension + '_' + uuid.v4() + extension;
+      const fileName = this.path.basename(file);
+      const extension = this.path.extname(fileName);
+      const fileNameWithoutExtension = this.path.parse(fileName).name;
+      const fileNameBuilder = fileNameWithoutExtension + '_' + this.uuid.v4() + extension;
 
       // copy file from original location to app data folder
-      fs.copyFile(file, path.join(this.storePdfPath, fileNameBuilder), (err) => {
+      this.fs.copyFile(file, this.path.join(this.storePdfPath, fileNameBuilder), (err) => {
           if (err) throw err;
       });
 

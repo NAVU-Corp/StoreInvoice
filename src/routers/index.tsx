@@ -7,6 +7,7 @@ import {
   LoginPage,
   RegisterPage,
   InvoiceDetailPage,
+  Test,
 } from "../containers";
 import { BlankLayout } from "../layouts";
 import { PrivateRouter } from "./PrivateRouter";
@@ -48,6 +49,13 @@ export const Routers = () => {
         component={InvoiceDetailPage}
         layout={BlankLayout}
         title="CHI TIẾT HÓA ĐƠN"
+      />
+      <PrivateRouter
+        exact
+        path="/test-api"
+        component={Test}
+        layout={BlankLayout}
+        title="TEST API"
       />
     </Switch>
   );

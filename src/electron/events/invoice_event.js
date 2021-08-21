@@ -5,14 +5,14 @@ const { ipcMain } = require("electron");
 
 // listener get companies
 ipcMain.on(InvoiceEvent.GET_ALL_INVOICES, (event, filter) => {
-  invoiceService.getInvoices()
+  invoiceService.getInvoices(filter)
     .then((invoices) => event.reply(InvoiceEvent.RESULT_GET_ALL_INVOICES, {
       result: 1,
       content: {
         invoices,
       }
     }))
-    .catch((err) => event.reply(CompanyEvent.RESULT_GET_ALL_INVOICES, err));
+    .catch((err) => event.reply(InvoiceEvent.RESULT_GET_ALL_INVOICES, err));
 });
 
 // listener get one company
