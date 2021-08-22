@@ -6,4 +6,5 @@ interface IStyles {
   paddingRight?: number;
   marginBottom?: number;
   className?: string;
+  marginLeft?: number;
 }
