@@ -20,7 +20,7 @@ export const LoginPage = () => {
             <Button isBig isRed>
               Xóa
             </Button>
-            <Button isWhite isBig>
+            <Button isWhite isBig onClick={() => history.push("/register")}>
               Mã mới
             </Button>
             <Button isBig onClick={() => history.push("/")}>

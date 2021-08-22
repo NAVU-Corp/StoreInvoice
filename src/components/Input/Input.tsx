@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { SvgSearch } from "../../assets/svg";
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
 import "./Input.scss";
@@ -13,9 +13,12 @@ export const Input: React.FC<IInput> = ({
   label,
   hasIconSearch,
   className,
+  marginLeft,
+  marginBottom,
+  type,
 }) => {
   return (
-    <div className={`input ${className}`}>
+    <div className={`input ${className}`} style={{ marginLeft, marginBottom }}>
       {label && (
         <label htmlFor={id} className="input__label">
           {label}
@@ -29,6 +32,7 @@ export const Input: React.FC<IInput> = ({
             id={id}
             name={name}
             placeholder={placeholder}
+            type={type}
           />
           {hasIconSearch && <SvgSearch />}
         </div>

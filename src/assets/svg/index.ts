@@ -9,3 +9,5 @@ export * from "./SvgDelete";
 export * from "./SvgPlus";
 export * from "./SvgArrowLeft";
 export * from "./SvgArrowRight";
+export * from "./SvgArrowGoBack";
+export * from "./SvgDropdownName";
