@@ -1,14 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { SvgMinimize, SvgZoom, SvgClose, SvgZoomOut } from "../../assets/svg";
+import React, { useEffect, useRef, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import {
+  SvgMinimize,
+  SvgZoom,
+  SvgClose,
+  SvgZoomOut,
+  SvgArrowGoBack,
+  SvgDropdownName,
+} from "../../assets/svg";
 import { WinEvent } from "../../constants/event";
-import { Avatar } from "../Avatar/Avatar";
+import { useClickOutside } from "../../hooks";
 import { Logo } from "../Logo/Logo";
 import "./TitleBar.scss";
 
 export const TitleBar: React.FC<ITitleBar> = ({ title }) => {
   const history = useHistory();
+  const { pathname } = useLocation();
+  const menuRef = useRef<HTMLDivElement>(null);
   const [isMaximized, setIsMaximized] = useState(true);
+  const [isOpenMenu, setIsOpenMenu] = useState(false);
+
+  //useClickOutside
+  useClickOutside(menuRef, () => {
+    setIsOpenMenu(!isOpenMenu);
+  });
 
   useEffect(() => {
     apiElectron.on(WinEvent.IS_MAXIMIZED, (_: any, ms: any) => {
@@ -18,16 +33,29 @@ export const TitleBar: React.FC<ITitleBar> = ({ title }) => {
 
   return (
     <div className="title-bar">
+      {pathname === "/login" || (
+        <div className="title-bar__go-back" onClick={() => history.goBack()}>
+          <SvgArrowGoBack />
+        </div>
+      )}
+
       <div className="title-bar__logo">
         <Logo />
-        <Link to={`/test-api`}>Test API</Link>
-        <div
-          className="title-bar__avatar"
-          onClick={() => history.push("/login")}
-        >
-          <Avatar marginRight={4} marginLeft={16} />
-          <span>User name</span>
-        </div>
+        {pathname === "/login" || (
+          <div
+            className="title-bar__avatar"
+            onClick={() => setIsOpenMenu(!isOpenMenu)}
+          >
+            <span>TIKI</span>
+            <SvgDropdownName />
+            {isOpenMenu && (
+              <div className="title-bar__menu" ref={menuRef}>
+                <div>Thông tin</div>
+                <div onClick={() => history.replace("/login")}>Đăng xuất</div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <span className="title-bar__title">{title}</span>
       <div className="title-bar__action">

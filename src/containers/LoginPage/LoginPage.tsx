@@ -5,22 +5,22 @@ import { BoxShadow, Button, Input } from "../../components";
 import { ImageLogin } from "../../constants/images";
 import { CompanyCard } from "./components";
 
-import "./Login.scss";
+import "./LoginPage.scss";
 
-export const Login = () => {
+export const LoginPage = () => {
   const history = useHistory();
 
   return (
-    <div className="login">
-      <div className="login__container">
-        <BoxShadow className="login__form">
+    <div className="login-page">
+      <div className="login-page__container">
+        <BoxShadow className="login-page__form">
           <h3>ĐĂNG NHẬP HỆ THỐNG</h3>
-          <Input label="MST:" placeholder="MST" className="login__input" />
-          <div className="login__actions">
+          <Input label="MST:" placeholder="MST" className="login-page__input" />
+          <div className="login-page__actions">
             <Button isBig isRed>
               Xóa
             </Button>
-            <Button isWhite isBig>
+            <Button isWhite isBig onClick={() => history.push("/register")}>
               Mã mới
             </Button>
             <Button isBig onClick={() => history.push("/")}>
@@ -28,9 +28,9 @@ export const Login = () => {
             </Button>
           </div>
         </BoxShadow>
-        <img src={ImageLogin} className="login__img" />
+        <img src={ImageLogin} className="login-page__img" />
       </div>
-      <div className="login__companys">
+      <div className="login-page__companys">
         <CompanyCard />
         <CompanyCard />
         <CompanyCard />

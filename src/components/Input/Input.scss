@@ -1,8 +1,12 @@
 @import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
 
 .input {
   width: 100%;
-  max-width: 500px;
+  max-width: 263px;
+  @include max-respond-to(md) {
+    max-width: 600px;
+  }
 
   &__main {
     background: #ffffff;
@@ -10,7 +14,7 @@
     border-radius: 4px;
     margin-bottom: 16px;
     position: relative;
-    height: 38px;
+    height: 42px;
   }
 
   &__container {
@@ -34,8 +38,8 @@
   &__label {
     width: 100%;
     padding-left: 5px;
-    font-weight: 500;
-    color: gray;
-    font-size: 15px;
+    font-weight: 600;
+    color: $label-color;
+    font-size: 14px;
   }
 }

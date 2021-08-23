@@ -7,6 +7,8 @@ export const Button: React.FC<IButton> = ({
   isBig,
   isWhite,
   onClick,
+  className,
+  type,
 }) => {
   const checkClassName = () => {
     let name = "btn";
@@ -25,7 +27,11 @@ export const Button: React.FC<IButton> = ({
   };
 
   return (
-    <button className={checkClassName()} onClick={onClick}>
+    <button
+      className={`${checkClassName()} ${className}`}
+      onClick={onClick}
+      type={type}
+    >
       {children}
     </button>
   );

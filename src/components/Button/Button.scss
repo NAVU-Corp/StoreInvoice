@@ -8,6 +8,9 @@
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   &--red {
     background-color: $red-color;
     border: solid 1px $red-color;

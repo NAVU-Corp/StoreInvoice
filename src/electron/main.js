@@ -59,11 +59,11 @@ const createWindow = () => {
     }
   });
 
-  mainWindow.on("resize", function () {
-    let size = mainWindow.getSize();
-    let height = size[1];
-    mainWindow.webContents.send(WinEvent.WIN_SIZE, height);
-  });
+  // mainWindow.on("resize", function () {
+  //   let size = mainWindow.getSize();
+  //   let height = size[1];
+  //   mainWindow.webContents.send(WinEvent.WIN_SIZE, height);
+  // });
 };
 
 /// run app
@@ -77,4 +77,7 @@ app
     // pdf(dataBuffer).then(function (data) {
     //   console.log("TEXT", data.text);
     // });
+    mainWindow.webContents.send(WinEvent.IS_MAXIMIZED, {
+      isMaximized: mainWindow.isMaximized(),
+    });
   });
