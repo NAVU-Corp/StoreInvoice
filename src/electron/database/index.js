@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require("path");
 const { app } = require("electron");
 const uuid = require('uuid');
+const pdf = require("pdf-parse");
+const { dialog } = require('electron');
 
 const { UtilsDB } = require('./ultilsdb');
 
@@ -24,14 +26,14 @@ if (!fs.existsSync(storePdfPath)){
 const utilsDB = new UtilsDB();
 
 const companyRepository = new CompanyRepository({ utilsDB });
-const invoiceRepository = new InvoiceRepository({ utilsDB });
+const invoiceRepository = new InvoiceRepository({ utilsDB, storePdfPath });
 const configRepository = new ConfigRepository({ utilsDB });
 
 const companyService = new CompanyService({ companyRepository });
 const invoiceService = new InvoiceService({ invoiceRepository });
 const configService = new ConfigService({ configRepository });
 
-const mediaService = new MediaService({ storePdfPath, fs, path, uuid });
+const mediaService = new MediaService({ storePdfPath, fs, path, uuid, pdf, configRepository, dialog, invoiceRepository });
 
 companyRepository.createTable();
 invoiceRepository.createTable();

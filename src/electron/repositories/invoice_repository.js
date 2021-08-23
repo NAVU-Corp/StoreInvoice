@@ -1,8 +1,9 @@
 
 
 class InvoiceRepository {
-  constructor({ utilsDB }) {
+  constructor({ utilsDB, storePdfPath }) {
     this.utilsDB = utilsDB;
+    this.storePdfPath = storePdfPath;
   }
 
   //typeinvoice: 10 - Hóa đơn bán ra, 20 - Hóa đơn mua vào
@@ -23,20 +24,21 @@ class InvoiceRepository {
       );`
 
     // sql = `ALTER TABLE invoice ADD typeinvoice INT;`;
- 
+    // sql = `ALTER TABLE invoice ADD nameseller text;`;    
+
     return this.utilsDB.run(sql)
   }
 
   create(invoice, { 
     dateNow,
   }) {
-    const { invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf, typeinvoice } = invoice;
-
+    const { invoicesymbol, invoicetemplate, invoicenumber, invoicedate, namebuyer, nameseller, note, namepdf, typeinvoice } = invoice;
+    console.log(invoice);
     return this.utilsDB.run(
       `INSERT INTO invoice (invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf,
-        typeinvoice, status, createdate, updatedate)
+        namebuyer, nameseller, typeinvoice, status, createdate, updatedate)
       VALUES ($invoicesymbol, $invoicetemplate, $invoicenumber, $invoicedate, $note, $namepdf, 
-        $typeinvoice, $status, $createdate, $updatedate)`,
+        $namebuyer, $nameseller, $typeinvoice, $status, $createdate, $updatedate)`,
       {
         $invoicesymbol: invoicesymbol,
         $invoicetemplate: invoicetemplate,
@@ -44,6 +46,8 @@ class InvoiceRepository {
         $invoicedate: invoicedate,
         $note: note,
         $namepdf: namepdf,
+        $namebuyer: namebuyer,
+        $nameseller: nameseller,
         $typeinvoice: typeinvoice,
         $status: 10,
         $createdate: dateNow,
@@ -54,13 +58,13 @@ class InvoiceRepository {
   update(invoice, { 
     dateNow,
   }) {
-    const { id, invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf, typeinvoice } = invoice;
+    const { id, invoicesymbol, invoicetemplate, invoicenumber, invoicedate, namebuyer, nameseller, note, namepdf, typeinvoice } = invoice;
 
     return this.utilsDB.run(
       `UPDATE invoice 
       SET invoicesymbol = $invoicesymbol, invoicetemplate = $invoicetemplate, invoicenumber = $invoicenumber, 
-        invoicedate = $invoicedate, note = $note, namepdf = $namepdf, typeinvoice = $typeinvoice, 
-        status = $status, updatedate = $updatedate 
+        invoicedate = $invoicedate, note = $note, namepdf = $namepdf, namebuyer = $namebuyer, namebuyer = $namebuyer, 
+        typeinvoice = $typeinvoice, status = $status, updatedate = $updatedate 
       WHERE id = $id`,
       {
         $id: id,
@@ -70,6 +74,8 @@ class InvoiceRepository {
         $invoicedate: invoicedate,
         $note: note,
         $namepdf: namepdf,
+        $namebuyer: namebuyer,
+        $nameseller: nameseller,
         $typeinvoice: typeinvoice,
         $status: 10,
         $updatedate: dateNow,
@@ -94,7 +100,8 @@ class InvoiceRepository {
   getById(id) {
     return this.utilsDB.get(
       `SELECT id, invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf,
-        IFNULL(namebuyer, '') namebuyer, IFNULL(typeinvoice, 10) typeinvoice, 
+        '${this.storePdfPath}' || '\\' || ifnull(namepdf, '') linkpdf,
+        IFNULL(namebuyer, '') namebuyer, IFNULL(nameseller, '') nameseller, IFNULL(typeinvoice, 10) typeinvoice, 
         status, createdate, updatedate
       FROM invoice 
       WHERE status != 90 and id = $id`,
@@ -114,6 +121,10 @@ class InvoiceRepository {
 
     if(filter.namebuyer) {
       condition += ` and IFNULL(namebuyer, 10) like $namebuyer `;
+    }
+
+    if(filter.nameseller) {
+      condition += ` and IFNULL(nameseller, 10) like $nameseller `;
     }
 
     if(filter.frominvoicedate) {
@@ -159,9 +170,10 @@ class InvoiceRepository {
     let query =
       `SELECT id, IFNULL(invoicesymbol, '') invoicesymbol, ifnull(invoicetemplate, '') invoicetemplate, 
         ifnull(invoicenumber, '') invoicenumber, ifnull(invoicedate, 0) invoicedate, ifnull(note, '') note, 
-        ifnull(namepdf, '') namepdf, IFNULL(namebuyer, '') namebuyer, IFNULL(typeinvoice, 10) typeinvoice, 
-        strftime('%m ', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) month,
-        status, createdate, updatedate 
+        ifnull(namepdf, '') namepdf, IFNULL(namebuyer, '') namebuyer, IFNULL(nameseller, '') nameseller, 
+        IFNULL(typeinvoice, 10) typeinvoice, status, createdate, updatedate, 
+        '${this.storePdfPath}' || '\\' || ifnull(namepdf, '') linkpdf,
+        strftime('%m ', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) month 
       FROM invoice 
       WHERE status != 90 ${condition} 
       ORDER BY invoicedate desc`
@@ -169,6 +181,7 @@ class InvoiceRepository {
     return this.utilsDB.all(query, {
       $typeinvoice: filter.typeinvoice,
       $namebuyer: filter.namebuyer ? `%${filter.namebuyer}%` : undefined,
+      $nameseller: filter.nameseller ? `%${filter.nameseller}%` : undefined,
       $frominvoicedate: filter.frominvoicedate,
       $toinvoicedate: filter.toinvoicedate,
       $invoicesymbol: filter.invoicesymbol ? `%${filter.invoicesymbol}%` : undefined,

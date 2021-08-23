@@ -58,13 +58,13 @@ export const Test: React.FC = () => {
   }, []);
 
   return (
-    <div className="home">
+    <div className="test">
       <h1>Test</h1>
 
       <button
         onClick={() => {
           let company = {
-            taxcode: "",
+            taxcode: "0123456789",
             name: "Qwerty 001",
             address: "001 ABC Qwerty",
             email: "qwerty001@gmail.com",
@@ -186,7 +186,7 @@ export const Test: React.FC = () => {
       <button
         onClick={() => {
           apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
-            groupmonth: 30,
+            // groupmonth: 30,
           });
         }}
       >
@@ -207,9 +207,7 @@ export const Test: React.FC = () => {
       <button
         onClick={() => {
           let input = {
-            filePath: [
-              fileName
-            ]
+            typeinvoice: 10,
           };
 
           apiElectron.sendMessages(MediaEvent.STORE_MEDIA, input);
@@ -221,7 +219,7 @@ export const Test: React.FC = () => {
       <button
         onClick={() => {
           let config = {
-            title: "Tên đơn vị",
+            title: "Đơn vị mua hàng",
             type: 20,
           };
 
