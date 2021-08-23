@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import {
   SvgMinimize,
@@ -10,6 +16,7 @@ import {
 } from "../../assets/svg";
 import { WinEvent } from "../../constants/event";
 import { useClickOutside } from "../../hooks";
+import { CounterContext } from "../../store/reducers";
 import { Logo } from "../Logo/Logo";
 import "./TitleBar.scss";
 
@@ -19,6 +26,7 @@ export const TitleBar: React.FC<ITitleBar> = ({ title }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [isMaximized, setIsMaximized] = useState(true);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const { state } = useContext(CounterContext);
 
   //useClickOutside
   useClickOutside(menuRef, () => {
@@ -41,6 +49,7 @@ export const TitleBar: React.FC<ITitleBar> = ({ title }) => {
 
       <div className="title-bar__logo">
         <Logo />
+        <div>{state.value}</div>
         {pathname === "/login" || (
           <div
             className="title-bar__avatar"
