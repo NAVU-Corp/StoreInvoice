@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import {
   SvgMinimize,
@@ -10,7 +10,9 @@ import {
 } from "../../assets/svg";
 import { WinEvent } from "../../constants/event";
 import { useClickOutside } from "../../hooks";
+import { CompanyContext } from "../../store/reducers";
 import { Logo } from "../Logo/Logo";
+
 import "./TitleBar.scss";
 
 export const TitleBar: React.FC<ITitleBar> = ({ title }) => {
@@ -19,6 +21,7 @@ export const TitleBar: React.FC<ITitleBar> = ({ title }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [isMaximized, setIsMaximized] = useState(true);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const { state } = useContext(CompanyContext);
 
   //useClickOutside
   useClickOutside(menuRef, () => {
@@ -46,7 +49,7 @@ export const TitleBar: React.FC<ITitleBar> = ({ title }) => {
             className="title-bar__avatar"
             onClick={() => setIsOpenMenu(!isOpenMenu)}
           >
-            <span>TIKI</span>
+            <span>{state.companyData.name}</span>
             <SvgDropdownName />
             {isOpenMenu && (
               <div className="title-bar__menu" ref={menuRef}>

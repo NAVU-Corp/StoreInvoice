@@ -8,5 +8,6 @@ export * from "./Select/Select";
 export * from "./ErrorMessage/ErrorMessage";
 export * from "./Button/Button";
 export * from "./Textarea/Textarea";
+export * from "./Alert/Alert";
 
 export * from "./Nav/Nav";
