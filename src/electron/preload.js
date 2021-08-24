@@ -6,8 +6,10 @@ contextBridge.exposeInMainWorld("apiElectron", {
   },
 
   on(event, callback) {
-    ipcRenderer.on(event, (event, data) => {
-      callback(event, data);
-    });
+    ipcRenderer.on(event, callback);
+  },
+
+  removeListener(event, callback) {
+    ipcRenderer.removeListener(event, callback);
   },
 });

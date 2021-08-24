@@ -1,8 +1,32 @@
-import React from "react";
-import { BoxShadow, Button, Input, Textarea } from "../../components";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { Button, Input, Textarea } from "../../components";
+import { InvoiceEvent } from "../../constants/event";
+import { InvoicePreview } from "./components";
 import "./InvoiceDetailPage.scss";
 
 export const InvoiceDetailPage = () => {
+  const { id } = useParams<{ id: string }>();
+
+  const handleGetOneInvoice = (_: any, data: any) => {
+    console.log("data", data);
+  };
+  useEffect(() => {
+    if (id) {
+      apiElectron.sendMessages(InvoiceEvent.GET_ONE_INVOICE, {
+        id: parseInt(id || ""),
+      });
+      apiElectron.on(InvoiceEvent.RESULT_GET_ONE_INVOICE, handleGetOneInvoice);
+    }
+
+    return () => {
+      apiElectron.removeListener(
+        InvoiceEvent.GET_ONE_INVOICE,
+        handleGetOneInvoice
+      );
+    };
+  }, [id]);
+
   return (
     <div className="invoice-detail">
       <form className="invoice-detail__form">
@@ -37,7 +61,7 @@ export const InvoiceDetailPage = () => {
       </form>
       <div className="invoice-detail__preview">
         <h3>XEM HÓA ĐƠN</h3>
-        <BoxShadow className="invoice-detail__invoid">Hóa đơn</BoxShadow>
+        <InvoicePreview />
       </div>
     </div>
   );

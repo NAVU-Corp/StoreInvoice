@@ -61,8 +61,8 @@ export const ChooseTypePage = () => {
             onSelect={(item) => setValueYear(item)}
           />
           <div className="choose-type__actions">
-            <Button isBig isRed onClick={() => history.goBack()}>
-              Đóng
+            <Button isBig isRed onClick={() => history.push("/")}>
+              Bỏ qua
             </Button>
             <Button isBig onClick={handleGoToInvoid}>
               Mở

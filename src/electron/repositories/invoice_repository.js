@@ -1,5 +1,3 @@
-
-
 class InvoiceRepository {
   constructor({ utilsDB, storePdfPath }) {
     this.utilsDB = utilsDB;
@@ -21,18 +19,26 @@ class InvoiceRepository {
         status int,
         createdate datetime,
         updatedate datetime
-      );`
+      );`;
 
     // sql = `ALTER TABLE invoice ADD typeinvoice INT;`;
-    // sql = `ALTER TABLE invoice ADD nameseller text;`;    
+    // sql = `ALTER TABLE invoice ADD nameseller text;`;
 
-    return this.utilsDB.run(sql)
+    return this.utilsDB.run(sql);
   }
 
-  create(invoice, { 
-    dateNow,
-  }) {
-    const { invoicesymbol, invoicetemplate, invoicenumber, invoicedate, namebuyer, nameseller, note, namepdf, typeinvoice } = invoice;
+  create(invoice, { dateNow }) {
+    const {
+      invoicesymbol,
+      invoicetemplate,
+      invoicenumber,
+      invoicedate,
+      namebuyer,
+      nameseller,
+      note,
+      namepdf,
+      typeinvoice,
+    } = invoice;
     console.log(invoice);
     return this.utilsDB.run(
       `INSERT INTO invoice (invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf,
@@ -52,13 +58,23 @@ class InvoiceRepository {
         $status: 10,
         $createdate: dateNow,
         $updatedate: dateNow,
-      });
+      }
+    );
   }
 
-  update(invoice, { 
-    dateNow,
-  }) {
-    const { id, invoicesymbol, invoicetemplate, invoicenumber, invoicedate, namebuyer, nameseller, note, namepdf, typeinvoice } = invoice;
+  update(invoice, { dateNow }) {
+    const {
+      id,
+      invoicesymbol,
+      invoicetemplate,
+      invoicenumber,
+      invoicedate,
+      namebuyer,
+      nameseller,
+      note,
+      namepdf,
+      typeinvoice,
+    } = invoice;
 
     return this.utilsDB.run(
       `UPDATE invoice 
@@ -80,12 +96,10 @@ class InvoiceRepository {
         $status: 10,
         $updatedate: dateNow,
       }
-    )
+    );
   }
 
-  delete(id, { 
-    dateNow,
-  }) {
+  delete(id, { dateNow }) {
     return this.utilsDB.run(
       `UPDATE invoice 
       SET status = $status, updatedate = $updatedate 
@@ -94,7 +108,8 @@ class InvoiceRepository {
         $id: id,
         $status: 90,
         $updatedate: dateNow,
-      });
+      }
+    );
   }
 
   getById(id) {
@@ -107,7 +122,8 @@ class InvoiceRepository {
       WHERE status != 90 and id = $id`,
       {
         $id: id,
-      })
+      }
+    );
   }
 
   getList(filter) {
@@ -115,60 +131,63 @@ class InvoiceRepository {
 
     let condition = ``;
 
-    if(filter.typeinvoice) {
+    if (filter.typeinvoice) {
       condition += ` and IFNULL(typeinvoice, 10) = $typeinvoice `;
     }
 
-    if(filter.namebuyer) {
+    if (filter.namebuyer) {
       condition += ` and IFNULL(namebuyer, 10) like $namebuyer `;
     }
 
-    if(filter.nameseller) {
+    if (filter.nameseller) {
       condition += ` and IFNULL(nameseller, 10) like $nameseller `;
     }
 
-    if(filter.frominvoicedate) {
+    if (filter.frominvoicedate) {
       condition += ` and invoicedate >= $frominvoicedate `;
     }
 
-    if(filter.toinvoicedate) {
+    if (filter.toinvoicedate) {
       condition += ` and invoicedate <= $toinvoicedate `;
     }
 
-    if(filter.invoicesymbol) {
+    if (filter.invoicesymbol) {
       condition += ` and ifnull(invoicesymbol, '') like $invoicesymbol `;
     }
 
-    if(filter.invoicetemplate) {
+    if (filter.invoicetemplate) {
       condition += ` and ifnull(invoicetemplate, '') like $invoicetemplate `;
     }
 
-    if(filter.invoicenumber) {
+    if (filter.invoicenumber) {
       condition += ` and ifnull(invoicenumber, '') like $invoicenumber `;
     }
 
-    if(filter.month) {
+    if (filter.month) {
       condition += ` and CAST(strftime('%m', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) as int) = $month `;
     }
 
-    if(filter.groupmonth) {
-      if(filter.groupmonth === 10) { // Quý 1
+    if (filter.groupmonth) {
+      if (filter.groupmonth === 10) {
+        // Quý 1
         condition += ` and CAST(strftime('%m', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) as int) in (1, 2, 3) `;
-      } else if(filter.groupmonth === 20) { // Quý 2
+      } else if (filter.groupmonth === 20) {
+        // Quý 2
         condition += ` and CAST(strftime('%m', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) as int) in (4, 5, 6) `;
-      } else if(filter.groupmonth === 30) { // Quý 3
+      } else if (filter.groupmonth === 30) {
+        // Quý 3
         condition += ` and CAST(strftime('%m', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) as int) in (7, 8, 9) `;
-      } else if(filter.groupmonth === 40) { // Quý 4
+      } else if (filter.groupmonth === 40) {
+        // Quý 4
         condition += ` and CAST(strftime('%m', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) as int) in (10, 11, 12) `;
       }
     }
 
-    if(filter.year) {
+    if (filter.year) {
       condition += ` and CAST(strftime('%y', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) as int) = $year `;
     }
 
-    let query =
-      `SELECT id, IFNULL(invoicesymbol, '') invoicesymbol, ifnull(invoicetemplate, '') invoicetemplate, 
+    let query = `SELECT id, IFNULL(invoicesymbol, '') invoicesymbol, ifnull(invoicetemplate, '') invoicetemplate, 
         ifnull(invoicenumber, '') invoicenumber, ifnull(invoicedate, 0) invoicedate, ifnull(note, '') note, 
         ifnull(namepdf, '') namepdf, IFNULL(namebuyer, '') namebuyer, IFNULL(nameseller, '') nameseller, 
         IFNULL(typeinvoice, 10) typeinvoice, status, createdate, updatedate, 
@@ -176,7 +195,7 @@ class InvoiceRepository {
         strftime('%m ', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) month 
       FROM invoice 
       WHERE status != 90 ${condition} 
-      ORDER BY invoicedate desc`
+      ORDER BY invoicedate desc`;
 
     return this.utilsDB.all(query, {
       $typeinvoice: filter.typeinvoice,
@@ -184,9 +203,15 @@ class InvoiceRepository {
       $nameseller: filter.nameseller ? `%${filter.nameseller}%` : undefined,
       $frominvoicedate: filter.frominvoicedate,
       $toinvoicedate: filter.toinvoicedate,
-      $invoicesymbol: filter.invoicesymbol ? `%${filter.invoicesymbol}%` : undefined,
-      $invoicetemplate: filter.invoicetemplate ? `%${filter.invoicetemplate}%` : undefined,
-      $invoicenumber: filter.invoicenumber ? `%${filter.invoicenumber}%` : undefined,
+      $invoicesymbol: filter.invoicesymbol
+        ? `%${filter.invoicesymbol}%`
+        : undefined,
+      $invoicetemplate: filter.invoicetemplate
+        ? `%${filter.invoicetemplate}%`
+        : undefined,
+      $invoicenumber: filter.invoicenumber
+        ? `%${filter.invoicenumber}%`
+        : undefined,
       $month: filter.month,
       $year: filter.year,
     });

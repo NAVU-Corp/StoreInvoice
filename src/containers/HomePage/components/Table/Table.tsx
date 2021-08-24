@@ -1,84 +1,12 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+
 import { SvgDelete } from "../../../../assets/svg";
 import { Button } from "../../../../components";
 import "./Table.scss";
 
-const DATA = [
-  {
-    stt: "1",
-    MaHD: "215-593-5846",
-    SoHD: "215-593-5846",
-    NgayHD: "11/11/2000",
-    Cusumer: "South Mariane",
-    note: "Note 1221221",
-  },
-  {
-    stt: "2",
-    MaHD: "215-593-5846",
-    SoHD: "215-593-5846",
-    NgayHD: "11/11/2000",
-    Cusumer: "South Mariane",
-    note: "Note 1221221",
-  },
-  {
-    stt: "3",
-    MaHD: "215-593-5846",
-    SoHD: "215-593-5846",
-    NgayHD: "11/11/2000",
-    Cusumer: "South Mariane",
-    note: "Note 1221221",
-  },
-  {
-    stt: "4",
-    MaHD: "215-593-5846",
-    SoHD: "215-593-5846",
-    NgayHD: "11/11/2000",
-    Cusumer: "South Mariane",
-    note: "Note 1221221",
-  },
-  {
-    stt: "5",
-    MaHD: "215-593-5846",
-    SoHD: "215-593-5846",
-    NgayHD: "11/11/2000",
-    Cusumer: "South Mariane",
-    note: "Note 1221221",
-  },
-  {
-    stt: "5",
-    MaHD: "215-593-5846",
-    SoHD: "215-593-5846",
-    NgayHD: "11/11/2000",
-    Cusumer: "South Mariane",
-    note: "Note 1221221",
-  },
-  {
-    stt: "5",
-    MaHD: "215-593-5846",
-    SoHD: "215-593-5846",
-    NgayHD: "11/11/2000",
-    Cusumer: "South Mariane",
-    note: "Note 1221221",
-  },
-  {
-    stt: "5",
-    MaHD: "215-593-5846",
-    SoHD: "215-593-5846",
-    NgayHD: "11/11/2000",
-    Cusumer: "South Mariane",
-    note: "Note 1221221",
-  },
-  {
-    stt: "5",
-    MaHD: "215-593-5846",
-    SoHD: "215-593-5846",
-    NgayHD: "11/11/2000",
-    Cusumer: "South Mariane",
-    note: "Note 1221221",
-  },
-];
-
-export const Table = () => {
+export const Table: React.FC<ITable> = ({ dataTable }) => {
+  const history = useHistory();
   return (
     <table className="table">
       <thead>
@@ -95,20 +23,24 @@ export const Table = () => {
         </tr>
       </thead>
       <tbody>
-        {DATA.map((item, i) => {
+        {dataTable?.map((item, i) => {
           return (
-            <tr key={i}>
-              <td align="center">{item.stt}</td>
+            <tr
+              key={i}
+              className="table__row"
+              onClick={() => history.push(`/invoice-detail/${item.id}`)}
+            >
+              <td align="center">{i + 1}</td>
               <td
                 align="center"
                 style={{ fontWeight: "bold", color: "#262626" }}
               >
-                {item.MaHD}
+                {item.invoicesymbol}
               </td>
-              <td align="center">{item.MaHD}</td>
-              <td align="center">{item.SoHD}</td>
-              <td align="center">{item.NgayHD}</td>
-              <td align="center">{item.NgayHD}</td>
+              <td align="center">{item.invoicenumber}</td>
+              <td align="center">{item.invoicetemplate}</td>
+              <td align="center">{item.invoicedate}</td>
+              <td align="center">{item.namebuyer}</td>
               <td align="center">{item.note}</td>
               <td align="center">
                 <Button className="table__btn">Xem</Button>

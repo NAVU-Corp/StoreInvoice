@@ -29,18 +29,25 @@ export const LoginPage = () => {
   };
 
   // reviced result login
+
+  const handleCallback = (_: any, data: IResGetOneCompany) => {
+    if (data.content.company) {
+      dispatch(doSaveCompanyData(data.content.company));
+      history.push("/choose-type-store");
+    } else {
+      setMessageAlert("Không tìm thấy công ty");
+    }
+  };
+
   useEffect(() => {
-    apiElectron.on(
-      CompanyEvent.RESULT_GET_ONE_COMPANY,
-      (_: any, data: IResGetOneCompany) => {
-        if (data.content.company) {
-          dispatch(doSaveCompanyData(data.content.company));
-          history.push("/choose-type-store");
-        } else {
-          setMessageAlert("Không tìm thấy công ty");
-        }
-      }
-    );
+    apiElectron.on(CompanyEvent.RESULT_GET_ONE_COMPANY, handleCallback);
+
+    return () => {
+      apiElectron.removeListener(
+        CompanyEvent.RESULT_GET_ONE_COMPANY,
+        handleCallback
+      );
+    };
   }, []);
 
   return (
