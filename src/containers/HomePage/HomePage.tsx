@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Input, LabelTitle, BoxShadow, Select } from "../../components";
 import { InvoiceEvent } from "../../constants/event";
@@ -11,16 +11,27 @@ export const HomePage: React.FC = () => {
   const { state } =
     useLocation<{ month: number; groupmonth: number; year: number }>();
 
+  const [dataTable, setDataTable] = useState<Array<IResInvoice>>([]);
+
+  const handleListenerGetInvoice = (_: any, data: IResGetAllInvoices) => {
+    if (data.content.invoices) {
+      setDataTable(data.content.invoices);
+    }
+  };
+
   useEffect(() => {
     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {});
-
-    //
     apiElectron.on(
       InvoiceEvent.RESULT_GET_ALL_INVOICES,
-      (_: any, data: any) => {
-        console.log(data);
-      }
+      handleListenerGetInvoice
     );
+
+    return () => {
+      apiElectron.removeListener(
+        InvoiceEvent.RESULT_GET_ALL_INVOICES,
+        handleListenerGetInvoice
+      );
+    };
   }, []);
 
   return (
@@ -58,7 +69,7 @@ export const HomePage: React.FC = () => {
       </BoxShadow>
       <BoxShadow>
         <LabelTitle title="Danh sách hoá đơn mua" marginBottom={16} hasBtnAdd />
-        <Table />
+        <Table dataTable={dataTable} />
         <Pagination />
       </BoxShadow>
     </div>

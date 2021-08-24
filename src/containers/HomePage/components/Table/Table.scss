@@ -20,4 +20,10 @@
   tr {
     height: 48px;
   }
+  &__row {
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(211, 210, 210, 0.15);
+    }
+  }
 }

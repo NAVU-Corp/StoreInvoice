@@ -46,7 +46,7 @@ export const Routers = () => {
       />
       <PrivateRouter
         exact
-        path="/invoice-detail"
+        path="/invoice-detail/:id"
         component={InvoiceDetailPage}
         layout={BlankLayout}
         title="CHI TIẾT HÓA ĐƠN"

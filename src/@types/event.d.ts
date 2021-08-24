@@ -13,9 +13,33 @@ interface IResCompany {
   updatedate: number;
 }
 
+interface IResInvoice {
+  createdate: number;
+  id: number;
+  invoicedate: number;
+  invoicenumber: string;
+  invoicesymbol: string;
+  invoicetemplate: string;
+  linkpdf: string;
+  month: string;
+  namebuyer: string;
+  namepdf: string;
+  nameseller: string;
+  note: string;
+  status: number;
+  typeinvoice: number;
+  updatedate: number;
+}
 interface IResGetOneCompany {
   content: {
     company?: IResCompany;
+  };
+  result: number;
+}
+
+interface IResGetAllInvoices {
+  content: {
+    invoices?:Array<IResInvoice> ;
   };
   result: number;
 }
