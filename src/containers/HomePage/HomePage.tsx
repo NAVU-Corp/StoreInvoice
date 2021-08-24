@@ -1,18 +1,28 @@
-import React from "react";
-import {
-  Input,
-  LabelTitle,
-  BoxShadow,
-  Select,
-  Button,
-  Nav,
-} from "../../components";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { Input, LabelTitle, BoxShadow, Select } from "../../components";
+import { InvoiceEvent } from "../../constants/event";
 import { selectionTypeInvoid } from "../../constants/selections";
 import { Pagination, Table } from "./components";
 
 import "./HomePage.scss";
 
 export const HomePage: React.FC = () => {
+  const { state } =
+    useLocation<{ month: number; groupmonth: number; year: number }>();
+
+  useEffect(() => {
+    apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {});
+
+    //
+    apiElectron.on(
+      InvoiceEvent.RESULT_GET_ALL_INVOICES,
+      (_: any, data: any) => {
+        console.log(data);
+      }
+    );
+  }, []);
+
   return (
     <div className="home-page">
       <BoxShadow marginBottom={42}>
