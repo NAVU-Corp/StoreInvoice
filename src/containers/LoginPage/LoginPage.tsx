@@ -1,15 +1,11 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import { Alert, BoxShadow, Button, Input } from "../../components";
 import { CompanyEvent } from "../../constants/event";
 import { ImageLogin } from "../../constants/images";
-import { decreaseAction, increaseAction } from "../../store/actions";
-import {
-  CounterContext,
-  counterReducer,
-  initialCounterState,
-} from "../../store/reducers";
+import { doSaveCompanyData } from "../../store/actions";
+import { CompanyContext } from "../../store/reducers";
 import { CompanyCard } from "./components";
 
 import "./LoginPage.scss";
@@ -19,7 +15,7 @@ export const LoginPage = () => {
   const [taxCode, setTaxCode] = useState("");
   const [error, setError] = useState("");
   const [messageAlert, setMessageAlert] = useState("");
-  const { state, dispatch } = useContext(CounterContext);
+  const { dispatch } = useContext(CompanyContext);
 
   //handleLogin
   const handleLogin = () => {
@@ -38,7 +34,8 @@ export const LoginPage = () => {
       CompanyEvent.RESULT_GET_ONE_COMPANY,
       (_: any, data: IResGetOneCompany) => {
         if (data.content.company) {
-          console.log(JSON.stringify(data.content.company));
+          dispatch(doSaveCompanyData(data.content.company));
+          history.push("/choose-type-store");
         } else {
           setMessageAlert("Không tìm thấy công ty");
         }
@@ -48,11 +45,6 @@ export const LoginPage = () => {
 
   return (
     <div className="login-page">
-      <div>
-        Count: {state.value}
-        <button onClick={() => dispatch(decreaseAction)}>-</button>
-        <button onClick={() => dispatch(increaseAction)}>+</button>
-      </div>
       <div className="login-page__container">
         <BoxShadow className="login-page__form">
           <h3>ĐĂNG NHẬP HỆ THỐNG</h3>

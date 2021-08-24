@@ -1,19 +1,16 @@
 export enum ActionKind {
-  Increase = "INCREASE",
-  Decrease = "DECREASE",
+  SAVE_DATA_COMPANY = "SAVE_DATA_COMPANY",
+  DELETE_DATA_COMPANY = "DELETE_DATA_COMPANY",
 }
 
 export type Action = {
   type: ActionKind;
-  payload: number;
+  payload: IResCompany;
 };
 
-export const increaseAction: Action = {
-  type: ActionKind.Increase,
-  payload: 1,
-};
-
-export const decreaseAction: Action = {
-  type: ActionKind.Decrease,
-  payload: 1,
+export const doSaveCompanyData = (data: IResCompany): Action => {
+  return {
+    type: ActionKind.SAVE_DATA_COMPANY,
+    payload: data,
+  };
 };

@@ -1,51 +1,52 @@
 import { createContext } from "react";
 import { Action, ActionKind } from "./actions";
 
-type State = {
-  value: number;
+type CompanyState = {
+  companyData: IResCompany;
 };
 
-export const initialCounterState: State = {
-  value: 0,
+export const initialCompanyState: CompanyState = {
+  companyData: {
+    address: "",
+    createdate: 0,
+    district: "",
+    email: "",
+    fax: "",
+    id: 0,
+    name: "",
+    phone: "",
+    province: "",
+    status: 10,
+    taxcode: "",
+    updatedate: 0,
+  },
 };
 
-export const CounterContext = createContext<{
-  state: State;
+export const CompanyContext = createContext<{
+  state: CompanyState;
   dispatch: React.Dispatch<Action>;
 }>({
-  state: initialCounterState,
+  state: initialCompanyState,
   dispatch: () => undefined,
 });
 
-export function counterReducer(state: State, action: Action): State {
+export function companyReducer(
+  state: CompanyState,
+  action: Action
+): CompanyState {
   const { type, payload } = action;
 
-  // First, we figure out what action
-  // has been fired:
   switch (type) {
-    // Then, for each action
-    // we describe an according state update.
-    // For example, for increasing action
-    // we add the number from payload
-    // to the current value:
-    case ActionKind.Increase:
+    case ActionKind.SAVE_DATA_COMPANY:
       return {
         ...state,
-        value: state.value + action.payload,
+        companyData: payload,
       };
-
-    // For decreasing action,
-    // we subtract the payload number
-    // from the current value:
-    case ActionKind.Decrease:
+    case ActionKind.DELETE_DATA_COMPANY:
       return {
         ...state,
-        value: state.value - action.payload,
+        companyData: initialCompanyState.companyData,
       };
-
-    // If the action is unknown
-    // we return the current state:
-    default:
       return state;
   }
 }

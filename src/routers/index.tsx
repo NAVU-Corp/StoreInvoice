@@ -11,6 +11,7 @@ import {
 } from "../containers";
 import { BlankLayout } from "../layouts";
 import { PrivateRouter } from "./PrivateRouter";
+import { PublicRouter } from "./PublicRouter";
 
 export const Routers = () => {
   return (
@@ -22,7 +23,7 @@ export const Routers = () => {
         layout={BlankLayout}
         title={"HOÁ ĐƠN"}
       />
-      <PrivateRouter
+      <PublicRouter
         exact
         path="/login"
         component={LoginPage}

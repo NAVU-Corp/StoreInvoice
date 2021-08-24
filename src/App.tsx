@@ -2,17 +2,17 @@ import React, { useReducer } from "react";
 import "./App.scss";
 import { Routers } from "./routers";
 import {
-  CounterContext,
-  counterReducer,
-  initialCounterState,
+  CompanyContext,
+  companyReducer,
+  initialCompanyState,
 } from "./store/reducers";
 
 export const App = () => {
-  const [state, dispatch] = useReducer(counterReducer, initialCounterState);
+  const [state, dispatch] = useReducer(companyReducer, initialCompanyState);
 
   return (
-    <CounterContext.Provider value={{ state, dispatch }}>
+    <CompanyContext.Provider value={{ state, dispatch }}>
       <Routers />
-    </CounterContext.Provider>
+    </CompanyContext.Provider>
   );
 };
