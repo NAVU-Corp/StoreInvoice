@@ -128,6 +128,8 @@ class InvoiceRepository {
 
   getList(filter) {
     filter = filter || {};
+    filter.page = filter.page || 0;
+    filter.pagesize = filter.pagesize || 20;
 
     let condition = ``;
 
@@ -164,27 +166,27 @@ class InvoiceRepository {
     }
 
     if (filter.month) {
-      condition += ` and CAST(strftime('%m', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) as int) = $month `;
+      condition += ` and CAST(strftime('%m', datetime(createdate / 1000, 'unixepoch')) as int) = $month `;
     }
 
     if (filter.groupmonth) {
       if (filter.groupmonth === 10) {
         // Quý 1
-        condition += ` and CAST(strftime('%m', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) as int) in (1, 2, 3) `;
+        condition += ` and CAST(strftime('%m', datetime(createdate / 1000, 'unixepoch')) as int) in (1, 2, 3) `;
       } else if (filter.groupmonth === 20) {
         // Quý 2
-        condition += ` and CAST(strftime('%m', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) as int) in (4, 5, 6) `;
+        condition += ` and CAST(strftime('%m', datetime(createdate / 1000, 'unixepoch')) as int) in (4, 5, 6) `;
       } else if (filter.groupmonth === 30) {
         // Quý 3
-        condition += ` and CAST(strftime('%m', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) as int) in (7, 8, 9) `;
+        condition += ` and CAST(strftime('%m', datetime(createdate / 1000, 'unixepoch')) as int) in (7, 8, 9) `;
       } else if (filter.groupmonth === 40) {
         // Quý 4
-        condition += ` and CAST(strftime('%m', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) as int) in (10, 11, 12) `;
+        condition += ` and CAST(strftime('%m', datetime(createdate / 1000, 'unixepoch')) as int) in (10, 11, 12) `;
       }
     }
 
     if (filter.year) {
-      condition += ` and CAST(strftime('%y', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) as int) = $year `;
+      condition += ` and CAST(strftime('%y', datetime(createdate / 1000, 'unixepoch')) as int) = $year `;
     }
 
     let query = `SELECT id, IFNULL(invoicesymbol, '') invoicesymbol, ifnull(invoicetemplate, '') invoicetemplate, 
@@ -195,7 +197,8 @@ class InvoiceRepository {
         strftime('%m ', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) month 
       FROM invoice 
       WHERE status != 90 ${condition} 
-      ORDER BY invoicedate desc`;
+      ORDER BY invoicedate desc
+      limit $page, $pagesize;`;
 
     return this.utilsDB.all(query, {
       $typeinvoice: filter.typeinvoice,
@@ -214,6 +217,8 @@ class InvoiceRepository {
         : undefined,
       $month: filter.month,
       $year: filter.year,
+      $page: filter.page * filter.pagesize,
+      $pagesize: filter.pagesize,
     });
   }
 }
