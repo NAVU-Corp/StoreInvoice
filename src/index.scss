@@ -83,12 +83,12 @@ body {
   padding: 0;
   overflow: hidden;
   font-size: 16px;
+  color: #343434;
 }
 
 *,
 html {
   box-sizing: border-box;
-  color: #343434;
   font-family: "Roboto", sans-serif;
   &::-webkit-scrollbar {
     width: 8px;

@@ -8,24 +8,24 @@ import "./InvoiceDetailPage.scss";
 export const InvoiceDetailPage = () => {
   const { id } = useParams<{ id: string }>();
 
-  const handleGetOneInvoice = (_: any, data: any) => {
-    console.log("data", data);
-  };
-  useEffect(() => {
-    if (id) {
-      apiElectron.sendMessages(InvoiceEvent.GET_ONE_INVOICE, {
-        id: parseInt(id || ""),
-      });
-      apiElectron.on(InvoiceEvent.RESULT_GET_ONE_INVOICE, handleGetOneInvoice);
-    }
+  // const handleGetOneInvoice = (_: any, data: any) => {
+  //   console.log("data", data);
+  // };
+  // useEffect(() => {
+  //   if (id) {
+  //     apiElectron.sendMessages(InvoiceEvent.GET_ONE_INVOICE, {
+  //       id: parseInt(id || ""),
+  //     });
+  //     apiElectron.on(InvoiceEvent.RESULT_GET_ONE_INVOICE, handleGetOneInvoice);
+  //   }
 
-    return () => {
-      apiElectron.removeListener(
-        InvoiceEvent.GET_ONE_INVOICE,
-        handleGetOneInvoice
-      );
-    };
-  }, [id]);
+  //   return () => {
+  //     apiElectron.removeListener(
+  //       InvoiceEvent.GET_ONE_INVOICE,
+  //       handleGetOneInvoice
+  //     );
+  //   };
+  // }, [id]);
 
   return (
     <div className="invoice-detail">

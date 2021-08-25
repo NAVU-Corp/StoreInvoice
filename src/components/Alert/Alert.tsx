@@ -1,24 +1,25 @@
-import React, { Fragment, useRef, useState } from "react";
-import { useClickOutside } from "../../hooks";
+import React from "react";
 import { BoxShadow } from "../BoxShadow/BoxShadow";
+import { Button } from "../Button/Button";
+import { Modal } from "../Modal/Modal";
 import "./Alert.scss";
 
 export const Alert: React.FC<IAlert> = ({ isOpen, setOpen, messages }) => {
-  const alertRef = useRef<HTMLDivElement>(document.createElement("div"));
-
-  useClickOutside(alertRef, () => {
-    if (setOpen) {
-      setOpen(false);
-    }
-  });
-
   return (
-    <Fragment>
-      {isOpen && (
-        <div className="alert">
-          <BoxShadow ref={alertRef}>{messages}</BoxShadow>
-        </div>
-      )}
-    </Fragment>
+    <Modal isOpen={isOpen} setOpen={setOpen}>
+      <BoxShadow className="alert">
+        <p>{messages}</p>
+        <Button
+          isBig
+          onClick={() => {
+            if (setOpen) {
+              setOpen(false);
+            }
+          }}
+        >
+          Đồng ý
+        </Button>
+      </BoxShadow>
+    </Modal>
   );
 };

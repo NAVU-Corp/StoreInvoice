@@ -1,0 +1,16 @@
+.modal-confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+
+  p {
+    margin-bottom: 16px;
+  }
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+}

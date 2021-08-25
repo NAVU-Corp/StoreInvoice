@@ -5,8 +5,9 @@ import { SvgDelete } from "../../../../assets/svg";
 import { Button } from "../../../../components";
 import "./Table.scss";
 
-export const Table: React.FC<ITable> = ({ dataTable }) => {
+export const Table: React.FC<ITable> = ({ dataTable, handleDeleteInvoice }) => {
   const history = useHistory();
+
   return (
     <table className="table">
       <thead>
@@ -46,7 +47,15 @@ export const Table: React.FC<ITable> = ({ dataTable }) => {
                 <Button className="table__btn">Xem</Button>
               </td>
               <td align="center">
-                <Button isRed>
+                <Button
+                  isRed
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (handleDeleteInvoice) {
+                      return handleDeleteInvoice(item.id);
+                    }
+                  }}
+                >
                   <SvgDelete />
                 </Button>
               </td>

@@ -39,7 +39,12 @@ interface IResGetOneCompany {
 
 interface IResGetAllInvoices {
   content: {
-    invoices?:Array<IResInvoice> ;
+    invoices?: Array<IResInvoice>;
   };
   result: number;
+}
+
+interface IResDeleteOneInvoice {
+  content: { deleteid: number };
+  result: 1;
 }
