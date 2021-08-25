@@ -15,17 +15,9 @@ export const InvoicePreview: React.FC<IInvoicePreview> = ({ link }) => {
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <BoxShadow>
-        <Document
-          file={
-            "C:\\Users\\minht\\AppData\\Roaming\\app-pdf-ts\\store-pdf\\01GTKT0_0004532_3b126a1a-d8ea-45c4-8346-8eada99fe49a.pdf"
-          }
-          onLoadSuccess={onDocumentLoadSuccess}
-        >
+        <Document file={link} onLoadSuccess={onDocumentLoadSuccess}>
           <Page pageNumber={1} />
         </Document>
-        <p>
-          Page {pageNumber} of {numPages}
-        </p>
       </BoxShadow>
     </div>
   );

@@ -34,19 +34,6 @@ export const HomePage: React.FC = () => {
     }
   };
 
-  //handleResultDeleteInvoice
-  const handleResultDeleteInvoice = (_: any, data: IResDeleteOneInvoice) => {
-    if (data.content && data.result) {
-      const deleteInvoice = dataTable.filter(
-        (item) => item.id !== data.content.deleteid
-      );
-      // setDataTable(deleteInvoice);
-      console.log("deleteInvoice", deleteInvoice);
-      console.log(data.content.deleteid);
-    }
-    // setMessageConfirm("");
-  };
-
   useEffect(() => {
     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {});
 
@@ -56,6 +43,25 @@ export const HomePage: React.FC = () => {
       handleListenerGetInvoice
     );
 
+    return () => {
+      apiElectron.removeListener(
+        InvoiceEvent.RESULT_GET_ALL_INVOICES,
+        handleListenerGetInvoice
+      );
+    };
+  }, []);
+
+  //handleResultDeleteInvoice
+  const handleResultDeleteInvoice = (_: any, data: IResDeleteOneInvoice) => {
+    if (data.content && data.result) {
+      const deleteInvoice = dataTable.filter(
+        (item) => item.id !== data.content.deleteid
+      );
+      setDataTable(deleteInvoice);
+    }
+    setMessageConfirm("");
+  };
+  useEffect(() => {
     //RESULT_DELETE_ONE_INVOICE
     apiElectron.on(
       InvoiceEvent.RESULT_DELETE_ONE_INVOICE,
@@ -64,15 +70,11 @@ export const HomePage: React.FC = () => {
 
     return () => {
       apiElectron.removeListener(
-        InvoiceEvent.RESULT_GET_ALL_INVOICES,
-        handleListenerGetInvoice
-      );
-      apiElectron.removeListener(
         InvoiceEvent.RESULT_DELETE_ONE_INVOICE,
         handleResultDeleteInvoice
       );
     };
-  }, []);
+  }, [dataTable]);
 
   //handleConfirmDeleteInvoice
   const handleConfirmDeleteInvoice = () => {

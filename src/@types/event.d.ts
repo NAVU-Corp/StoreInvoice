@@ -44,6 +44,13 @@ interface IResGetAllInvoices {
   result: number;
 }
 
+interface IResGetOneInvoice {
+  content: {
+    invoice?: IResInvoice;
+  };
+  result: number;
+}
+
 interface IResDeleteOneInvoice {
   content: { deleteid: number };
   result: 1;
