@@ -52,7 +52,7 @@ class InvoiceRepository {
       namepdf,
       typeinvoice,
     } = invoice;
-    
+
     return this.utilsDB.run(
       `INSERT INTO invoice (companyid, invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf,
         namebuyer, nameseller, typeinvoice, status, createdate, updatedate)
@@ -149,7 +149,7 @@ class InvoiceRepository {
 
     let condition = ``;
 
-    if(filter.companyid) {
+    if (filter.companyid) {
       condition += ` and ifnull(companyid, 0) = $companyid `;
     }
 
@@ -209,8 +209,7 @@ class InvoiceRepository {
       condition += ` and CAST(strftime('%y', datetime(createdate / 1000, 'unixepoch')) as int) = $year `;
     }
 
-    let query = 
-      `SELECT id, ifnull(companyid, 0) companyid, IFNULL(invoicesymbol, '') invoicesymbol, ifnull(invoicetemplate, '') invoicetemplate, 
+    let query = `SELECT id, ifnull(companyid, 0) companyid, IFNULL(invoicesymbol, '') invoicesymbol, ifnull(invoicetemplate, '') invoicetemplate, 
         ifnull(invoicenumber, '') invoicenumber, ifnull(invoicedate, 0) invoicedate, ifnull(note, '') note, 
         ifnull(namepdf, '') namepdf, IFNULL(namebuyer, '') namebuyer, IFNULL(nameseller, '') nameseller, 
         IFNULL(typeinvoice, 10) typeinvoice, status, createdate, updatedate, 

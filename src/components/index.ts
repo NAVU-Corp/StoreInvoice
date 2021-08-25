@@ -9,5 +9,7 @@ export * from "./ErrorMessage/ErrorMessage";
 export * from "./Button/Button";
 export * from "./Textarea/Textarea";
 export * from "./Alert/Alert";
+export * from "./Modal/Modal";
+export * from "./ModalConfirm/ModalConfirm";
 
 export * from "./Nav/Nav";

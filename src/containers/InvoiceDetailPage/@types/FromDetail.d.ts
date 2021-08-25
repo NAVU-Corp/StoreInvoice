@@ -1,0 +1,3 @@
+interface IFromDetail {
+  invoice: IResInvoice;
+}

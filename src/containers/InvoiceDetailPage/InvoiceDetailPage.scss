@@ -3,31 +3,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-  &__block {
-    display: flex;
-    align-items: center;
-    max-width: 420px;
-    margin-bottom: 16px;
-  }
+  height: calc(100vh - 52px);
+  overflow: auto;
   &__form {
+    flex: 2;
     width: 100%;
-    max-width: 400px;
+    height: 100%;
     h3 {
       margin-bottom: 32px;
     }
   }
-  &__actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  &__preview {
-    flex: 1;
-    margin-left: 42px;
-  }
 
-  &__input {
-    max-width: 500px;
+  &__preview {
+    flex: 3;
+    margin-left: 42px;
+    padding-top: 110px;
   }
 }

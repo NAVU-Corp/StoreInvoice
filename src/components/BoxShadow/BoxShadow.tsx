@@ -12,6 +12,7 @@ export const BoxShadow = forwardRef<HTMLDivElement, IBoxShadow>(
       paddingRight,
       marginBottom,
       className,
+      color,
     },
     ref
   ) => {
@@ -26,6 +27,7 @@ export const BoxShadow = forwardRef<HTMLDivElement, IBoxShadow>(
           paddingTop,
           paddingRight,
           marginBottom,
+          color,
         }}
       >
         {children}
