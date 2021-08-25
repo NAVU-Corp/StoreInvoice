@@ -24,7 +24,7 @@ class InvoiceService {
   }
 
   getInvoiceById(id) {
-    return this.invoiceRepository.getById(id, { dateNow });
+    return this.invoiceRepository.getById(id);
   }
 
   getInvoices(filter) {
