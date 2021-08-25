@@ -128,6 +128,8 @@ class InvoiceRepository {
 
   getList(filter) {
     filter = filter || {};
+    filter.page = filter.page || 0;
+    filter.pagesize = filter.pagesize || 20;
 
     let condition = ``;
 
@@ -195,7 +197,8 @@ class InvoiceRepository {
         strftime('%m ', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) month 
       FROM invoice 
       WHERE status != 90 ${condition} 
-      ORDER BY invoicedate desc`;
+      ORDER BY invoicedate desc
+      limit $page, $pagesize;`;
 
     return this.utilsDB.all(query, {
       $typeinvoice: filter.typeinvoice,
@@ -214,6 +217,8 @@ class InvoiceRepository {
         : undefined,
       $month: filter.month,
       $year: filter.year,
+      $page: filter.page * filter.pagesize,
+      $pagesize: filter.pagesize,
     });
   }
 }
