@@ -39,6 +39,10 @@ companyRepository.createTable();
 invoiceRepository.createTable();
 configRepository.createTable();
 
+invoiceRepository.alterCompanyId();
+invoiceRepository.alterNameSeller();
+invoiceRepository.alterTypeInvoice();
+
 module.exports = {
   companyService,
   invoiceService,

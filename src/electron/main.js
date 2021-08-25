@@ -7,8 +7,6 @@ require("./events/config_event");
 
 const { BrowserWindow, app, ipcMain, Notification } = require("electron");
 const path = require("path");
-const fs = require("fs");
-const pdf = require("pdf-parse");
 const isDev = require("electron-is-dev");
 const { WinEvent } = require("../constants/event");
 
@@ -67,17 +65,6 @@ const createWindow = () => {
 };
 
 /// run app
-app
-  .whenReady()
-  .then(() => {
-    createWindow();
-  })
-  .then(() => {
-    // const dataBuffer = fs.readFileSync(path.join(__dirname, "sample.pdf"));
-    // pdf(dataBuffer).then(function (data) {
-    //   console.log("TEXT", data.text);
-    // });
-    mainWindow.webContents.send(WinEvent.IS_MAXIMIZED, {
-      isMaximized: mainWindow.isMaximized(),
-    });
-  });
+app.whenReady().then(() => {
+  createWindow();
+});
