@@ -23,12 +23,14 @@ class InvoiceRepository {
 
     // sql = `ALTER TABLE invoice ADD typeinvoice INT;`;
     // sql = `ALTER TABLE invoice ADD nameseller text;`;
+    // sql = `ALTER TABLE invoice ADD companyid int;`;
 
     return this.utilsDB.run(sql);
   }
 
   create(invoice, { dateNow }) {
     const {
+      companyid,
       invoicesymbol,
       invoicetemplate,
       invoicenumber,
@@ -39,13 +41,14 @@ class InvoiceRepository {
       namepdf,
       typeinvoice,
     } = invoice;
-    console.log(invoice);
+    
     return this.utilsDB.run(
-      `INSERT INTO invoice (invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf,
+      `INSERT INTO invoice (companyid, invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf,
         namebuyer, nameseller, typeinvoice, status, createdate, updatedate)
-      VALUES ($invoicesymbol, $invoicetemplate, $invoicenumber, $invoicedate, $note, $namepdf, 
+      VALUES ($companyid, $invoicesymbol, $invoicetemplate, $invoicenumber, $invoicedate, $note, $namepdf, 
         $namebuyer, $nameseller, $typeinvoice, $status, $createdate, $updatedate)`,
       {
+        $companyid: companyid,
         $invoicesymbol: invoicesymbol,
         $invoicetemplate: invoicetemplate,
         $invoicenumber: invoicenumber,
@@ -65,6 +68,7 @@ class InvoiceRepository {
   update(invoice, { dateNow }) {
     const {
       id,
+      companyid,
       invoicesymbol,
       invoicetemplate,
       invoicenumber,
@@ -78,12 +82,13 @@ class InvoiceRepository {
 
     return this.utilsDB.run(
       `UPDATE invoice 
-      SET invoicesymbol = $invoicesymbol, invoicetemplate = $invoicetemplate, invoicenumber = $invoicenumber, 
+      SET companyid = $companyid, invoicesymbol = $invoicesymbol, invoicetemplate = $invoicetemplate, invoicenumber = $invoicenumber, 
         invoicedate = $invoicedate, note = $note, namepdf = $namepdf, namebuyer = $namebuyer, namebuyer = $namebuyer, 
         typeinvoice = $typeinvoice, status = $status, updatedate = $updatedate 
       WHERE id = $id`,
       {
         $id: id,
+        $companyid: companyid,
         $invoicesymbol: invoicesymbol,
         $invoicetemplate: invoicetemplate,
         $invoicenumber: invoicenumber,
@@ -114,7 +119,7 @@ class InvoiceRepository {
 
   getById(id) {
     return this.utilsDB.get(
-      `SELECT id, invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf,
+      `SELECT id, ifnull(companyid, 0) companyid, invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf,
         '${this.storePdfPath}' || '\\' || ifnull(namepdf, '') linkpdf,
         IFNULL(namebuyer, '') namebuyer, IFNULL(nameseller, '') nameseller, IFNULL(typeinvoice, 10) typeinvoice, 
         status, createdate, updatedate
@@ -132,6 +137,10 @@ class InvoiceRepository {
     filter.pagesize = filter.pagesize || 20;
 
     let condition = ``;
+
+    if(filter.companyid) {
+      condition += ` and ifnull(companyid, 0) = $companyid `;
+    }
 
     if (filter.typeinvoice) {
       condition += ` and IFNULL(typeinvoice, 10) = $typeinvoice `;
@@ -189,7 +198,8 @@ class InvoiceRepository {
       condition += ` and CAST(strftime('%y', datetime(createdate / 1000, 'unixepoch')) as int) = $year `;
     }
 
-    let query = `SELECT id, IFNULL(invoicesymbol, '') invoicesymbol, ifnull(invoicetemplate, '') invoicetemplate, 
+    let query = 
+      `SELECT id, ifnull(companyid, 0), IFNULL(invoicesymbol, '') invoicesymbol, ifnull(invoicetemplate, '') invoicetemplate, 
         ifnull(invoicenumber, '') invoicenumber, ifnull(invoicedate, 0) invoicedate, ifnull(note, '') note, 
         ifnull(namepdf, '') namepdf, IFNULL(namebuyer, '') namebuyer, IFNULL(nameseller, '') nameseller, 
         IFNULL(typeinvoice, 10) typeinvoice, status, createdate, updatedate, 
@@ -201,6 +211,7 @@ class InvoiceRepository {
       limit $page, $pagesize;`;
 
     return this.utilsDB.all(query, {
+      $companyid: filter.companyid,
       $typeinvoice: filter.typeinvoice,
       $namebuyer: filter.namebuyer ? `%${filter.namebuyer}%` : undefined,
       $nameseller: filter.nameseller ? `%${filter.nameseller}%` : undefined,
