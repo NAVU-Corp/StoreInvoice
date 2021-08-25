@@ -21,10 +21,21 @@ class InvoiceRepository {
         updatedate datetime
       );`;
 
-    // sql = `ALTER TABLE invoice ADD typeinvoice INT;`;
-    // sql = `ALTER TABLE invoice ADD nameseller text;`;
-    // sql = `ALTER TABLE invoice ADD companyid int;`;
+    return this.utilsDB.run(sql);
+  }
 
+  alterTypeInvoice() {
+    let sql =  `ALTER TABLE invoice ADD typeinvoice INT;`;
+    return this.utilsDB.run(sql);
+  }
+
+  alterNameSeller() {
+    let sql = `ALTER TABLE invoice ADD nameseller text;`;
+    return this.utilsDB.run(sql);
+  }
+
+  alterCompanyId() {
+    let sql = `ALTER TABLE invoice ADD companyid int;`;
     return this.utilsDB.run(sql);
   }
 
