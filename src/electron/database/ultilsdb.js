@@ -55,6 +55,25 @@ class UtilsDB {
       })
     })
   }
+
+  checkExistsColumn(params = []) {
+    return new Promise((resolve, reject) => {
+      let sql =
+        `SELECT COUNT(*) AS numcol 
+        FROM pragma_table_info($table) 
+        WHERE name=$column`;
+
+      this.db.get(sql, params, (err, result) => {
+        if (err) {
+          console.log('Error running sql: ' + sql)
+          console.log(err)
+          reject(err)
+        } else {
+          resolve(result)
+        }
+      })
+    })
+  }
 }
 
 module.exports = {

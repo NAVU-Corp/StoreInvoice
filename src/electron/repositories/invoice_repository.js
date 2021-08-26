@@ -24,19 +24,40 @@ class InvoiceRepository {
     return this.utilsDB.run(sql);
   }
 
-  alterTypeInvoice() {
-    let sql =  `ALTER TABLE invoice ADD typeinvoice INT;`;
-    return this.utilsDB.run(sql);
+  async alterTypeInvoice() {
+    let result = await this.utilsDB.checkExistsColumn({
+      $table: 'invoice',
+      $column: 'typeinvoice',
+    });
+
+    if(!result || !result.numcol || result.numcol === 0) {
+      let sql = `ALTER TABLE invoice ADD typeinvoice int;`;
+      return this.utilsDB.run(sql);
+    }
   }
 
-  alterNameSeller() {
-    let sql = `ALTER TABLE invoice ADD nameseller text;`;
-    return this.utilsDB.run(sql);
+  async alterNameSeller() {
+    let result = await this.utilsDB.checkExistsColumn({
+      $table: 'invoice',
+      $column: 'nameseller',
+    });
+
+    if(!result || !result.numcol || result.numcol === 0) {
+      let sql = `ALTER TABLE invoice ADD nameseller int;`;
+      return this.utilsDB.run(sql);
+    }
   }
 
-  alterCompanyId() {
-    let sql = `ALTER TABLE invoice ADD companyid int;`;
-    return this.utilsDB.run(sql);
+  async alterCompanyId() {
+    let result = await this.utilsDB.checkExistsColumn({
+      $table: 'invoice',
+      $column: 'companyid',
+    });
+
+    if(!result || !result.numcol || result.numcol === 0) {
+      let sql = `ALTER TABLE invoice ADD companyid int;`;
+      return this.utilsDB.run(sql);
+    }
   }
 
   create(invoice, { dateNow }) {
