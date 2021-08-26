@@ -53,7 +53,10 @@ export const TitleBar: React.FC<ITitleBar> = ({ title }) => {
             <SvgDropdownName />
             {isOpenMenu && (
               <div className="title-bar__menu" ref={menuRef}>
-                <div>Thông tin</div>
+                <div onClick={() => history.push("/company-profile")}>
+                  Thông tin
+                </div>
+                <div onClick={() => history.push("/setting")}>Cài Đặt</div>
                 <div onClick={() => history.replace("/login")}>Đăng xuất</div>
               </div>
             )}

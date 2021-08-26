@@ -1,11 +1,16 @@
 import React from "react";
 import { useFormik } from "formik";
+import moment from "moment";
 
-import { Button, Input, Textarea } from "../../../../components";
+import { Button, Input, Select, Textarea } from "../../../../components";
 import "./FormDetail.scss";
 import { useHistory } from "react-router-dom";
+import { optionTypeInvoid } from "../../../../constants/selections";
 
-export const FromDetail: React.FC<IFromDetail> = ({ invoice }) => {
+export const FromDetail: React.FC<IFromDetail> = ({
+  invoice,
+  handleSubmit,
+}) => {
   const history = useHistory();
   const {
     invoicenumber,
@@ -22,7 +27,9 @@ export const FromDetail: React.FC<IFromDetail> = ({ invoice }) => {
     initialValues: {
       invoicenumber: invoicenumber || "",
       invoicetemplate: invoicetemplate || "",
-      invoicedate: invoicedate || "",
+      invoicedate: moment(
+        invoicedate ? new Date(invoicedate) : new Date()
+      ).format("YYYY-MM-DD"),
       namebuyer: namebuyer || "",
       note: note || "",
       status: status || 0,
@@ -31,21 +38,21 @@ export const FromDetail: React.FC<IFromDetail> = ({ invoice }) => {
     },
 
     enableReinitialize: true,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values: any) => {
+      values.invoicedate = new Date(values.invoicedate);
+      return handleSubmit(values);
     },
   });
 
   return (
     <form className="form-detail__form" onSubmit={formik.handleSubmit}>
       <div className="form-detail__block">
-        <Input
+        <Select
           placeholder="Loại hóa đơn"
           label="Loại hóa đơn"
-          id="status"
-          name="status"
-          onChange={formik.handleChange}
           value={formik.values.status}
+          options={optionTypeInvoid}
+          onSelect={(item) => formik.setFieldValue("status", item.id)}
         />
         <Input
           placeholder="Kí hiệu HĐ"
@@ -107,7 +114,14 @@ export const FromDetail: React.FC<IFromDetail> = ({ invoice }) => {
         onChange={formik.handleChange}
         value={formik.values.nameseller}
       />
-      <Textarea placeholder="Ghi chú" label="Ghi chú" />
+      <Textarea
+        placeholder="Ghi chú"
+        label="Ghi chú"
+        onChange={formik.handleChange}
+        value={formik.values.note}
+        name="note"
+        id="note"
+      />
       <div className="form-detail__actions">
         <Button isBig isRed onClick={() => history.goBack()}>
           Trở về
