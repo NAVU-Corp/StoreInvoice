@@ -100,7 +100,6 @@ class InvoiceRepository {
   update(invoice, { dateNow }) {
     const {
       id,
-      companyid,
       invoicesymbol,
       invoicetemplate,
       invoicenumber,
@@ -108,28 +107,23 @@ class InvoiceRepository {
       namebuyer,
       nameseller,
       note,
-      namepdf,
-      typeinvoice,
     } = invoice;
 
     return this.utilsDB.run(
       `UPDATE invoice 
-      SET companyid = $companyid, invoicesymbol = $invoicesymbol, invoicetemplate = $invoicetemplate, invoicenumber = $invoicenumber, 
-        invoicedate = $invoicedate, note = $note, namepdf = $namepdf, namebuyer = $namebuyer, namebuyer = $namebuyer, 
-        typeinvoice = $typeinvoice, status = $status, updatedate = $updatedate 
+      SET invoicesymbol = $invoicesymbol, invoicetemplate = $invoicetemplate, invoicenumber = $invoicenumber, 
+        invoicedate = $invoicedate, note = $note, namebuyer = $namebuyer, nameseller = $nameseller, 
+        status = $status, updatedate = $updatedate 
       WHERE id = $id`,
       {
         $id: id,
-        $companyid: companyid,
         $invoicesymbol: invoicesymbol,
         $invoicetemplate: invoicetemplate,
         $invoicenumber: invoicenumber,
         $invoicedate: invoicedate,
         $note: note,
-        $namepdf: namepdf,
         $namebuyer: namebuyer,
         $nameseller: nameseller,
-        $typeinvoice: typeinvoice,
         $status: 10,
         $updatedate: dateNow,
       }
