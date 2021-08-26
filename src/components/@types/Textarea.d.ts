@@ -1,4 +1,4 @@
-interface ITextarea {
+interface ITextarea extends IInput {
   label?: string;
   placeholder?: string;
   value?: string;

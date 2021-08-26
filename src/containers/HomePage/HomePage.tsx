@@ -9,7 +9,7 @@ import {
   ModalConfirm,
 } from "../../components";
 import { InvoiceEvent, MediaEvent } from "../../constants/event";
-import { selectionTypeInvoid } from "../../constants/selections";
+import { optionTypeInvoid } from "../../constants/selections";
 import { Pagination, Table } from "./components";
 
 import "./HomePage.scss";
@@ -92,7 +92,7 @@ export const HomePage: React.FC = () => {
             <Select
               placeholder="Loại hoá đơn"
               label="Loại hoá đơn"
-              options={selectionTypeInvoid}
+              options={optionTypeInvoid}
             />
             <Input
               placeholder="Kí hiệu hóa đơn"
@@ -110,7 +110,7 @@ export const HomePage: React.FC = () => {
             <Select
               placeholder="Chọn kì"
               label="Chọn kì"
-              options={selectionTypeInvoid}
+              options={optionTypeInvoid}
             />
             <Input placeholder="Tên file" label="Tên file" hasIconSearch />
           </form>

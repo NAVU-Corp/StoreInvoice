@@ -61,7 +61,7 @@ export const ChooseTypePage = () => {
             onSelect={(item) => setValueYear(item)}
           />
           <div className="choose-type__actions">
-            <Button isBig isRed onClick={() => history.push("/")}>
+            <Button isBig isRed onClick={() => history.push("/invoice-type")}>
               Bỏ qua
             </Button>
             <Button isBig onClick={handleGoToInvoid}>

@@ -64,7 +64,7 @@ export const LoginPage = () => {
             error={error}
           />
           <div className="login-page__actions">
-            <Button isBig isRed>
+            <Button isBig isRed onClick={() => history.push("/test-api")}>
               Xóa
             </Button>
             <Button isWhite isBig onClick={() => history.push("/register")}>

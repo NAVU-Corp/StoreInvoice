@@ -4,4 +4,5 @@ packages
 .webpack
 out
 package-lock*
+app.db*
 bundle

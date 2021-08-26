@@ -1,5 +1,5 @@
 interface IInput extends IStyles {
-  value?: string | number;
+  value?: any;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   id?: string;
   name?: string;
