@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   Input,
@@ -10,6 +10,7 @@ import {
 } from "../../components";
 import { InvoiceEvent, MediaEvent } from "../../constants/event";
 import { optionTypeInvoid } from "../../constants/selections";
+import { CompanyContext } from "../../store/reducers";
 import { Pagination, Table } from "./components";
 
 import "./HomePage.scss";
@@ -18,13 +19,21 @@ export const HomePage: React.FC = () => {
   const { state } =
     useLocation<{ month: number; groupmonth: number; year: number }>();
 
+  const {
+    state: { companyData },
+  } = useContext(CompanyContext);
+
   const [dataTable, setDataTable] = useState<Array<IResInvoice>>([]);
   const [messageConfirm, setMessageConfirm] = useState("");
   const [invoiceId, setInvoiceId] = useState(0);
+  const [typeInvoice, setTypeInvoice] = useState(10);
 
   //handleAddFilePDF
   const handleAddFilePDF = () => {
-    apiElectron.sendMessages(MediaEvent.STORE_MEDIA, { typeinvoice: 10 });
+    apiElectron.sendMessages(MediaEvent.STORE_MEDIA, {
+      typeinvoice: typeInvoice,
+      companyid: companyData.id,
+    });
   };
 
   //handleListenerGetInvoice
@@ -33,15 +42,26 @@ export const HomePage: React.FC = () => {
       setDataTable(data.content.invoices);
     }
   };
+  //handleListenerGetInvoice
+  const handleGetAllInvoices = () => {
+    apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
+      companyid: companyData.id,
+    });
+  };
 
+  //handleResultStoreMedia
+  const handleResultStoreMedia = (_: any, data: any) => {
+    console.log(data);
+  };
   useEffect(() => {
-    apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {});
-
+    handleGetAllInvoices();
     //RESULT_GET_ALL_INVOICES
     apiElectron.on(
       InvoiceEvent.RESULT_GET_ALL_INVOICES,
       handleListenerGetInvoice
     );
+    //RESULT_STORE_MEDIA
+    apiElectron.on(MediaEvent.RESULT_STORE_MEDIA, handleResultStoreMedia);
 
     return () => {
       apiElectron.removeListener(
