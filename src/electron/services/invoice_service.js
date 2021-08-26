@@ -30,6 +30,10 @@ class InvoiceService {
   getInvoices(filter) {
     return this.invoiceRepository.getList(filter);
   }
+
+  countInvoices(filter) {
+    return this.invoiceRepository.countList(filter);
+  }
 }
 
 module.exports = {

@@ -158,6 +158,73 @@ class InvoiceRepository {
   }
 
   getList(filter) {
+    let condition = this.buildCondition(filter);
+
+    let query = 
+      `SELECT id, ifnull(companyid, 0) companyid, IFNULL(invoicesymbol, '') invoicesymbol, ifnull(invoicetemplate, '') invoicetemplate, 
+        ifnull(invoicenumber, '') invoicenumber, ifnull(invoicedate, 0) invoicedate, ifnull(note, '') note, 
+        ifnull(namepdf, '') namepdf, IFNULL(namebuyer, '') namebuyer, IFNULL(nameseller, '') nameseller, 
+        IFNULL(typeinvoice, 10) typeinvoice, status, createdate, updatedate, 
+        '${this.storePdfPath}' || '\\' || ifnull(namepdf, '') linkpdf,
+        strftime('%m ', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) month 
+      FROM invoice 
+      WHERE status != 90 ${condition} 
+      ORDER BY invoicedate desc
+      limit $page, $pagesize;`;
+
+    return this.utilsDB.all(query, {
+      $companyid: filter.companyid,
+      $typeinvoice: filter.typeinvoice,
+      $namebuyer: filter.namebuyer ? `%${filter.namebuyer}%` : undefined,
+      $nameseller: filter.nameseller ? `%${filter.nameseller}%` : undefined,
+      $frominvoicedate: filter.frominvoicedate,
+      $toinvoicedate: filter.toinvoicedate,
+      $invoicesymbol: filter.invoicesymbol
+        ? `%${filter.invoicesymbol}%`
+        : undefined,
+      $invoicetemplate: filter.invoicetemplate
+        ? `%${filter.invoicetemplate}%`
+        : undefined,
+      $invoicenumber: filter.invoicenumber
+        ? `%${filter.invoicenumber}%`
+        : undefined,
+      $month: filter.month,
+      $year: filter.year,
+      $page: filter.page * filter.pagesize,
+      $pagesize: filter.pagesize,
+    });
+  }
+
+  countList(filter) {
+    let condition = this.buildCondition(filter);
+
+    let query = 
+      `select count(1) numline 
+      FROM invoice 
+      WHERE status != 90 ${condition}`;
+
+    return this.utilsDB.get(query, {
+      $companyid: filter.companyid,
+      $typeinvoice: filter.typeinvoice,
+      $namebuyer: filter.namebuyer ? `%${filter.namebuyer}%` : undefined,
+      $nameseller: filter.nameseller ? `%${filter.nameseller}%` : undefined,
+      $frominvoicedate: filter.frominvoicedate,
+      $toinvoicedate: filter.toinvoicedate,
+      $invoicesymbol: filter.invoicesymbol
+        ? `%${filter.invoicesymbol}%`
+        : undefined,
+      $invoicetemplate: filter.invoicetemplate
+        ? `%${filter.invoicetemplate}%`
+        : undefined,
+      $invoicenumber: filter.invoicenumber
+        ? `%${filter.invoicenumber}%`
+        : undefined,
+      $month: filter.month,
+      $year: filter.year,
+    });
+  }
+
+  buildCondition(filter) {
     filter = filter || {};
     filter.page = filter.page || 0;
     filter.pagesize = filter.pagesize || 20;
@@ -224,38 +291,7 @@ class InvoiceRepository {
       condition += ` and CAST(strftime('%y', datetime(createdate / 1000, 'unixepoch')) as int) = $year `;
     }
 
-    let query = `SELECT id, ifnull(companyid, 0) companyid, IFNULL(invoicesymbol, '') invoicesymbol, ifnull(invoicetemplate, '') invoicetemplate, 
-        ifnull(invoicenumber, '') invoicenumber, ifnull(invoicedate, 0) invoicedate, ifnull(note, '') note, 
-        ifnull(namepdf, '') namepdf, IFNULL(namebuyer, '') namebuyer, IFNULL(nameseller, '') nameseller, 
-        IFNULL(typeinvoice, 10) typeinvoice, status, createdate, updatedate, 
-        '${this.storePdfPath}' || '\\' || ifnull(namepdf, '') linkpdf,
-        strftime('%m ', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) month 
-      FROM invoice 
-      WHERE status != 90 ${condition} 
-      ORDER BY invoicedate desc
-      limit $page, $pagesize;`;
-
-    return this.utilsDB.all(query, {
-      $companyid: filter.companyid,
-      $typeinvoice: filter.typeinvoice,
-      $namebuyer: filter.namebuyer ? `%${filter.namebuyer}%` : undefined,
-      $nameseller: filter.nameseller ? `%${filter.nameseller}%` : undefined,
-      $frominvoicedate: filter.frominvoicedate,
-      $toinvoicedate: filter.toinvoicedate,
-      $invoicesymbol: filter.invoicesymbol
-        ? `%${filter.invoicesymbol}%`
-        : undefined,
-      $invoicetemplate: filter.invoicetemplate
-        ? `%${filter.invoicetemplate}%`
-        : undefined,
-      $invoicenumber: filter.invoicenumber
-        ? `%${filter.invoicenumber}%`
-        : undefined,
-      $month: filter.month,
-      $year: filter.year,
-      $page: filter.page * filter.pagesize,
-      $pagesize: filter.pagesize,
-    });
+    return condition;
   }
 }
 
