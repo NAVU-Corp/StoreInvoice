@@ -30,45 +30,41 @@ export const InvoiceDetailPage = () => {
     updatedate: 0,
   });
 
-  //handleGetOneInvoice
-  const handleGetOneInvoice = (_: any, data: IResGetOneInvoice) => {
+  //handleResultGetOneInvoice
+  const handleResultGetOneInvoice = (_: any, data: IResGetOneInvoice) => {
     if (data.content.invoice) {
       setInvoice(data.content.invoice);
     }
   };
+
+  //handleGetOneInvoice
+  const handleGetOneInvoice = () => {
+    apiElectron.sendMessages(InvoiceEvent.GET_ONE_INVOICE, {
+      id: parseInt(id || ""),
+    });
+  };
+
   useEffect(() => {
     if (id) {
-      apiElectron.sendMessages(InvoiceEvent.GET_ONE_INVOICE, {
-        id: parseInt(id || ""),
-      });
-      apiElectron.on(InvoiceEvent.RESULT_GET_ONE_INVOICE, handleGetOneInvoice);
+      handleGetOneInvoice();
+      apiElectron.on(
+        InvoiceEvent.RESULT_GET_ONE_INVOICE,
+        handleResultGetOneInvoice
+      );
     }
 
     return () => {
       apiElectron.removeListener(
         InvoiceEvent.GET_ONE_INVOICE,
-        handleGetOneInvoice
+        handleResultGetOneInvoice
       );
     };
   }, [id]);
 
+  console.log("invoice", invoice);
+
   //handleUpdateInvoice
   const handleUpdateInvoice = (values: any) => {
-    let invoice = {
-      id: 3,
-      invoicesymbol: "123456",
-      invoicetemplate: "ABC/123",
-      invoicenumber: "745218",
-      invoicedate: new Date("2021-08-21"),
-      note: "Oke nhé",
-    };
-
-    console.log("values", values);
-    console.log({
-      ...values,
-      id: invoice.id,
-    });
-
     apiElectron.sendMessages(InvoiceEvent.UPDATE_ONE_INVOICE, {
       ...values,
       id: invoice.id,
@@ -76,11 +72,12 @@ export const InvoiceDetailPage = () => {
   };
 
   //handleResultUpdateInvoice
+  const handleResultUpdateInvoice = (_: any, data: any) => {
+    if (data && data.result) {
+      handleGetOneInvoice();
+    }
+  };
   useEffect(() => {
-    const handleResultUpdateInvoice = (_: any, data: any) => {
-      console.log(data);
-    };
-
     apiElectron.on(
       InvoiceEvent.RESULT_UPDATE_ONE_INVOICE,
       handleResultUpdateInvoice
