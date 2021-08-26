@@ -4,11 +4,18 @@ const { mediaService } = require("../database/index");
 const { ipcMain } = require("electron");
 
 // listener store media
-ipcMain.on(MediaEvent.STORE_MEDIA, (event, { typeinvoice }) => {
+ipcMain.on(MediaEvent.STORE_MEDIA, (event, { typeinvoice, companyid }) => {
+  if(!companyid || companyid < 1) {
+    event.reply(MediaEvent.RESULT_STORE_MEDIA, {
+      result: 0,
+      message: 'Vui lòng chọn công ty.'
+    });
+    return;
+  }
+
   let dateNow = new Date();
-  mediaService.storeFile({ typeinvoice, dateNow })
-    // .then((data) => event.reply(MediaEvent.RESULT_STORE_MEDIA, {
-    //   result: 1,
-    // }))
-    // .catch((err) => event.reply(MediaEvent.RESULT_STORE_MEDIA, err));
+  var result = mediaService.storeFile({ typeinvoice, companyid, dateNow });
+  event.reply(MediaEvent.RESULT_STORE_MEDIA, {
+    result: result,
+  });
 });
