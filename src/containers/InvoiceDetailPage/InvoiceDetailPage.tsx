@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { number } from "yup/lib/locale";
-import { Button, Input, Textarea } from "../../components";
+
 import { InvoiceEvent } from "../../constants/event";
+import { CompanyContext } from "../../store/reducers";
 import { FromDetail, InvoicePreview } from "./components";
 import "./InvoiceDetailPage.scss";
 
 export const InvoiceDetailPage = () => {
   const { id } = useParams<{ id: string }>();
+  const {
+    state: { companyData },
+  } = useContext(CompanyContext);
 
   const [invoice, setInvoice] = useState<IResInvoice>({
     createdate: 0,
@@ -27,32 +30,72 @@ export const InvoiceDetailPage = () => {
     updatedate: 0,
   });
 
-  const handleGetOneInvoice = (_: any, data: IResGetOneInvoice) => {
+  //handleResultGetOneInvoice
+  const handleResultGetOneInvoice = (_: any, data: IResGetOneInvoice) => {
     if (data.content.invoice) {
       setInvoice(data.content.invoice);
     }
   };
+
+  //handleGetOneInvoice
+  const handleGetOneInvoice = () => {
+    apiElectron.sendMessages(InvoiceEvent.GET_ONE_INVOICE, {
+      id: parseInt(id || ""),
+    });
+  };
+
   useEffect(() => {
     if (id) {
-      apiElectron.sendMessages(InvoiceEvent.GET_ONE_INVOICE, {
-        id: parseInt(id || ""),
-      });
-      apiElectron.on(InvoiceEvent.RESULT_GET_ONE_INVOICE, handleGetOneInvoice);
+      handleGetOneInvoice();
+      apiElectron.on(
+        InvoiceEvent.RESULT_GET_ONE_INVOICE,
+        handleResultGetOneInvoice
+      );
     }
 
     return () => {
       apiElectron.removeListener(
         InvoiceEvent.GET_ONE_INVOICE,
-        handleGetOneInvoice
+        handleResultGetOneInvoice
       );
     };
   }, [id]);
+
+  console.log("invoice", invoice);
+
+  //handleUpdateInvoice
+  const handleUpdateInvoice = (values: any) => {
+    apiElectron.sendMessages(InvoiceEvent.UPDATE_ONE_INVOICE, {
+      ...values,
+      id: invoice.id,
+    });
+  };
+
+  //handleResultUpdateInvoice
+  const handleResultUpdateInvoice = (_: any, data: any) => {
+    if (data && data.result) {
+      handleGetOneInvoice();
+    }
+  };
+  useEffect(() => {
+    apiElectron.on(
+      InvoiceEvent.RESULT_UPDATE_ONE_INVOICE,
+      handleResultUpdateInvoice
+    );
+
+    return () => {
+      apiElectron.removeListener(
+        InvoiceEvent.RESULT_UPDATE_ONE_INVOICE,
+        handleResultUpdateInvoice
+      );
+    };
+  }, []);
 
   return (
     <div className="invoice-detail">
       <div className="invoice-detail__form">
         <h3>THÔNG TIN</h3>
-        <FromDetail invoice={invoice} />
+        <FromDetail invoice={invoice} handleSubmit={handleUpdateInvoice} />
       </div>
 
       <div className="invoice-detail__preview">

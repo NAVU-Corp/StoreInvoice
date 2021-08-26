@@ -9,6 +9,7 @@ export const Button: React.FC<IButton> = ({
   onClick,
   className,
   type,
+  isExtraBig,
 }) => {
   const checkClassName = () => {
     let name = "btn";
@@ -21,6 +22,9 @@ export const Button: React.FC<IButton> = ({
 
     if (isWhite) {
       name = name + " btn--white";
+    }
+    if (isExtraBig) {
+      name = name + " btn--xbig";
     }
 
     return name;

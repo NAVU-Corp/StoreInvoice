@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from "react";
-import "./Test.scss";
-import moment from 'moment';
-import { CompanyEvent, ConfigEvent, InvoiceEvent, MediaEvent } from "../../constants/event";
+import "./TestPage.scss";
+import moment from "moment";
+import {
+  CompanyEvent,
+  ConfigEvent,
+  InvoiceEvent,
+  MediaEvent,
+} from "../../constants/event";
 
-export const Test: React.FC = () => {
+export const TestPage: React.FC = () => {
   const [companies, setCompanies] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [configs, setConfigs] = useState([]);
   const [companyDeleteId, setCompanyDeleteId] = useState<number>(0);
   const [invoiceDeleteId, setInvoiceDeleteId] = useState<number>(0);
   const [configDeleteId, setConfigDeleteId] = useState<number>(0);
-  const [fileName, setFileName] = useState<string>('');
+  const [fileName, setFileName] = useState<string>("");
 
   useEffect(() => {
     apiElectron.on(CompanyEvent.RESULT_GET_ALL_COMPANIES, (_, data) => {
-      if(data.result === 1) {
+      if (data.result === 1) {
         setCompanies(data.content.companies);
         console.log(data);
       } else {
@@ -35,7 +40,7 @@ export const Test: React.FC = () => {
     });
 
     apiElectron.on(InvoiceEvent.RESULT_GET_ALL_INVOICES, (_, data) => {
-      if(data.result === 1) {
+      if (data.result === 1) {
         setInvoices(data.content.invoices);
         console.log(data);
       } else {
@@ -48,13 +53,20 @@ export const Test: React.FC = () => {
     });
 
     apiElectron.on(ConfigEvent.RESULT_GET_ALL_CONFIGS, (_, data) => {
-      if(data.result === 1) {
+      if (data.result === 1) {
         setConfigs(data.content.configs);
         console.log(data);
       } else {
         console.log(data?.message);
       }
     });
+
+    apiElectron.on(
+      InvoiceEvent.RESULT_UPDATE_ONE_INVOICE,
+      (_: any, data: any) => {
+        console.log("dât", data);
+      }
+    );
   }, []);
 
   return (
@@ -101,7 +113,11 @@ export const Test: React.FC = () => {
         UPDATE COMPANY
       </button>
 
-      <input type="text" value={companyDeleteId} onChange={(e) => setCompanyDeleteId(Number(e.target.value || 0))} />
+      <input
+        type="text"
+        value={companyDeleteId}
+        onChange={(e) => setCompanyDeleteId(Number(e.target.value || 0))}
+      />
 
       <button
         onClick={() => {
@@ -128,7 +144,7 @@ export const Test: React.FC = () => {
       <button
         onClick={() => {
           apiElectron.sendMessages(CompanyEvent.GET_ONE_COMPANY, {
-            taxcode: "0123456789"
+            taxcode: "0123456789",
           });
         }}
       >
@@ -141,7 +157,7 @@ export const Test: React.FC = () => {
             invoicesymbol: "123",
             invoicetemplate: "ABC/123",
             invoicenumber: "745218",
-            invoicedate: new Date('2021-08-21'),
+            invoicedate: new Date("2021-08-21"),
             note: "Oke nhé",
             namepdf: "pdf1.pdf",
           };
@@ -156,13 +172,13 @@ export const Test: React.FC = () => {
       <button
         onClick={() => {
           let invoice = {
-            id: 4,
+            id: 3,
             invoicesymbol: "123456",
             invoicetemplate: "ABC/123",
             invoicenumber: "745218",
-            invoicedate: new Date('2021-08-21'),
+            invoicedate: new Date("2021-08-21"),
             note: "Oke nhé",
-            namepdf: "pdf1.pdf",
+            // namepdf: "pdf1.pdf",
           };
 
           apiElectron.sendMessages(InvoiceEvent.UPDATE_ONE_INVOICE, invoice);
@@ -171,7 +187,11 @@ export const Test: React.FC = () => {
         UPDATE INVOICE
       </button>
 
-      <input type="text" value={invoiceDeleteId} onChange={(e) => setInvoiceDeleteId(Number(e.target.value || 0))} />
+      <input
+        type="text"
+        value={invoiceDeleteId}
+        onChange={(e) => setInvoiceDeleteId(Number(e.target.value || 0))}
+      />
 
       <button
         onClick={() => {
@@ -197,12 +217,18 @@ export const Test: React.FC = () => {
         return (
           <div key={invoice.id}>
             <p>{JSON.stringify(invoice)}</p>
-            <p>{moment(new Date(invoice.invoicedate)).format('DD/MM/yyyy HH:mm')}</p>
+            <p>
+              {moment(new Date(invoice.invoicedate)).format("DD/MM/yyyy HH:mm")}
+            </p>
           </div>
         );
       })}
 
-      <input type="text" value={fileName} onChange={(e) => setFileName(e.target.value || '')} />
+      <input
+        type="text"
+        value={fileName}
+        onChange={(e) => setFileName(e.target.value || "")}
+      />
 
       <button
         onClick={() => {
@@ -243,7 +269,11 @@ export const Test: React.FC = () => {
         return <p key={config.id}>{JSON.stringify(config)}</p>;
       })}
 
-      <input type="text" value={configDeleteId} onChange={(e) => setConfigDeleteId(Number(e.target.value || 0))} />
+      <input
+        type="text"
+        value={configDeleteId}
+        onChange={(e) => setConfigDeleteId(Number(e.target.value || 0))}
+      />
 
       <button
         onClick={() => {

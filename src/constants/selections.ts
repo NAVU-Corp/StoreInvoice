@@ -1,4 +1,4 @@
-export const selectionTypeInvoid = [
+export const optionTypeInvoid = [
   {
     id: 10,
     title: "Hóa đơn bán ra",

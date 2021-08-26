@@ -7,7 +7,10 @@ import {
   LoginPage,
   RegisterPage,
   InvoiceDetailPage,
-  Test,
+  SettingPage,
+  TypeInvoicePage,
+  TestPage,
+  CompanyProfilePage,
 } from "../containers";
 import { BlankLayout } from "../layouts";
 import { PrivateRouter } from "./PrivateRouter";
@@ -30,7 +33,7 @@ export const Routers = () => {
         layout={BlankLayout}
         title="ĐĂNG NHẬP"
       />
-      <PrivateRouter
+      <PublicRouter
         exact
         path="/register"
         component={RegisterPage}
@@ -53,8 +56,31 @@ export const Routers = () => {
       />
       <PrivateRouter
         exact
+        path="/setting"
+        component={SettingPage}
+        layout={BlankLayout}
+        title="CÀI ĐẶT"
+      />
+
+      <PrivateRouter
+        exact
+        path="/invoice-type"
+        component={TypeInvoicePage}
+        layout={BlankLayout}
+        title="CHỌN LOẠI HOÁ ĐƠN"
+      />
+
+      <PrivateRouter
+        exact
+        path="/company-profile"
+        component={CompanyProfilePage}
+        layout={BlankLayout}
+        title="THÔNG TIN CÔNG TY"
+      />
+      <PublicRouter
+        exact
         path="/test-api"
-        component={Test}
+        component={TestPage}
         layout={BlankLayout}
         title="TEST API"
       />

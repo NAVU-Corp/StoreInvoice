@@ -7,12 +7,22 @@ export const Textarea: FC<ITextarea> = ({
   placeholder,
   value,
   onChange,
+  id,
+  name,
 }) => {
   return (
     <div className="textarea">
-      <div className="textarea__label">{label}</div>
+      <label className="textarea__label" htmlFor={id}>
+        {label}
+      </label>
       <div className="textarea__container">
-        <textarea placeholder={placeholder} value={value} onChange={onChange} />
+        <textarea
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          id={id}
+          name={name}
+        />
       </div>
     </div>
   );
