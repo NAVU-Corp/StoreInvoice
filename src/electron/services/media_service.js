@@ -40,13 +40,13 @@ class MediaService {
   }
 
   // The function triggered by your button
-  async storeFile({ typeinvoice, dateNow }) {
+  async storeFile({ typeinvoice, companyid, dateNow }) {
     var filePath = await this.dialog.showOpenDialogSync({
       properties: ['openFile', 'multiSelections']
     });
 
     if(!filePath) {
-      return;
+      return 0;
     }
 
     filePath.forEach(file => {
@@ -63,6 +63,7 @@ class MediaService {
 
       this.analyzePdf(file).then(queue => {
         this.invoiceRepository.create({
+          companyid: companyid,
           invoicesymbol: queue.find(a => a.key === 'Mẫu số')?.value || '',
           invoicetemplate: queue.find(a => a.key === 'Ký hiệu')?.value || '',
           invoicenumber: queue.find(a => a.key === 'Số')?.value || '',
@@ -74,7 +75,7 @@ class MediaService {
       });
     });
 
-    return;
+    return 1;
   }
 
   async analyzePdf(file) {
