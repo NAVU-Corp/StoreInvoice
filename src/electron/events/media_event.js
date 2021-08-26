@@ -14,8 +14,8 @@ ipcMain.on(MediaEvent.STORE_MEDIA, (event, { typeinvoice, companyid }) => {
   }
 
   let dateNow = new Date();
-  mediaService.storeFile({ typeinvoice, companyid, dateNow });
+  var result = mediaService.storeFile({ typeinvoice, companyid, dateNow });
   event.reply(MediaEvent.RESULT_STORE_MEDIA, {
-    result: 1,
+    result: result,
   });
 });

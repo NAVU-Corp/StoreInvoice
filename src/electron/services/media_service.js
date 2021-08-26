@@ -46,7 +46,7 @@ class MediaService {
     });
 
     if(!filePath) {
-      return;
+      return 0;
     }
 
     filePath.forEach(file => {
@@ -75,7 +75,7 @@ class MediaService {
       });
     });
 
-    return;
+    return 1;
   }
 
   async analyzePdf(file) {
