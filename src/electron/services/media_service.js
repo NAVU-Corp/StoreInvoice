@@ -48,7 +48,7 @@ class MediaService {
     if(!filePath) {
       return 0;
     }
-
+    
     filePath.forEach(file => {
       // get file name
       const fileName = this.path.basename(file);
@@ -60,7 +60,7 @@ class MediaService {
       this.fs.copyFile(file, this.path.join(this.storePdfPath, fileNameBuilder), (err) => {
           if (err) throw err;
       });
-
+      
       this.analyzePdf(file).then(queue => {
         this.invoiceRepository.create({
           companyid: companyid,
@@ -81,15 +81,15 @@ class MediaService {
   async analyzePdf(file) {
     const dataBuffer = this.fs.readFileSync(file);
     const data = await this.pdf(dataBuffer);
-    let configs = await this.configRepository.getList();
+    let configs = await this.configRepository.getList({ });
 
-    this.keyWord = [ ...this.keyWord, ...configs.map(function(obj) {
+    this.keyWord = [ ...this.keyWord, ...configs?.map(function(obj) {
       return {
         key: obj.title,
         type: obj.type,
       } 
     })];
-    
+
     let queue = [];
 
     if(data.text) {
@@ -119,7 +119,7 @@ class MediaService {
     if(newStr.indexOf(':') > -1) {
       newStr = newStr.split(':')[1].trim();
     }
-    
+
     if(key === 'Ngày' && newStr) {
       let content = newStr.toLowerCase();
       if(content.indexOf('ngày') > -1 && content.indexOf('tháng') > -1 && content.indexOf('năm') > -1) {
