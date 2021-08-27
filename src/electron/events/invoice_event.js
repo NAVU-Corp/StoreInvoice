@@ -6,12 +6,24 @@ const { ipcMain } = require("electron");
 // listener get companies
 ipcMain.on(InvoiceEvent.GET_ALL_INVOICES, (event, filter) => {
   invoiceService.getInvoices(filter)
-    .then((invoices) => event.reply(InvoiceEvent.RESULT_GET_ALL_INVOICES, {
-      result: 1,
-      content: {
-        invoices,
-      }
-    }))
+    .then((invoices) => {
+      invoiceService.countInvoices(filter)
+        .then((resultCount) => {
+          event.reply(InvoiceEvent.RESULT_GET_ALL_INVOICES, {
+            result: 1,
+            content: {
+              invoices,
+              pageconfig: {
+                page: filter.page,
+                pagesize: filter.pagesize,
+                totalelement: resultCount?.numline || 0,
+                totalpage: Math.ceil((resultCount?.numline || 0) / filter.pagesize),
+              }
+            }
+          })
+        })
+        .catch((err) => event.reply(InvoiceEvent.RESULT_GET_ONE_INVOICE, err));
+    })
     .catch((err) => event.reply(InvoiceEvent.RESULT_GET_ALL_INVOICES, err));
 });
 
