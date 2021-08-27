@@ -24,6 +24,9 @@ export const HomePage: React.FC = () => {
   } = useContext(CompanyContext);
 
   const [dataTable, setDataTable] = useState<Array<IResInvoice>>([]);
+  const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(1);
+
   const [messageConfirm, setMessageConfirm] = useState("");
   const [invoiceId, setInvoiceId] = useState(0);
   const [typeInvoice, setTypeInvoice] = useState(10);
@@ -37,21 +40,31 @@ export const HomePage: React.FC = () => {
   };
 
   //handleListenerGetInvoice
-  const handleListenerGetInvoice = (_: any, data: IResGetAllInvoices) => {
-    if (data.content.invoices) {
-      setDataTable(data.content.invoices);
-    }
-  };
-  //handleListenerGetInvoice
   const handleGetAllInvoices = () => {
     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
       companyid: companyData.id,
+      page,
     });
   };
 
+  //handleListenerGetInvoice
+  const handleListenerGetInvoice = (_: any, data: IResGetAllInvoices) => {
+    if (data.content.invoices) {
+      setDataTable(data.content.invoices);
+      console.log("data", data);
+      setPage(data.content.pageconfig.page);
+      setTotalPage(data.content.pageconfig.totalpage);
+    }
+  };
+
   //handleResultStoreMedia
-  const handleResultStoreMedia = (_: any, data: any) => {
-    console.log(data);
+  const handleResultStoreMedia = (_: any, data: { result: number }) => {
+    if (data.result) {
+      let time = setTimeout(() => {
+        handleGetAllInvoices();
+        clearTimeout(time);
+      }, 1000);
+    }
   };
   useEffect(() => {
     handleGetAllInvoices();
@@ -67,6 +80,11 @@ export const HomePage: React.FC = () => {
       apiElectron.removeListener(
         InvoiceEvent.RESULT_GET_ALL_INVOICES,
         handleListenerGetInvoice
+      );
+
+      apiElectron.removeListener(
+        MediaEvent.RESULT_STORE_MEDIA,
+        handleResultStoreMedia
       );
     };
   }, []);
@@ -150,7 +168,20 @@ export const HomePage: React.FC = () => {
             setInvoiceId(id);
           }}
         />
-        <Pagination />
+        {totalPage !== 1 && (
+          <Pagination
+            totalPage={totalPage}
+            page={page}
+            handleSelectNumber={(pageInside) => {
+              setPage(pageInside);
+
+              apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
+                companyid: companyData.id,
+                page: pageInside,
+              });
+            }}
+          />
+        )}
       </BoxShadow>
 
       <ModalConfirm

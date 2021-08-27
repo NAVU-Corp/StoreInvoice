@@ -5,43 +5,127 @@ import { InputSetting, KeySetting, LableSetting } from "./components";
 import "./SettingPage.scss";
 
 export const SettingPage = () => {
-  const [listKeysSeller, setListKeysSeller] = useState([]);
-  const [listKeysBuyer, setListKeysBuyer] = useState([]);
+  const [listKeysSeller, setListKeysSeller] = useState<Array<IResConfig>>([]);
+  const [listKeysBuyer, setListKeysBuyer] = useState<Array<IResConfig>>([]);
   const [valueKeySeller, setValueKeySeller] = useState("");
   const [valueKeyBuyer, setValueKeyBuyer] = useState("");
 
-  useEffect(() => {
+  //handleGetAllConfig
+  const handleGetAllConfig = () => {
     apiElectron.sendMessages(ConfigEvent.GET_ALL_CONFIGS);
-    apiElectron.on(ConfigEvent.RESULT_GET_ALL_CONFIGS, (_: any, data: any) => {
-      console.log("data", data);
-    });
+  };
+
+  //handleResultGetAllConfig
+  const handleResultGetAllConfig = (_: any, data: IResGetAllConfigs) => {
+    if (data.result && data.content.configs) {
+      const listSeller = data.content.configs.filter(
+        (item) => item.type === 10
+      );
+      const listBuyer = data.content.configs.filter((item) => item.type === 20);
+      setListKeysSeller(listSeller);
+      setListKeysBuyer(listBuyer);
+    }
+  };
+
+  //handleResultInsertOneConfgi
+  const handleResultInsertOneConfgi = (_: any, data: { result: number }) => {
+    if (data.result) {
+      handleGetAllConfig();
+    }
+  };
+
+  //handleResultDeleteOneConfig
+  const handleResultDeleteOneConfig = (_: any, data: { result: number }) => {
+    if (data.result) {
+      handleGetAllConfig();
+    }
+  };
+
+  useEffect(() => {
+    handleGetAllConfig();
+
+    //RESULT_GET_ALL_CONFIGS
+    apiElectron.on(
+      ConfigEvent.RESULT_GET_ALL_CONFIGS,
+      handleResultGetAllConfig
+    );
+
+    //RESULT_INSERT_ONE_CONFIG
+    apiElectron.on(
+      ConfigEvent.RESULT_INSERT_ONE_CONFIG,
+      handleResultInsertOneConfgi
+    );
+    //RESULT_DELETE_ONE_CONFIG
+    apiElectron.on(
+      ConfigEvent.RESULT_DELETE_ONE_CONFIG,
+      handleResultDeleteOneConfig
+    );
+
+    return () => {
+      apiElectron.removeListener(
+        ConfigEvent.RESULT_GET_ALL_CONFIGS,
+        handleResultGetAllConfig
+      );
+      //RESULT_INSERT_ONE_CONFIG
+      apiElectron.removeListener(
+        ConfigEvent.RESULT_INSERT_ONE_CONFIG,
+        handleResultInsertOneConfgi
+      );
+      //RESULT_DELETE_ONE_CONFIG
+      apiElectron.removeListener(
+        ConfigEvent.RESULT_DELETE_ONE_CONFIG,
+        handleResultDeleteOneConfig
+      );
+    };
   }, []);
 
   //handleKeySeller
   const handleKeySeller = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement;
+    let target = e.target as HTMLInputElement;
     setValueKeySeller(target.value);
 
     if (e.key === "Enter") {
-      console.log(target.value);
+      apiElectron.sendMessages(ConfigEvent.INSERT_ONE_CONFIG, {
+        title: target.value,
+        type: 10,
+      });
+      setValueKeySeller("");
+      target.value = "";
     }
   };
 
   //handleAddListSeller
-  const handleAddListSeller = () => {};
+  const handleAddListSeller = () => {
+    apiElectron.sendMessages(ConfigEvent.INSERT_ONE_CONFIG, {
+      title: valueKeySeller,
+      type: 10,
+    });
+    setValueKeySeller("");
+  };
 
   //handleKeyBuyer
   const handleKeyBuyer = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement;
+    let target = e.target as HTMLInputElement;
     setValueKeyBuyer(target.value);
 
     if (e.key === "Enter") {
-      console.log(target.value);
+      apiElectron.sendMessages(ConfigEvent.INSERT_ONE_CONFIG, {
+        title: target.value,
+        type: 20,
+      });
+      setValueKeyBuyer("");
+      target.value = "";
     }
   };
 
   //handleAddListBuyer
-  const handleAddListBuyer = () => {};
+  const handleAddListBuyer = () => {
+    apiElectron.sendMessages(ConfigEvent.INSERT_ONE_CONFIG, {
+      title: valueKeyBuyer,
+      type: 20,
+    });
+    setValueKeyBuyer("");
+  };
 
   return (
     <div className="setting-page">
@@ -54,7 +138,17 @@ export const SettingPage = () => {
         />
         <LableSetting />
         {listKeysSeller.map((item, i) => {
-          return <KeySetting key={i} />;
+          return (
+            <KeySetting
+              key={i}
+              title={item.title}
+              onDelete={() =>
+                apiElectron.sendMessages(ConfigEvent.DELETE_ONE_CONFIG, {
+                  id: item.id,
+                })
+              }
+            />
+          );
         })}
       </BoxShadow>
       <BoxShadow className="setting-page__container">
@@ -66,7 +160,17 @@ export const SettingPage = () => {
         />
         <LableSetting />
         {listKeysBuyer.map((item, i) => {
-          return <KeySetting key={i} />;
+          return (
+            <KeySetting
+              key={i}
+              title={item.title}
+              onDelete={() =>
+                apiElectron.sendMessages(ConfigEvent.DELETE_ONE_CONFIG, {
+                  id: item.id,
+                })
+              }
+            />
+          );
         })}
       </BoxShadow>
     </div>

@@ -30,6 +30,23 @@ interface IResInvoice {
   typeinvoice: number;
   updatedate: number;
 }
+
+interface IResConfig {
+  createdate: number;
+  id: number;
+  status: number;
+  title: string;
+  type: number;
+  updatedate: number;
+}
+
+interface IResPageconfig {
+  page: number;
+  pagesize: number;
+  totalelement: number;
+  totalpage: number;
+}
+
 interface IResGetOneCompany {
   content: {
     company?: IResCompany;
@@ -40,6 +57,7 @@ interface IResGetOneCompany {
 interface IResGetAllInvoices {
   content: {
     invoices?: Array<IResInvoice>;
+    pageconfig: IResPageconfig;
   };
   result: number;
 }
@@ -54,4 +72,11 @@ interface IResGetOneInvoice {
 interface IResDeleteOneInvoice {
   content: { deleteid: number };
   result: 1;
+}
+
+interface IResGetAllConfigs {
+  content: {
+    configs?: Array<IResConfig>;
+  };
+  result: number;
 }

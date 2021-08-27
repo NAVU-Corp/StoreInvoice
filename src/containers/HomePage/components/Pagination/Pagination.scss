@@ -1,3 +1,5 @@
+@import "../../../../assets/scss/variables";
+
 .pagination {
   display: flex;
   justify-content: flex-end;
@@ -11,5 +13,10 @@
     justify-content: center;
     margin: 4px;
     cursor: pointer;
+    &--blue {
+      background-color: $primary-color;
+      border-color: $primary-color;
+      color: white;
+    }
   }
 }
