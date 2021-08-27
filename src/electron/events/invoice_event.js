@@ -17,7 +17,7 @@ ipcMain.on(InvoiceEvent.GET_ALL_INVOICES, (event, filter) => {
                 page: filter.page,
                 pagesize: filter.pagesize,
                 totalelement: resultCount?.numline || 0,
-                totalpage: (resultCount?.numline || 0) / filter.pagesize,
+                totalpage: Math.ceil((resultCount?.numline || 0) / filter.pagesize),
               }
             }
           })

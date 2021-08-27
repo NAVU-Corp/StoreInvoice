@@ -73,7 +73,7 @@ class InvoiceRepository {
       namepdf,
       typeinvoice,
     } = invoice;
-
+    
     return this.utilsDB.run(
       `INSERT INTO invoice (companyid, invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf,
         namebuyer, nameseller, typeinvoice, status, createdate, updatedate)
@@ -173,7 +173,7 @@ class InvoiceRepository {
       limit $page, $pagesize;`;
 
     return this.utilsDB.all(query, {
-      $companyid: filter.companyid,
+      $companyid: filter.companyid > 0 ? filter.companyid : undefined,
       $typeinvoice: filter.typeinvoice,
       $namebuyer: filter.namebuyer ? `%${filter.namebuyer}%` : undefined,
       $nameseller: filter.nameseller ? `%${filter.nameseller}%` : undefined,
@@ -204,7 +204,7 @@ class InvoiceRepository {
       WHERE status != 90 ${condition}`;
 
     return this.utilsDB.get(query, {
-      $companyid: filter.companyid,
+      $companyid: filter.companyid > 0 ? filter.companyid : undefined,
       $typeinvoice: filter.typeinvoice,
       $namebuyer: filter.namebuyer ? `%${filter.namebuyer}%` : undefined,
       $nameseller: filter.nameseller ? `%${filter.nameseller}%` : undefined,
