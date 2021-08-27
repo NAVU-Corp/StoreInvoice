@@ -16,6 +16,7 @@ export const Input: React.FC<IInput> = ({
   marginLeft,
   marginBottom,
   type,
+  onKeyDown,
 }) => {
   return (
     <div className={`input ${className}`} style={{ marginLeft, marginBottom }}>
@@ -33,6 +34,7 @@ export const Input: React.FC<IInput> = ({
             name={name}
             placeholder={placeholder}
             type={type}
+            onKeyDown={onKeyDown}
           />
           {hasIconSearch && <SvgSearch />}
         </div>

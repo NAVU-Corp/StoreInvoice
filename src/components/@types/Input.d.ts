@@ -9,4 +9,5 @@ interface IInput extends IStyles {
   hasIconSearch?: boolean;
   className?: string;
   type?: string;
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 }
