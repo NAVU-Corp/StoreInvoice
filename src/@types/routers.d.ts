@@ -6,3 +6,16 @@ interface IRouter {
   header?: any;
   title?: string;
 }
+
+interface IParamsFilterHome {
+  month: number;
+  groupmonth: number;
+  year: number;
+  typeinvoice: number;
+}
+
+interface IParamsFilterTypeInvoice {
+  month: number;
+  groupmonth: number;
+  year: number;
+}

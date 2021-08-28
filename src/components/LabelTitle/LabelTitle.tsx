@@ -9,6 +9,8 @@ export const LabelTitle: React.FC<ILabelTitle> = ({
   marginBottom,
   hasBtnAdd,
   handleBtnAdd,
+  secondContent,
+  className,
 }) => {
   const checkClassName = () => {
     let name = "label-title";
@@ -20,13 +22,17 @@ export const LabelTitle: React.FC<ILabelTitle> = ({
   };
 
   return (
-    <div className={checkClassName()} style={{ marginBottom }}>
+    <div
+      className={`${checkClassName()} ${className}`}
+      style={{ marginBottom }}
+    >
       <span>{title}</span>
       {hasBtnAdd && (
         <Button isWhite className="label-title__btn" onClick={handleBtnAdd}>
           <SvgPlus />
         </Button>
       )}
+      {secondContent}
     </div>
   );
 };
