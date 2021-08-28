@@ -121,13 +121,14 @@ class InvoiceRepository {
       namebuyer,
       nameseller,
       note,
+      datechoose,
     } = invoice;
 
     return this.utilsDB.run(
       `UPDATE invoice 
       SET invoicesymbol = $invoicesymbol, invoicetemplate = $invoicetemplate, invoicenumber = $invoicenumber, 
         invoicedate = $invoicedate, note = $note, namebuyer = $namebuyer, nameseller = $nameseller, 
-        status = $status, updatedate = $updatedate 
+        datechoose = $datechoose, status = $status, updatedate = $updatedate 
       WHERE id = $id`,
       {
         $id: id,
@@ -138,6 +139,7 @@ class InvoiceRepository {
         $note: note,
         $namebuyer: namebuyer,
         $nameseller: nameseller,
+        $datechoose: datechoose,
         $status: 10,
         $updatedate: dateNow,
       }

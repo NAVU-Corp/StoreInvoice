@@ -40,7 +40,7 @@ class MediaService {
   }
 
   // The function triggered by your button
-  async storeFile({ typeinvoice, companyid, dateNow }) {
+  async storeFile({ typeinvoice, companyid, datechoose, dateNow }) {
     var filePath = await this.dialog.showOpenDialogSync({
       properties: ['openFile', 'multiSelections']
     });
@@ -64,6 +64,7 @@ class MediaService {
       this.analyzePdf(file).then(queue => {
         this.invoiceRepository.create({
           companyid: companyid,
+          datechoose: datechoose,
           invoicesymbol: queue.find(a => a.key === 'Mẫu số')?.value || '',
           invoicetemplate: queue.find(a => a.key === 'Ký hiệu')?.value || '',
           invoicenumber: queue.find(a => a.key === 'Số')?.value || '',
