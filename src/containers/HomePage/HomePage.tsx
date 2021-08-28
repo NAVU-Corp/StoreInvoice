@@ -8,7 +8,12 @@ import {
 } from "../../components";
 import { InvoiceEvent, MediaEvent } from "../../constants/event";
 import { CompanyContext } from "../../store/reducers";
-import { FormFilter, ModalPreviewInvoice, Table } from "./components";
+import {
+  FormFilter,
+  ModalDate,
+  ModalPreviewInvoice,
+  Table,
+} from "./components";
 
 import "./HomePage.scss";
 
@@ -26,12 +31,15 @@ export const HomePage = () => {
   const [messageConfirm, setMessageConfirm] = useState("");
   const [invoiceId, setInvoiceId] = useState(0);
   const [linkPDF, setLinkPDF] = useState("");
+  const [isOpenFile, setIsOpenFile] = useState(false);
 
   //handleAddFilePDF
-  const handleAddFilePDF = () => {
+  const handleAddFilePDF = (date: any) => {
+    console.log(new Date(date));
     apiElectron.sendMessages(MediaEvent.STORE_MEDIA, {
       typeinvoice: state ? state.typeinvoice : 10,
       companyid: companyData.id,
+      datechoose: date ? new Date(date) : new Date(),
     });
   };
 
@@ -63,6 +71,7 @@ export const HomePage = () => {
       let time = setTimeout(() => {
         handleGetAllInvoices();
         clearTimeout(time);
+        setIsOpenFile(false);
       }, 1000);
     }
   };
@@ -134,7 +143,7 @@ export const HomePage = () => {
       namebuyer,
       year,
     } = values;
-
+    // Khong filter được ở đây?
     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
       companyid: companyData.id,
       page,
@@ -149,6 +158,8 @@ export const HomePage = () => {
       namebuyer: namebuyer && undefined,
     });
   };
+
+  console.log("dataTable", dataTable);
 
   return (
     <div className="home-page">
@@ -167,7 +178,7 @@ export const HomePage = () => {
           } `}
           marginBottom={16}
           hasBtnAdd
-          handleBtnAdd={handleAddFilePDF}
+          handleBtnAdd={() => setIsOpenFile(true)}
         />
         <Table
           dataTable={dataTable}
@@ -221,6 +232,12 @@ export const HomePage = () => {
         isOpen={linkPDF}
         link={linkPDF}
         setOpen={setLinkPDF}
+      />
+      <ModalDate
+        onChoosePDF={handleAddFilePDF}
+        isOpen={isOpenFile}
+        setOpen={setIsOpenFile}
+        onClose={() => setIsOpenFile(false)}
       />
     </div>
   );

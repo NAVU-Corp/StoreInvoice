@@ -10,4 +10,5 @@ interface IInput extends IStyles {
   className?: string;
   type?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
+  lang?: string;
 }
