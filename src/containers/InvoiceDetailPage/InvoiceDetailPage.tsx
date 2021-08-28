@@ -1,16 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { InvoicePreview } from "../../components";
 
 import { InvoiceEvent } from "../../constants/event";
-import { CompanyContext } from "../../store/reducers";
-import { FromDetail, InvoicePreview } from "./components";
+import { FromDetail } from "./components";
 import "./InvoiceDetailPage.scss";
 
 export const InvoiceDetailPage = () => {
   const { id } = useParams<{ id: string }>();
-  const {
-    state: { companyData },
-  } = useContext(CompanyContext);
 
   const [invoice, setInvoice] = useState<IResInvoice>({
     createdate: 0,

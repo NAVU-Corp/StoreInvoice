@@ -1,15 +1,17 @@
 import React from "react";
-import { SvgArrowLeft, SvgArrowRight } from "../../../../assets/svg";
+import { SvgArrowLeft, SvgArrowRight } from "../../assets/svg";
 import "./Pagination.scss";
 
 export const Pagination: React.FC<IPagination> = ({
   totalPage,
   page,
   handleSelectNumber,
+  onBack,
+  onNext,
 }) => {
   return (
     <div className="pagination">
-      <div className="pagination__btn">
+      <div className="pagination__btn" onClick={onBack}>
         <SvgArrowLeft />
       </div>
       {Array.from(Array(totalPage).keys()).map((_, i) => {
@@ -31,7 +33,7 @@ export const Pagination: React.FC<IPagination> = ({
           </div>
         );
       })}
-      <div className="pagination__btn">
+      <div className="pagination__btn" onClick={onNext}>
         <SvgArrowRight />
       </div>
     </div>

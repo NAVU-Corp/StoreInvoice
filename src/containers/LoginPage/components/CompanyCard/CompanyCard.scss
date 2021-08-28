@@ -4,13 +4,17 @@
   display: flex;
   align-items: center;
   margin-bottom: 16px;
-  padding: 20px 32px;
-  @include max-respond-to(md) {
-    padding: 20px;
-  }
+  justify-content: center;
+  width: 100%;
+  max-width: 210px;
+  cursor: pointer;
+
   p {
     font-weight: 600;
     font-size: 16px;
     text-transform: uppercase;
+  }
+  &--selected {
+    border: solid 2px grey;
   }
 }

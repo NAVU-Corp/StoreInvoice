@@ -53,6 +53,7 @@ export const FromDetail: React.FC<IFromDetail> = ({
           value={formik.values.status}
           options={optionTypeInvoid}
           onSelect={(item) => formik.setFieldValue("status", item.id)}
+          className="form-detail__input"
         />
         <Input
           placeholder="Kí hiệu HĐ"
@@ -62,6 +63,7 @@ export const FromDetail: React.FC<IFromDetail> = ({
           name="invoicesymbol"
           onChange={formik.handleChange}
           value={formik.values.invoicesymbol}
+          className="form-detail__input"
         />
       </div>
       <div className="form-detail__block">
@@ -72,6 +74,7 @@ export const FromDetail: React.FC<IFromDetail> = ({
           name="invoicenumber"
           onChange={formik.handleChange}
           value={formik.values.invoicenumber}
+          className="form-detail__input"
         />
         <Input
           placeholder="Số HĐ"
@@ -81,6 +84,7 @@ export const FromDetail: React.FC<IFromDetail> = ({
           name="invoicetemplate"
           onChange={formik.handleChange}
           value={formik.values.invoicetemplate}
+          className="form-detail__input"
         />
       </div>
       <Input

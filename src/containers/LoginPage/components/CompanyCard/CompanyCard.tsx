@@ -3,11 +3,20 @@ import { SvgCompany } from "../../../../assets/svg";
 import { BoxShadow } from "../../../../components";
 import "./CompanyCard.scss";
 
-export const CompanyCard = () => {
+export const CompanyCard: React.FC<ICompanyCard> = ({
+  title,
+  onClick,
+  isSelected,
+}) => {
   return (
-    <BoxShadow className="company-card">
+    <BoxShadow
+      className={
+        isSelected ? "company-card company-card--selected" : "company-card"
+      }
+      onClick={onClick}
+    >
       <SvgCompany />
-      <p>Công Ty A</p>
+      <p>{title}</p>
     </BoxShadow>
   );
 };

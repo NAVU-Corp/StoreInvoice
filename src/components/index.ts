@@ -11,5 +11,7 @@ export * from "./Textarea/Textarea";
 export * from "./Alert/Alert";
 export * from "./Modal/Modal";
 export * from "./ModalConfirm/ModalConfirm";
+export * from "./Pagination/Pagination";
+export * from "./InvoicePreview/InvoicePreview";
 
 export * from "./Nav/Nav";

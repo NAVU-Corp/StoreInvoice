@@ -13,11 +13,13 @@ export const BoxShadow = forwardRef<HTMLDivElement, IBoxShadow>(
       marginBottom,
       className,
       color,
+      onClick,
     },
     ref
   ) => {
     return (
       <div
+        onClick={onClick}
         className={`box-shadow ${className}`}
         ref={ref}
         style={{

@@ -1,9 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { LabelTitle, BoxShadow, ModalConfirm } from "../../components";
+import {
+  LabelTitle,
+  BoxShadow,
+  ModalConfirm,
+  Pagination,
+} from "../../components";
 import { InvoiceEvent, MediaEvent } from "../../constants/event";
 import { CompanyContext } from "../../store/reducers";
-import { FormFilter, Pagination, Table } from "./components";
+import { FormFilter, ModalPreviewInvoice, Table } from "./components";
 
 import "./HomePage.scss";
 
@@ -20,6 +25,7 @@ export const HomePage = () => {
   const [totalPage, setTotalPage] = useState(1);
   const [messageConfirm, setMessageConfirm] = useState("");
   const [invoiceId, setInvoiceId] = useState(0);
+  const [linkPDF, setLinkPDF] = useState("");
 
   //handleAddFilePDF
   const handleAddFilePDF = () => {
@@ -47,7 +53,7 @@ export const HomePage = () => {
       setDataTable(data.content.invoices);
       setPage(data.content.pageconfig.page);
       setTotalPage(data.content.pageconfig.totalpage);
-      console.log("data", data);
+      // console.log("data", data);
     }
   };
 
@@ -116,6 +122,7 @@ export const HomePage = () => {
     });
   };
 
+  //handleFilterVoice
   const handleFilterVoice = (values: ISubmitFilter) => {
     const {
       groupmonth,
@@ -168,6 +175,7 @@ export const HomePage = () => {
             setMessageConfirm("Bạn có muốn xóa hóa đơn này không?");
             setInvoiceId(id);
           }}
+          handlePreviewPDF={(link) => setLinkPDF(link)}
         />
         {totalPage !== 1 && (
           <Pagination
@@ -181,6 +189,24 @@ export const HomePage = () => {
                 page: pageInside,
               });
             }}
+            onBack={() => {
+              if (page > 0) {
+                setPage((page) => page - 1);
+                apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
+                  companyid: companyData.id,
+                  page: page - 1,
+                });
+              }
+            }}
+            onNext={() => {
+              if (page < totalPage) {
+                setPage((page) => page + 1);
+                apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
+                  companyid: companyData.id,
+                  page: page + 1,
+                });
+              }
+            }}
           />
         )}
       </BoxShadow>
@@ -190,6 +216,11 @@ export const HomePage = () => {
         setOpen={setMessageConfirm}
         onCancel={() => setMessageConfirm("")}
         onOK={handleConfirmDeleteInvoice}
+      />
+      <ModalPreviewInvoice
+        isOpen={linkPDF}
+        link={linkPDF}
+        setOpen={setLinkPDF}
       />
     </div>
   );

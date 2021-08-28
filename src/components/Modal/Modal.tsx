@@ -2,7 +2,12 @@ import React, { useRef } from "react";
 import { useClickOutside } from "../../hooks";
 import "./Modal.scss";
 
-export const Modal: React.FC<IModal> = ({ children, isOpen, setOpen }) => {
+export const Modal: React.FC<IModal> = ({
+  children,
+  isOpen,
+  setOpen,
+  className,
+}) => {
   const ref = useRef<HTMLDivElement>(document.createElement("div"));
 
   useClickOutside(ref, () => {
@@ -16,8 +21,8 @@ export const Modal: React.FC<IModal> = ({ children, isOpen, setOpen }) => {
         ref={ref}
         className={
           isOpen
-            ? "modal__container modal__container--open"
-            : "modal__container"
+            ? `modal__container modal__container--open ${className}`
+            : `modal__container ${className}`
         }
       >
         {children}

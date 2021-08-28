@@ -18,12 +18,15 @@
   }
   &__container {
     transition: all 0.4s;
-
     transform: scale(0);
     &--open {
       transition: all 0.4s;
 
       transform: scale(1);
+    }
+    &::-webkit-scrollbar {
+      width: 0px;
+      height: 0px;
     }
   }
 }
