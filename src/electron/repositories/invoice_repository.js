@@ -162,7 +162,7 @@ class InvoiceRepository {
   getById(id) {
     return this.utilsDB.get(
       `SELECT id, ifnull(companyid, 0) companyid, invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf,
-        '${this.storePdfPath}' || '\\' || ifnull(namepdf, '') linkpdf,
+        '${this.storePdfPath}' || '\\' || ifnull(namepdf, '') linkpdf, datechoose, 
         IFNULL(namebuyer, '') namebuyer, IFNULL(nameseller, '') nameseller, IFNULL(typeinvoice, 10) typeinvoice, 
         status, createdate, updatedate
       FROM invoice 
@@ -180,7 +180,7 @@ class InvoiceRepository {
       `SELECT id, ifnull(companyid, 0) companyid, IFNULL(invoicesymbol, '') invoicesymbol, ifnull(invoicetemplate, '') invoicetemplate, 
         ifnull(invoicenumber, '') invoicenumber, ifnull(invoicedate, 0) invoicedate, ifnull(note, '') note, 
         ifnull(namepdf, '') namepdf, IFNULL(namebuyer, '') namebuyer, IFNULL(nameseller, '') nameseller, 
-        IFNULL(typeinvoice, 10) typeinvoice, ifnull(datechoose, datetime('now')) datechoose, status, createdate, updatedate, 
+        IFNULL(typeinvoice, 10) typeinvoice, datechoose, status, createdate, updatedate, 
         '${this.storePdfPath}' || '\\' || ifnull(namepdf, '') linkpdf,
         strftime('%m ', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) month 
       FROM invoice 
