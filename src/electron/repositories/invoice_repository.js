@@ -60,6 +60,18 @@ class InvoiceRepository {
     }
   }
 
+  async alterDateChoose() {
+    let result = await this.utilsDB.checkExistsColumn({
+      $table: 'invoice',
+      $column: 'datechoose',
+    });
+
+    if(!result || !result.numcol || result.numcol === 0) {
+      let sql = `ALTER TABLE invoice ADD datechoose datetime;`;
+      return this.utilsDB.run(sql);
+    }
+  }
+
   create(invoice, { dateNow }) {
     const {
       companyid,
@@ -72,13 +84,14 @@ class InvoiceRepository {
       note,
       namepdf,
       typeinvoice,
+      datechoose,
     } = invoice;
     
     return this.utilsDB.run(
       `INSERT INTO invoice (companyid, invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf,
-        namebuyer, nameseller, typeinvoice, status, createdate, updatedate)
+        namebuyer, nameseller, typeinvoice, datechoose, status, createdate, updatedate)
       VALUES ($companyid, $invoicesymbol, $invoicetemplate, $invoicenumber, $invoicedate, $note, $namepdf, 
-        $namebuyer, $nameseller, $typeinvoice, $status, $createdate, $updatedate)`,
+        $namebuyer, $nameseller, $typeinvoice, $datechoose, $status, $createdate, $updatedate)`,
       {
         $companyid: companyid,
         $invoicesymbol: invoicesymbol,
@@ -90,6 +103,7 @@ class InvoiceRepository {
         $namebuyer: namebuyer,
         $nameseller: nameseller,
         $typeinvoice: typeinvoice,
+        $datechoose: datechoose,
         $status: 10,
         $createdate: dateNow,
         $updatedate: dateNow,
@@ -164,7 +178,7 @@ class InvoiceRepository {
       `SELECT id, ifnull(companyid, 0) companyid, IFNULL(invoicesymbol, '') invoicesymbol, ifnull(invoicetemplate, '') invoicetemplate, 
         ifnull(invoicenumber, '') invoicenumber, ifnull(invoicedate, 0) invoicedate, ifnull(note, '') note, 
         ifnull(namepdf, '') namepdf, IFNULL(namebuyer, '') namebuyer, IFNULL(nameseller, '') nameseller, 
-        IFNULL(typeinvoice, 10) typeinvoice, status, createdate, updatedate, 
+        IFNULL(typeinvoice, 10) typeinvoice, ifnull(datechoose, datetime('now')) datechoose, status, createdate, updatedate, 
         '${this.storePdfPath}' || '\\' || ifnull(namepdf, '') linkpdf,
         strftime('%m ', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) month 
       FROM invoice 
@@ -188,8 +202,8 @@ class InvoiceRepository {
       $invoicenumber: filter.invoicenumber
         ? `%${filter.invoicenumber}%`
         : undefined,
-      $month: filter.month,
-      $year: filter.year,
+      $month: filter.month ? filter.month : undefined,
+      $year: filter.year ? filter.month : undefined,
       $page: filter.page * filter.pagesize,
       $pagesize: filter.pagesize,
     });
@@ -219,8 +233,8 @@ class InvoiceRepository {
       $invoicenumber: filter.invoicenumber
         ? `%${filter.invoicenumber}%`
         : undefined,
-      $month: filter.month,
-      $year: filter.year,
+      $month: filter.month ? filter.month : undefined,
+      $year: filter.year ? filter.month : undefined,
     });
   }
 
@@ -268,27 +282,27 @@ class InvoiceRepository {
     }
 
     if (filter.month) {
-      condition += ` and CAST(strftime('%m', datetime(createdate / 1000, 'unixepoch')) as int) = $month `;
+      condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) = $month `;
     }
 
     if (filter.groupmonth) {
       if (filter.groupmonth === 10) {
         // Quý 1
-        condition += ` and CAST(strftime('%m', datetime(createdate / 1000, 'unixepoch')) as int) in (1, 2, 3) `;
+        condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) in (1, 2, 3) `;
       } else if (filter.groupmonth === 20) {
         // Quý 2
-        condition += ` and CAST(strftime('%m', datetime(createdate / 1000, 'unixepoch')) as int) in (4, 5, 6) `;
+        condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) in (4, 5, 6) `;
       } else if (filter.groupmonth === 30) {
         // Quý 3
-        condition += ` and CAST(strftime('%m', datetime(createdate / 1000, 'unixepoch')) as int) in (7, 8, 9) `;
+        condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) in (7, 8, 9) `;
       } else if (filter.groupmonth === 40) {
         // Quý 4
-        condition += ` and CAST(strftime('%m', datetime(createdate / 1000, 'unixepoch')) as int) in (10, 11, 12) `;
+        condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) in (10, 11, 12) `;
       }
     }
 
     if (filter.year) {
-      condition += ` and CAST(strftime('%y', datetime(createdate / 1000, 'unixepoch')) as int) = $year `;
+      condition += ` and CAST(strftime('%y', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) = $year `;
     }
 
     return condition;

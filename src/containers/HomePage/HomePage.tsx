@@ -127,7 +127,19 @@ export const HomePage = () => {
       namebuyer,
       year,
     } = values;
-
+    console.log({
+      companyid: companyData.id,
+      page,
+      typeinvoice: state ? state.typeinvoice : 10,
+      groupmonth: groupmonth && undefined,
+      month: month && undefined,
+      year: year && undefined,
+      invoicedate: invoicedate && undefined,
+      invoicenumber: invoicenumber && undefined,
+      invoicesymbol: invoicesymbol && undefined,
+      invoicetemplate: invoicetemplate && undefined,
+      namebuyer: namebuyer && undefined,
+    });
     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
       companyid: companyData.id,
       page,

@@ -36,11 +36,11 @@ export const RegisterPage = () => {
   });
 
   //handleResultCreateCompany
-  const handleResultCreateCompany = (_: any, data: { id: number }) => {
+  const handleResultCreateCompany = (_: any, data: { id: number, message: string }) => {
     if (data && data.id) {
       history.replace("/login");
     } else {
-      setMessageError("Đã có lỗi khi tạo tài khoản mới");
+      setMessageError(data.message);
     }
   };
   useEffect(() => {
