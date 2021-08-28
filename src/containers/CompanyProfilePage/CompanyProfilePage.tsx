@@ -1,16 +1,20 @@
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 import * as Yup from "yup";
 
 import { Alert, BoxShadow, Button, Input } from "../../components";
 import { CompanyEvent } from "../../constants/event";
+import { ImageCompanyProfile } from "../../constants/images";
+import { CompanyContext } from "../../store/reducers";
 
 import "./CompanyProfilePage.scss";
 
 export const CompanyProfilePage = () => {
-  const [messageError, setMessageError] = useState("");
-  const history = useHistory();
+  const [message, setMessage] = useState("");
+  const {
+    state: { companyData },
+  } = useContext(CompanyContext);
+
   const RegisterSchema = Yup.object().shape({
     taxcode: Yup.string().required("Vui lòng nhập mã số thuế"),
     name: Yup.string().required("Vui lòng nhập tên công ty"),
@@ -19,38 +23,44 @@ export const CompanyProfilePage = () => {
 
   const formik = useFormik({
     initialValues: {
-      taxcode: "",
-      name: "",
-      address: "",
-      email: "",
-      phone: "",
-      fax: "",
-      province: "",
-      district: "",
+      taxcode: companyData.taxcode || "",
+      name: companyData.name || "",
+      address: companyData.address || "",
+      email: companyData.email || "",
+      phone: companyData.phone || "",
+      fax: companyData.fax || "",
+      province: companyData.province || "",
+      district: companyData.district || "",
     },
     validationSchema: RegisterSchema,
     onSubmit: (values) => {
-      apiElectron.sendMessages(CompanyEvent.INSERT_ONE_COMPANY, values);
+      apiElectron.sendMessages(CompanyEvent.UPDATE_ONE_COMPANY, {
+        id: companyData.id,
+        ...values,
+      });
     },
   });
 
-  //handleResultCreateCompany
-  const handleResultCreateCompany = (_: any, data: { id: number }) => {
-    if (data && data.id) {
-      history.replace("/login");
-    } else {
-      setMessageError("Đã có lỗi khi tạo tài khoản mới");
+  //handleResultUpdateOneCompany
+  const handleResultUpdateOneCompany = (_: any, data: { id: number }) => {
+    if (data) {
+      let time = setTimeout(() => {
+        setMessage("Cập nhật thông tin thành công");
+        clearTimeout(time);
+      }, 100);
     }
   };
+
   useEffect(() => {
+    //RESULT_GET_ONE_COMPANY
     apiElectron.on(
-      CompanyEvent.RESULT_INSERT_ONE_COMPANY,
-      handleResultCreateCompany
+      CompanyEvent.RESULT_UPDATE_ONE_COMPANY,
+      handleResultUpdateOneCompany
     );
     return () => {
       apiElectron.removeListener(
-        CompanyEvent.RESULT_INSERT_ONE_COMPANY,
-        handleResultCreateCompany
+        CompanyEvent.RESULT_UPDATE_ONE_COMPANY,
+        handleResultUpdateOneCompany
       );
     };
   }, []);
@@ -137,11 +147,10 @@ export const CompanyProfilePage = () => {
           </div>
         </form>
       </BoxShadow>
-      <Alert
-        isOpen={messageError}
-        messages={messageError}
-        setOpen={setMessageError}
-      />
+      <div className="company-profile__img">
+        <img src={ImageCompanyProfile} />
+      </div>
+      <Alert isOpen={message} messages={message} setOpen={setMessage} />
     </div>
   );
 };

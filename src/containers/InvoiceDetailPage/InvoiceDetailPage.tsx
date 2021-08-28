@@ -1,16 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Alert, InvoicePreview } from "../../components";
 
 import { InvoiceEvent } from "../../constants/event";
-import { CompanyContext } from "../../store/reducers";
-import { FromDetail, InvoicePreview } from "./components";
+import { FromDetail } from "./components";
 import "./InvoiceDetailPage.scss";
 
 export const InvoiceDetailPage = () => {
   const { id } = useParams<{ id: string }>();
-  const {
-    state: { companyData },
-  } = useContext(CompanyContext);
+
+  const [message, setMessage] = useState("");
 
   const [invoice, setInvoice] = useState<IResInvoice>({
     createdate: 0,
@@ -73,6 +72,10 @@ export const InvoiceDetailPage = () => {
   const handleResultUpdateInvoice = (_: any, data: any) => {
     if (data && data.result) {
       handleGetOneInvoice();
+      let time = setTimeout(() => {
+        setMessage("Cập nhận thành công");
+        clearTimeout(time);
+      }, 100);
     }
   };
   useEffect(() => {
@@ -100,6 +103,7 @@ export const InvoiceDetailPage = () => {
         <h3>XEM HÓA ĐƠN</h3>
         <InvoicePreview link={invoice.linkpdf} />
       </div>
+      <Alert isOpen={message} messages={message} setOpen={setMessage} />
     </div>
   );
 };

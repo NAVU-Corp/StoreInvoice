@@ -54,6 +54,13 @@ interface IResGetOneCompany {
   result: number;
 }
 
+interface IResGetAllCompanies {
+  content: {
+    companies: Array<IResCompany>;
+  };
+  result: number;
+}
+
 interface IResGetAllInvoices {
   content: {
     invoices?: Array<IResInvoice>;

@@ -26,4 +26,14 @@
       background-color: rgba(211, 210, 210, 0.15);
     }
   }
+  &__nodata {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  &__img {
+    width: 20%;
+    margin: 0 auto;
+  }
 }

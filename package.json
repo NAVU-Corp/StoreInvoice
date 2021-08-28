@@ -63,12 +63,18 @@
     "yup": "^0.32.9"
   },
   "build": {
-    "productName": "ManagerPDF",
-    "appId": "com.levminer.ManagerPDF",
+    "productName": "StoreInvoice",
+    "appId": "com.app.StoreInvoice",
     "win": {
       "target": [
         "nsis"
       ]
+    },
+    "nsis": {
+      "oneClick": false
+    },
+    "directories": {
+      "output": "release"
     }
   },
   "electronmon": {

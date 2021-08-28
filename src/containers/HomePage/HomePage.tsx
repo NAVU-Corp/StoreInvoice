@@ -1,9 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { LabelTitle, BoxShadow, ModalConfirm } from "../../components";
+import {
+  LabelTitle,
+  BoxShadow,
+  ModalConfirm,
+  Pagination,
+} from "../../components";
 import { InvoiceEvent, MediaEvent } from "../../constants/event";
 import { CompanyContext } from "../../store/reducers";
-import { FormFilter, Pagination, Table } from "./components";
+import {
+  FormFilter,
+  ModalDate,
+  ModalPreviewInvoice,
+  Table,
+} from "./components";
 
 import "./HomePage.scss";
 
@@ -20,12 +30,16 @@ export const HomePage = () => {
   const [totalPage, setTotalPage] = useState(1);
   const [messageConfirm, setMessageConfirm] = useState("");
   const [invoiceId, setInvoiceId] = useState(0);
+  const [linkPDF, setLinkPDF] = useState("");
+  const [isOpenFile, setIsOpenFile] = useState(false);
 
   //handleAddFilePDF
-  const handleAddFilePDF = () => {
+  const handleAddFilePDF = (date: any) => {
+    console.log(new Date(date));
     apiElectron.sendMessages(MediaEvent.STORE_MEDIA, {
       typeinvoice: state ? state.typeinvoice : 10,
       companyid: companyData.id,
+      datechoose: date ? new Date(date) : new Date(),
     });
   };
 
@@ -47,7 +61,7 @@ export const HomePage = () => {
       setDataTable(data.content.invoices);
       setPage(data.content.pageconfig.page);
       setTotalPage(data.content.pageconfig.totalpage);
-      console.log("data", data);
+      // console.log("data", data);
     }
   };
 
@@ -57,6 +71,7 @@ export const HomePage = () => {
       let time = setTimeout(() => {
         handleGetAllInvoices();
         clearTimeout(time);
+        setIsOpenFile(false);
       }, 1000);
     }
   };
@@ -116,6 +131,7 @@ export const HomePage = () => {
     });
   };
 
+  //handleFilterVoice
   const handleFilterVoice = (values: ISubmitFilter) => {
     const {
       groupmonth,
@@ -127,7 +143,7 @@ export const HomePage = () => {
       namebuyer,
       year,
     } = values;
-    
+    // Khong filter được ở đây?
     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
       companyid: companyData.id,
       page,
@@ -142,6 +158,8 @@ export const HomePage = () => {
       namebuyer: namebuyer && undefined,
     });
   };
+
+  console.log("dataTable", dataTable);
 
   return (
     <div className="home-page">
@@ -160,7 +178,7 @@ export const HomePage = () => {
           } `}
           marginBottom={16}
           hasBtnAdd
-          handleBtnAdd={handleAddFilePDF}
+          handleBtnAdd={() => setIsOpenFile(true)}
         />
         <Table
           dataTable={dataTable}
@@ -168,6 +186,7 @@ export const HomePage = () => {
             setMessageConfirm("Bạn có muốn xóa hóa đơn này không?");
             setInvoiceId(id);
           }}
+          handlePreviewPDF={(link) => setLinkPDF(link)}
         />
         {totalPage !== 1 && (
           <Pagination
@@ -181,6 +200,24 @@ export const HomePage = () => {
                 page: pageInside,
               });
             }}
+            onBack={() => {
+              if (page > 0) {
+                setPage((page) => page - 1);
+                apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
+                  companyid: companyData.id,
+                  page: page - 1,
+                });
+              }
+            }}
+            onNext={() => {
+              if (page < totalPage) {
+                setPage((page) => page + 1);
+                apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
+                  companyid: companyData.id,
+                  page: page + 1,
+                });
+              }
+            }}
           />
         )}
       </BoxShadow>
@@ -190,6 +227,17 @@ export const HomePage = () => {
         setOpen={setMessageConfirm}
         onCancel={() => setMessageConfirm("")}
         onOK={handleConfirmDeleteInvoice}
+      />
+      <ModalPreviewInvoice
+        isOpen={linkPDF}
+        link={linkPDF}
+        setOpen={setLinkPDF}
+      />
+      <ModalDate
+        onChoosePDF={handleAddFilePDF}
+        isOpen={isOpenFile}
+        setOpen={setIsOpenFile}
+        onClose={() => setIsOpenFile(false)}
       />
     </div>
   );

@@ -7,3 +7,5 @@ packages
 out
 package-lock*
 bundle
+
+release
