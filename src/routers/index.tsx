@@ -2,7 +2,7 @@ import React from "react";
 import { Switch } from "react-router-dom";
 
 import {
-  ChooseTypePage,
+  ChooseTypeStorePage,
   HomePage,
   LoginPage,
   RegisterPage,
@@ -43,7 +43,7 @@ export const Routers = () => {
       <PrivateRouter
         exact
         path="/choose-type-store"
-        component={ChooseTypePage}
+        component={ChooseTypeStorePage}
         layout={BlankLayout}
         title="CHỌN KỲ LƯU TRỮ"
       />

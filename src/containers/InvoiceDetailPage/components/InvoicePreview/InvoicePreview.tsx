@@ -13,7 +13,7 @@ export const InvoicePreview: React.FC<IInvoicePreview> = ({ link }) => {
     setNumPages(data.numPages);
   }
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div className="invoice-preview">
       <BoxShadow>
         <Document file={link} onLoadSuccess={onDocumentLoadSuccess}>
           <Page pageNumber={1} />

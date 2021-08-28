@@ -3,4 +3,5 @@ interface ILabelTitle extends IStyles {
   hasBottomLine?: boolean;
   hasBtnAdd?: boolean;
   handleBtnAdd?: React.MouseEventHandler<HTMLButtonElement>;
+  secondContent?: JSX.Element;
 }

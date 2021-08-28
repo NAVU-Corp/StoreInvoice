@@ -61,8 +61,6 @@ export const InvoiceDetailPage = () => {
     };
   }, [id]);
 
-  console.log("invoice", invoice);
-
   //handleUpdateInvoice
   const handleUpdateInvoice = (values: any) => {
     apiElectron.sendMessages(InvoiceEvent.UPDATE_ONE_INVOICE, {
