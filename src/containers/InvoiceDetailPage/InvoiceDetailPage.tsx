@@ -73,11 +73,12 @@ export const InvoiceDetailPage = () => {
     if (data && data.result) {
       handleGetOneInvoice();
       let time = setTimeout(() => {
-        setMessage("Cập nhận thành công");
+        setMessage("Cập nhật hóa đơn thành công.");
         clearTimeout(time);
       }, 100);
     }
   };
+  
   useEffect(() => {
     apiElectron.on(
       InvoiceEvent.RESULT_UPDATE_ONE_INVOICE,

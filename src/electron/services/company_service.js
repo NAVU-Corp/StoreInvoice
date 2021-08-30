@@ -27,8 +27,8 @@ class CompanyService {
     return this.companyRepository.update(company, { dateNow });
   }
 
-  deleteCompany(id, { dateNow }) {
-    return this.companyRepository.delete(id, { dateNow });
+  deleteCompany(id, { taxcode, dateNow }) {
+    return this.companyRepository.delete(id, { taxcode, dateNow });
   }
 
   getCompanyById(filter) {

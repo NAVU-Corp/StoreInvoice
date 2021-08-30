@@ -75,14 +75,26 @@ class CompanyRepository {
   }
 
   delete(id, { 
+    taxcode,
     dateNow,
   }) {
+    let condition = ``;
+
+    if(id) {
+      condition += ` and id = $id `;
+    }
+
+    if(taxcode) {
+      condition += ` and taxcode = $taxcode `;
+    }
+
     return this.utilsDB.run(
       `UPDATE company 
       SET status = $status, updatedate = $updatedate 
-      WHERE id = $id`,
+      WHERE ${condition}`,
       {
-        $id: id,
+        $id: !id || id < 1 ? undefined : id,
+        $taxcode: taxcode ? taxcode : undefined,
         $status: 90,
         $updatedate: dateNow,
       });
