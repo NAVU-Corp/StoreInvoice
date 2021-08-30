@@ -15,7 +15,7 @@ export const ChooseTypeStorePage = () => {
   const history = useHistory();
 
   const [valueType, setValueType] = useState(2);
-  const [valueYear, setValueYear] = useState(new Date().getFullYear());
+  const [valueYear, setValueYear] = useState(0);
   const [valueRankMonth, setValueRankMonth] = useState(0);
 
   const handleGoToInvoid = () => {

@@ -5,7 +5,8 @@ require("./events/invoice_event");
 require("./events/media_event");
 require("./events/config_event");
 
-const { BrowserWindow, app, ipcMain, Notification } = require("electron");
+const { BrowserWindow, app, ipcMain } = require("electron");
+const { NsisUpdater } = require("electron-updater");
 const path = require("path");
 const isDev = require("electron-is-dev");
 const { WinEvent } = require("../constants/event");
