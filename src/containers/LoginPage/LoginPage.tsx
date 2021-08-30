@@ -27,7 +27,7 @@ export const LoginPage = () => {
         taxcode: taxCode,
       });
     } else {
-      setError("Không để trống mã số thuế");
+      setError("Vui lòng điền mã số thuế.");
     }
   };
 
@@ -37,9 +37,10 @@ export const LoginPage = () => {
       dispatch(doSaveCompanyData(data.content.company));
       history.push("/choose-type-store");
     } else {
-      setMessageAlert("Không tìm thấy công ty");
+      setMessageAlert("Không có công ty tương ứng.");
     }
   };
+  
   // get all company
   const handleGetAllCompany = () => {
     apiElectron.sendMessages(CompanyEvent.GET_ALL_COMPANIES);

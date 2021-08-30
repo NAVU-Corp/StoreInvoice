@@ -68,8 +68,8 @@ ipcMain.on(CompanyEvent.UPDATE_ONE_COMPANY, (event, company) => {
 });
 
 // listner delete company
-ipcMain.on(CompanyEvent.DELETE_ONE_COMPANY, (event, { id }) => {
-  if(!id || id < 1) {
+ipcMain.on(CompanyEvent.DELETE_ONE_COMPANY, (event, { id, taxcode }) => {
+  if((!id || id < 1) && !taxcode) {
     event.reply(CompanyEvent.RESULT_DELETE_ONE_COMPANY, {
       result: 0,
       message: 'Vui lòng chọn công ty để xóa.'
@@ -79,6 +79,7 @@ ipcMain.on(CompanyEvent.DELETE_ONE_COMPANY, (event, { id }) => {
 
   let dateNow = new Date();
   companyService.deleteCompany(id, {
+    taxcode,
     dateNow,
   })
     .then((data) => event.reply(CompanyEvent.RESULT_DELETE_ONE_COMPANY, {
