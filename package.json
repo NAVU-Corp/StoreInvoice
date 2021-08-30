@@ -13,7 +13,8 @@
     "postinstall": "electron-builder install-app-deps",
     "test": "jest",
     "test:watch": "jest --watch",
-    "start:noreload": "concurrently 'npm:watcher' 'npm:electron'"
+    "start:noreload": "concurrently 'npm:watcher' 'npm:electron'",
+    "deploy": "electron-builder build --win --publish always"
   },
   "author": "",
   "license": "ISC",
@@ -51,6 +52,7 @@
   },
   "dependencies": {
     "electron-is-dev": "^2.0.0",
+    "electron-updater": "^4.3.9",
     "formik": "^2.2.9",
     "moment": "^2.29.1",
     "pdf-parse": "^1.1.1",
@@ -63,7 +65,7 @@
     "yup": "^0.32.9"
   },
   "build": {
-    "productName": "StoreInvoice",
+    "productName": "Store Invoice",
     "appId": "com.app.StoreInvoice",
     "win": {
       "target": [

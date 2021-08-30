@@ -39,12 +39,15 @@ export const optionGroupMonth = [
   },
 ];
 
-export const optionYears = Array.from(Array(50).keys()).map((item, i) => {
-  return {
-    id: 2000 + i,
-    title: `${2000 + i}`,
-  };
-});
+export const optionYears = [
+  { id: 0, title: `Tất cả` },
+  ...Array.from(Array(50).keys()).map((item, i) => {
+    return {
+      id: 2000 + i,
+      title: `${2000 + i}`,
+    };
+  }),
+];
 
 export const optionMonths = [
   {
