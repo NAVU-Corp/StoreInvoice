@@ -6,6 +6,7 @@ export const Button: React.FC<IButton> = ({
   isRed,
   isBig,
   isWhite,
+  isPrimary,
   onClick,
   className,
   type,
@@ -13,18 +14,17 @@ export const Button: React.FC<IButton> = ({
 }) => {
   const checkClassName = () => {
     let name = "btn";
+    
     if (isRed) {
       name = name + " btn--red";
-    }
-    if (isBig) {
+    } else if (isBig) {
       name = name + " btn--big";
-    }
-
-    if (isWhite) {
+    } else if (isWhite) {
       name = name + " btn--white";
-    }
-    if (isExtraBig) {
+    } else if (isExtraBig) {
       name = name + " btn--xbig";
+    } else if (isPrimary) {
+      name = name + " btn--primary";
     }
 
     return name;

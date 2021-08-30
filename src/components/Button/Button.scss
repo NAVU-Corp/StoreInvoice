@@ -1,16 +1,38 @@
 @import "../../assets/scss/variables";
 
 .btn {
-  background-color: $primary-color;
-  border: solid 1px $primary-color;
-  border-radius: 4px;
-  color: white;
-  font-size: 15px;
-  font-weight: 600;
+  display: inline-flex;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  border-radius: .375rem;
+  border-width: 1px;
+  padding: 0.75rem 0.75rem;
+  font-weight: bold;
+  --tw-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  box-shadow: var(--tw-ring-offset-shadow,0 0 transparent),var(--tw-ring-shadow,0 0 transparent),var(--tw-shadow);
+  transition-property: background-color,border-color,color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;
+  transition-property: background-color,border-color,color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;
+  transition-property: background-color,border-color,color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(.4,0,.2,1);
+  transition-duration: .15s;
+  transition-duration: .2s;
+  font-size: 16px;
+
+  &--primary {
+    --tw-bg-opacity: 1;
+    background-color: rgba(28,63,170,var(--tw-bg-opacity));
+    --tw-text-opacity: 1;
+    color: rgba(255,255,255,var(--tw-text-opacity));
+  }
+
+  &--primary:hover {
+    --tw-bg-opacity: .95;
+    background-color: rgba(28,63,170,var(--tw-bg-opacity));
+    --tw-text-opacity: 1;
+    color: rgba(255,255,255,var(--tw-text-opacity));
+  }
+
   &--red {
     background-color: $red-color;
     border: solid 1px $red-color;

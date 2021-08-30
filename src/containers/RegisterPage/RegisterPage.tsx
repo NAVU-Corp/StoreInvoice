@@ -15,7 +15,7 @@ export const RegisterPage = () => {
   const RegisterSchema = Yup.object().shape({
     taxcode: Yup.string().required("Vui lòng nhập mã số thuế"),
     name: Yup.string().required("Vui lòng nhập tên công ty"),
-    email: Yup.string().email("Email không đúng"),
+    email: Yup.string().email("Email không đúng định dạng"),
   });
 
   const formik = useFormik({
@@ -43,6 +43,7 @@ export const RegisterPage = () => {
       setMessageError(data.message);
     }
   };
+
   useEffect(() => {
     apiElectron.on(
       CompanyEvent.RESULT_INSERT_ONE_COMPANY,
@@ -128,7 +129,7 @@ export const RegisterPage = () => {
             onChange={formik.handleChange}
             value={formik.values.email}
           />
-          <Button isBig className="register-page__btn" type="submit">
+          <Button isPrimary className="register-page__btn" type="submit">
             Đăng Ký
           </Button>
         </form>
