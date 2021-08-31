@@ -70,6 +70,8 @@ export const InvoiceDetailPage = () => {
 
   //handleResultUpdateInvoice
   const handleResultUpdateInvoice = (_: any, data: any) => {
+    console.log("handleResultUpdateInvoice");
+
     if (data && data.result) {
       handleGetOneInvoice();
       let time = setTimeout(() => {
@@ -78,7 +80,7 @@ export const InvoiceDetailPage = () => {
       }, 100);
     }
   };
-  
+
   useEffect(() => {
     apiElectron.on(
       InvoiceEvent.RESULT_UPDATE_ONE_INVOICE,

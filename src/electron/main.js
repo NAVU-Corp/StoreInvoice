@@ -6,7 +6,7 @@ require("./events/media_event");
 require("./events/config_event");
 
 const { BrowserWindow, app, ipcMain } = require("electron");
-const { NsisUpdater } = require("electron-updater");
+const { autoUpdater } = require("electron-updater");
 const path = require("path");
 const isDev = require("electron-is-dev");
 const { WinEvent } = require("../constants/event");
@@ -57,15 +57,14 @@ const createWindow = () => {
       mainWindow.maximize();
     }
   });
-
-  // mainWindow.on("resize", function () {
-  //   let size = mainWindow.getSize();
-  //   let height = size[1];
-  //   mainWindow.webContents.send(WinEvent.WIN_SIZE, height);
-  // });
 };
 
 /// run app
-app.whenReady().then(() => {
-  createWindow();
-});
+app
+  .whenReady()
+  .then(() => {
+    createWindow();
+  })
+  .then(() => {
+    autoUpdater.checkForUpdatesAndNotify();
+  });

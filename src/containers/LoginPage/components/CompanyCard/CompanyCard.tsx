@@ -1,6 +1,7 @@
 import React from "react";
 import { SvgCompany } from "../../../../assets/svg";
 import { BoxShadow } from "../../../../components";
+import { readMore } from "../../../../helpers";
 import "./CompanyCard.scss";
 
 export const CompanyCard: React.FC<ICompanyCard> = ({
@@ -16,7 +17,7 @@ export const CompanyCard: React.FC<ICompanyCard> = ({
       onClick={onClick}
     >
       <SvgCompany />
-      <p>{title}</p>
+      <p>{readMore({ maxLength: 10, string: title })}</p>
     </BoxShadow>
   );
 };
