@@ -60,6 +60,12 @@ const WinEvent = {
   WIN_SIZE: "WIN_SIZE",
 };
 
+const AutoUpdateEvent = {
+  UPDATE_AVAILABLE: "UPDATE_AVAILABLE",
+  DOWNLOAD_PROGRESS: "DOWNLOAD_PROGRESS",
+  UPDATA_DOWNLOADED: "UPDATA-DOWNLOADED",
+};
+
 module.exports = {
   UserEvent,
   CompanyEvent,
@@ -67,4 +73,5 @@ module.exports = {
   ConfigEvent,
   MediaEvent,
   WinEvent,
+  AutoUpdateEvent,
 };

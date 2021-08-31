@@ -3,7 +3,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 
-import { Alert, BoxShadow, Button, Input } from "../../components";
+import {
+  Alert,
+  BoxShadow,
+  Button,
+  Input,
+  ModalConfirm,
+} from "../../components";
 import { ImageRegister } from "../../constants/images";
 
 import "./RegisterPage.scss";
@@ -11,6 +17,7 @@ import { CompanyEvent } from "../../constants/event";
 
 export const RegisterPage = () => {
   const [messageError, setMessageError] = useState("");
+  const [messageSuccess, setMessageSuccess] = useState("");
   const history = useHistory();
   const RegisterSchema = Yup.object().shape({
     taxcode: Yup.string().required("Vui lòng nhập mã số thuế"),
@@ -36,9 +43,14 @@ export const RegisterPage = () => {
   });
 
   //handleResultCreateCompany
-  const handleResultCreateCompany = (_: any, data: { id: number, message: string }) => {
+  const handleResultCreateCompany = (
+    _: any,
+    data: { id: number; message: string }
+  ) => {
     if (data && data.id) {
-      history.replace("/login");
+      setMessageSuccess(
+        "Đăng ký thành công. Bạn có muốn quay lại trang đăng nhập không?"
+      );
     } else {
       setMessageError(data.message);
     }
@@ -137,6 +149,13 @@ export const RegisterPage = () => {
         isOpen={messageError}
         messages={messageError}
         setOpen={setMessageError}
+      />
+      <ModalConfirm
+        isOpen={messageSuccess}
+        message={messageSuccess}
+        onCancel={() => setMessageSuccess("")}
+        onOK={() => history.replace("/login")}
+        setOpen={setMessageSuccess}
       />
     </div>
   );
