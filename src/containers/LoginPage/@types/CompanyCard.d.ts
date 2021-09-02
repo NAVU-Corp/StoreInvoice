@@ -1,5 +1,5 @@
 interface ICompanyCard {
-  title?: string;
+  title: string;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   isSelected?: boolean;
 }
