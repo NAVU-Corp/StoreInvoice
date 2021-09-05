@@ -9,28 +9,124 @@
   border-width: 1px;
   padding: 0.75rem 0.75rem;
   font-weight: bold;
-  --tw-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   box-shadow: var(--tw-ring-offset-shadow,0 0 transparent),var(--tw-ring-shadow,0 0 transparent),var(--tw-shadow);
   transition-property: background-color,border-color,color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;
   transition-property: background-color,border-color,color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;
   transition-property: background-color,border-color,color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;
-  transition-timing-function: cubic-bezier(.4,0,.2,1);
+  transition-timing-function: cubic-bezier(.4, 0, .2, 1);
   transition-duration: .15s;
   transition-duration: .2s;
   font-size: 16px;
+  border-color: transparent;
+  --tw-border-opacity: 1;
+  --tw-bg-opacity: 1;
+  --tw-text-opacity: 1;
 
   &--primary {
     --tw-bg-opacity: 1;
-    background-color: rgba(28,63,170,var(--tw-bg-opacity));
+    background-color: rgba($primary-color,var(--tw-bg-opacity));
     --tw-text-opacity: 1;
     color: rgba(255,255,255,var(--tw-text-opacity));
   }
 
   &--primary:hover {
     --tw-bg-opacity: .95;
-    background-color: rgba(28,63,170,var(--tw-bg-opacity));
+    background-color: rgba($primary-color,var(--tw-bg-opacity));
     --tw-text-opacity: 1;
     color: rgba(255,255,255,var(--tw-text-opacity));
+  }
+
+  &--danger {
+    --tw-bg-opacity: 1;
+    background-color: rgba($danger-color,var(--tw-bg-opacity));
+    --tw-text-opacity: 1;
+    color: rgba(255,255,255,var(--tw-text-opacity));
+  }
+
+  &--danger:hover {
+    --tw-bg-opacity: .95;
+    background-color: rgba($danger-color,var(--tw-bg-opacity));
+    --tw-text-opacity: 1;
+    color: rgba(255,255,255,var(--tw-text-opacity));
+  }
+
+  &--success {
+    --tw-bg-opacity: 1;
+    background-color: rgba($success-color,var(--tw-bg-opacity));
+    --tw-text-opacity: 1;
+    color: rgba(255,255,255,var(--tw-text-opacity));
+  }
+
+  &--success:hover {
+    --tw-bg-opacity: .95;
+    background-color: rgba($success-color,var(--tw-bg-opacity));
+    --tw-text-opacity: 1;
+    color: rgba(255,255,255,var(--tw-text-opacity));
+  }
+
+  &--secondary {
+    background-color: rgba($secondary-color,var(--tw-bg-opacity));
+    color: rgba(#718096,var(--tw-text-opacity));
+  }
+
+  &--secondary:hover {
+    background-color: rgba($secondary-color,var(--tw-bg-opacity));
+    color: rgba(#718096,var(--tw-text-opacity));
+  }
+
+  &--dark {
+    border-color: rgba($dark-color,var(--tw-border-opacity));
+    background-color: rgba($dark-color,var(--tw-bg-opacity));
+    color: rgba(255,255,255,var(--tw-text-opacity));
+  }
+
+  &--dark:hover {
+    border-color: rgba($dark-color,var(--tw-border-opacity));
+    background-color: rgba($dark-color,var(--tw-bg-opacity));
+    color: rgba(255,255,255,var(--tw-text-opacity));
+  }
+
+  &--outline-primary {
+    --tw-border-opacity: 1;
+    border-color: rgba(28,63,170,var(--tw-border-opacity));
+    --tw-text-opacity: 1;
+    color: rgba(28,63,170,var(--tw-text-opacity));
+  }
+
+  &--outline-primary:hover {
+    --tw-border-opacity: 1;
+    border-color: rgba(28,63,170,var(--tw-border-opacity));
+    --tw-text-opacity: 1;
+    color: rgba(28,63,170,var(--tw-text-opacity));
+  }
+
+  &--outline-secondary {
+    --tw-border-opacity: 1;
+    border-color: rgba(226,232,240,var(--tw-border-opacity));
+    --tw-text-opacity: 1;
+    color: rgba(74,85,104,var(--tw-text-opacity));
+  }
+
+  &--outline-secondary:hover {
+    --tw-border-opacity: 1;
+    border-color: rgba(226,232,240,var(--tw-border-opacity));
+    --tw-text-opacity: 1;
+    color: rgba(74,85,104,var(--tw-text-opacity));
+  }
+
+  &--outline-dark {
+    --tw-border-opacity: 1;
+    border-color: rgba($dark-color,var(--tw-border-opacity));
+    --tw-text-opacity: 1;
+    color: rgba($dark-color,var(--tw-text-opacity));
+  }
+
+  &--outline-dark:hover {
+    --tw-border-opacity: 1;
+    border-color: rgba($dark-color,var(--tw-border-opacity));
+    --tw-text-opacity: 1;
+    color: rgba($dark-color,var(--tw-text-opacity));
   }
 
   &--red {
@@ -49,5 +145,10 @@
   &--xbig {
     height: 48px;
     width: 164px;
+  }
+
+  &--with-image {
+    display: flex;
+    flex-direction: column;
   }
 }

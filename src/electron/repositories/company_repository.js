@@ -91,7 +91,7 @@ class CompanyRepository {
     return this.utilsDB.run(
       `UPDATE company 
       SET status = $status, updatedate = $updatedate 
-      WHERE ${condition}`,
+      WHERE 1=1 ${condition}`,
       {
         $id: !id || id < 1 ? undefined : id,
         $taxcode: taxcode ? taxcode : undefined,
@@ -143,10 +143,10 @@ class CompanyRepository {
       FROM company 
       WHERE status = 10 and taxcode like $taxcode and id != $id`;
 
-      return this.utilsDB.get(query, {
-        $id: id,
-        $taxcode: taxCode,
-      });
+    return this.utilsDB.get(query, {
+      $id: id,
+      $taxcode: taxCode,
+    });
   }
 
   checkExitsName(name, id) {
@@ -155,10 +155,10 @@ class CompanyRepository {
       FROM company 
       WHERE status = 10 and name like $name and id != $id`;
 
-      return this.utilsDB.get(query, {
-        $id: id,
-        $name: name,
-      });
+    return this.utilsDB.get(query, {
+      $id: id,
+      $name: name,
+    });
   }
 }
 

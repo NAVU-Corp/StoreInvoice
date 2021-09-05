@@ -1,39 +1,58 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { BoxShadow, Button } from "../../components";
 import "./TypeInvoicePage.scss";
+import { ImageInvoice, ImageLogin, ImageReceipt } from "../../constants/images";
+import { CompanyContext } from "../../store/reducers";
+import { doSaveStepFilter } from "../../store/actions";
 
 export const TypeInvoicePage = () => {
   const history = useHistory();
-  const { state } = useLocation<IParamsFilterTypeInvoice>();
+  const { dispatch, state: { filterData }, } = useContext(CompanyContext);
+  // const { state } = useLocation<IParamsFilterTypeInvoice>();
 
   return (
     <div className="type-invoice">
       <BoxShadow className="type-invoice__container">
-        <h3>CHỌN LOẠI HOÁ ĐƠN</h3>
+        <h3>Chọn loại hóa đơn</h3>
         <div className="type-invoice__actions">
           <Button
-            isExtraBig
-            isRed
-            onClick={() =>
+            isOutlinePrimary
+            isWithImage
+            onClick={() => {
               history.push({
                 pathname: "/",
-                state: { ...state, typeinvoice: 20 },
-              })
-            }
+              });
+              dispatch(doSaveStepFilter({
+                ...filterData,
+                typeInvoice: 20,
+              }));
+            }}
+            style={{
+              background: 'transparent',
+            }}
           >
             Hóa đơn mua vào
+            <img src={ImageReceipt} className="type-invoice__btn-img" />
           </Button>
           <Button
-            isExtraBig
-            onClick={() =>
+            isOutlineDark
+            isWithImage
+            onClick={() => {
               history.push({
                 pathname: "/",
-                state: { ...state, typeinvoice: 10 },
               })
-            }
+              dispatch(doSaveStepFilter({
+                ...filterData,
+                typeInvoice: 10,
+              }));
+            }}
+            style={{
+              background: 'transparent',
+            }}
           >
             Hóa đơn bán ra
+            <img src={ImageInvoice} className="type-invoice__btn-img" />
           </Button>
         </div>
       </BoxShadow>

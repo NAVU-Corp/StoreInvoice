@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BoxShadow } from "../../components";
 import { ConfigEvent } from "../../constants/event";
 import { InputSetting, KeySetting, LableSetting } from "./components";
 import "./SettingPage.scss";
 
 export const SettingPage = () => {
+  const configSellerRef = useRef<any>(null);
+  const configBuyerRef = useRef<any>(null);
+
   const [listKeysSeller, setListKeysSeller] = useState<Array<IResConfig>>([]);
   const [listKeysBuyer, setListKeysBuyer] = useState<Array<IResConfig>>([]);
   const [valueKeySeller, setValueKeySeller] = useState("");
@@ -101,6 +104,7 @@ export const SettingPage = () => {
       type: 10,
     });
     setValueKeySeller("");
+    (document.getElementById('configSellerRef') as any).value = '';
   };
 
   //handleKeyBuyer
@@ -125,15 +129,18 @@ export const SettingPage = () => {
       type: 20,
     });
     setValueKeyBuyer("");
+    (document.getElementById('configBuyerRef') as any).value = '';
   };
 
   return (
     <div className="setting-page">
       <BoxShadow className="setting-page__container">
-        <h3>NHÀ CUNG CẤP</h3>
+        <h3>Nhà cung cấp</h3>
         <InputSetting
           placeholder="Gõ từ khoá..."
+          id={`configSellerRef`}
           onKeyDown={handleKeySeller}
+          onChange={handleKeySeller as any}
           onAdd={handleAddListSeller}
         />
         <LableSetting />
@@ -152,10 +159,12 @@ export const SettingPage = () => {
         })}
       </BoxShadow>
       <BoxShadow className="setting-page__container">
-        <h3>KHÁCH HÀNG</h3>
+        <h3>Khách hàng</h3>
         <InputSetting
           placeholder="Gõ từ khoá..."
+          id={`configBuyerRef`}
           onKeyDown={handleKeyBuyer}
+          onChange={handleKeyBuyer as any}
           onAdd={handleAddListBuyer}
         />
         <LableSetting />

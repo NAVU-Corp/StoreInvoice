@@ -61,7 +61,6 @@ export const Routers = () => {
         layout={BlankLayout}
         title="CÀI ĐẶT"
       />
-
       <PrivateRouter
         exact
         path="/invoice-type"
@@ -69,7 +68,6 @@ export const Routers = () => {
         layout={BlankLayout}
         title="CHỌN LOẠI HOÁ ĐƠN"
       />
-
       <PrivateRouter
         exact
         path="/company-profile"

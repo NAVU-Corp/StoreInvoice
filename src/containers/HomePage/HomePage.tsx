@@ -14,14 +14,13 @@ import {
   ModalPreviewInvoice,
   Table,
 } from "./components";
-
 import "./HomePage.scss";
 
 export const HomePage = () => {
   const { state } = useLocation<IParamsFilterHome>();
 
   const {
-    state: { companyData },
+    state: { companyData, filterData },
   } = useContext(CompanyContext);
 
   //useState
@@ -35,9 +34,8 @@ export const HomePage = () => {
 
   //handleAddFilePDF
   const handleAddFilePDF = (date: any) => {
-    console.log(new Date(date));
     apiElectron.sendMessages(MediaEvent.STORE_MEDIA, {
-      typeinvoice: state ? state.typeinvoice : 10,
+      typeinvoice: filterData ? filterData.typeInvoice : 10,
       companyid: companyData.id,
       datechoose: date ? new Date(date) : new Date(),
     });
@@ -48,18 +46,10 @@ export const HomePage = () => {
     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
       companyid: companyData.id,
       page,
-      typeinvoice: state ? state.typeinvoice : 10,
-      groupmonth: (state && state.groupmonth) || undefined,
-      month: (state && state.month) || undefined,
-      year: (state && state.year) || undefined,
-    });
-    console.log({
-      companyid: companyData.id,
-      page,
-      typeinvoice: state ? state.typeinvoice : 10,
-      groupmonth: (state && state.groupmonth) || undefined,
-      month: (state && state.month) || undefined,
-      year: (state && state.year) || undefined,
+      typeinvoice: filterData ? filterData.typeInvoice : 10,
+      groupmonth: (filterData && filterData.groupMonth) || undefined,
+      month: (filterData && filterData.month) || undefined,
+      year: (filterData && filterData.year) || undefined,
     });
   };
 
@@ -69,7 +59,6 @@ export const HomePage = () => {
       setDataTable(data.content.invoices);
       setPage(data.content.pageconfig.page);
       setTotalPage(data.content.pageconfig.totalpage);
-      // console.log("data", data);
     }
   };
 
@@ -139,6 +128,20 @@ export const HomePage = () => {
     });
   };
 
+  const handleOpenFile = (url: string) => {
+    apiElectron.sendMessages(
+      MediaEvent.OPEN_FILE_MEDIA,
+      { url: url },
+    );
+  }
+
+  const handleOpenFolder = (url: string) => {
+    apiElectron.sendMessages(
+      MediaEvent.OPEN_FOLDER_MEDIA,
+      { url: url },
+    );
+  }
+
   //handleFilterVoice
   const handleFilterVoice = (values: ISubmitFilter) => {
     const {
@@ -155,10 +158,10 @@ export const HomePage = () => {
     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
       companyid: companyData.id,
       page,
-      typeinvoice: state ? state.typeinvoice : 10,
-      groupmonth: groupmonth || undefined,
-      month: month || undefined,
-      year: year || undefined,
+      typeinvoice: filterData ? filterData.typeInvoice : 10,
+      groupmonth: filterData.valueType === 2 ? ((filterData && filterData.groupMonth) || undefined) : undefined,
+      month: filterData.valueType === 1 ? ((filterData && filterData.month) || undefined) : undefined,
+      year: (filterData && filterData.year) || undefined,
       invoicedate: invoicedate || undefined,
       invoicenumber: invoicenumber || undefined,
       invoicesymbol: invoicesymbol || undefined,
@@ -166,8 +169,6 @@ export const HomePage = () => {
       namebuyer: namebuyer || undefined,
     });
   };
-
-  console.log("dataTable", dataTable);
 
   return (
     <div className="home-page">
@@ -182,19 +183,22 @@ export const HomePage = () => {
       <BoxShadow>
         <LabelTitle
           title={`Danh sách hoá đơn ${
-            state && state.typeinvoice === 20 ? "mua vào" : "bán ra"
+            filterData && filterData.typeInvoice === 20 ? "mua vào" : "bán ra"
           } `}
           marginBottom={16}
           hasBtnAdd
           handleBtnAdd={() => setIsOpenFile(true)}
         />
         <Table
+          typeInvoice={filterData.typeInvoice || 10}
           dataTable={dataTable}
           handleDeleteInvoice={(id) => {
             setMessageConfirm("Bạn có muốn xóa hóa đơn này không?");
             setInvoiceId(id);
           }}
           handlePreviewPDF={(link) => setLinkPDF(link)}
+          handleOpenFile={((link) => handleOpenFile(link))}
+          handleOpenFolder={((link) => handleOpenFolder(link))}
         />
         {totalPage !== 1 && (
           <Pagination

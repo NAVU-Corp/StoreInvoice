@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react";
 
 import { BoxShadow, Button, Input, Modal } from "../../../../components";
+import { formatDate } from "../../../../helpers";
 import "./ModalDate.scss";
 
 export const ModalDate: FC<IModalDate> = ({
@@ -8,12 +9,12 @@ export const ModalDate: FC<IModalDate> = ({
   onClose,
   ...props
 }) => {
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(formatDate(new Date()));
 
   return (
     <Modal {...props}>
       <BoxShadow className="modal-date">
-        <h3>CHỌN NGÀY LƯU</h3>
+        <h3>Ngày lưu hóa đơn</h3>
         <Input
           type="date"
           className="modal-date__input"
@@ -22,11 +23,12 @@ export const ModalDate: FC<IModalDate> = ({
           onChange={(e) => setDate(e.target.value)}
         />
         <div className="modal-date__actions">
-          <Button isBig isRed onClick={onClose}>
+          <Button isSecondary onClick={onClose} className="modal-date__btn-cancel">
             Hủy
           </Button>
           <Button
-            isBig
+            isPrimary
+            className="modal-date__btn-accept"
             onClick={() => {
               if (onChoosePDF) {
                 return onChoosePDF(date);

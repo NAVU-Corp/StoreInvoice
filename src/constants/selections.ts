@@ -40,7 +40,7 @@ export const optionGroupMonth = [
 ];
 
 export const optionYears = [
-  { id: 0, title: `Tất cả` },
+  // { id: 0, title: `Tất cả` },
   ...Array.from(Array(50).keys()).map((item, i) => {
     return {
       id: 2000 + i,

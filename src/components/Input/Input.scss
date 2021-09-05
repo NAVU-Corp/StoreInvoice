@@ -3,7 +3,7 @@
 
 .input {
   width: 100%;
-  max-width: 263px;
+  max-width: 300px;
   @include max-respond-to(md) {
     max-width: 600px;
   }
@@ -15,12 +15,12 @@
     margin-bottom: 16px;
     position: relative;
     height: 42px;
+    margin-top: 5px;
   }
 
   &__container {
     display: flex;
     align-items: center;
-    padding-right: 5px;
     height: 100%;
     width: 100%;
   }

@@ -3,6 +3,7 @@ import { Action, ActionKind } from "./actions";
 
 type CompanyState = {
   companyData: IResCompany;
+  filterData: IResStepFilter;
 };
 
 export const initialCompanyState: CompanyState = {
@@ -19,6 +20,13 @@ export const initialCompanyState: CompanyState = {
     status: 10,
     taxcode: "",
     updatedate: 0,
+  },
+  filterData: {
+    valueType: 1,
+    groupMonth: 10,
+    month: (new Date()).getMonth() + 1,
+    year: (new Date()).getFullYear(),
+    typeInvoice: 10,
   },
 };
 
@@ -40,13 +48,17 @@ export function companyReducer(
     case ActionKind.SAVE_DATA_COMPANY:
       return {
         ...state,
-        companyData: payload,
+        companyData: payload as IResCompany,
       };
     case ActionKind.DELETE_DATA_COMPANY:
       return {
         ...state,
         companyData: initialCompanyState.companyData,
       };
-      return state;
+    case ActionKind.SAVE_STEP_FILTER:
+      return {
+        ...state,
+        filterData: payload as IResStepFilter,
+      };
   }
 }

@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   h3 {
-    margin-bottom: 72px;
+    margin: 0px 0px 50px 0px;
   }
   &__container {
     display: flex;
@@ -13,12 +13,16 @@
     justify-content: center;
     max-width: 500px;
     width: 100%;
-    padding: 32px;
+    padding: 50px 30px;
   }
   &__actions {
     display: flex;
     width: 100%;
     justify-content: space-between;
     align-items: center;
+  }
+  &__btn-img {
+    margin-top: 10px;
+    width: 50px;
   }
 }

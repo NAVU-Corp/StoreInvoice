@@ -5,7 +5,7 @@ require("./events/invoice_event");
 require("./events/media_event");
 require("./events/config_event");
 
-const { BrowserWindow, app, ipcMain } = require("electron");
+const { BrowserWindow, app, ipcMain, shell } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const path = require("path");
 const isDev = require("electron-is-dev");

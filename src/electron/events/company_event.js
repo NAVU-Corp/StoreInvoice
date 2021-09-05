@@ -45,7 +45,11 @@ ipcMain.on(CompanyEvent.INSERT_ONE_COMPANY, (event, company) => {
   companyService.createCompany(company, {
     dateNow,
   })
-    .then((data) => event.reply(CompanyEvent.RESULT_INSERT_ONE_COMPANY, data))
+    .then((data) => event.reply(CompanyEvent.RESULT_INSERT_ONE_COMPANY, {
+      ...data, ...{
+        company
+      }
+    }))
     .catch((err) => event.reply(CompanyEvent.RESULT_INSERT_ONE_COMPANY, err));;
 });
 
@@ -72,7 +76,7 @@ ipcMain.on(CompanyEvent.DELETE_ONE_COMPANY, (event, { id, taxcode }) => {
   if((!id || id < 1) && !taxcode) {
     event.reply(CompanyEvent.RESULT_DELETE_ONE_COMPANY, {
       result: 0,
-      message: 'Vui lòng chọn công ty để xóa.'
+      message: 'Vui lòng chọn công ty để xóa'
     });
     return;
   }

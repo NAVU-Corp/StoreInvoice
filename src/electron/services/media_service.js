@@ -8,6 +8,7 @@ class MediaService {
     configRepository,
     dialog,
     invoiceRepository,
+    shell,
   }) {
     this.storePdfPath = storePdfPath;
     this.fs = fs;
@@ -35,6 +36,7 @@ class MediaService {
     this.configRepository = configRepository;
     this.dialog = dialog;
     this.invoiceRepository = invoiceRepository;
+    this.shell = shell;
   }
 
   // The function triggered by your button
@@ -162,6 +164,14 @@ class MediaService {
     }
 
     return newStr;
+  }
+
+  openFile({ url }) {
+    this.shell.openPath(url);
+  }
+
+  openFolderFile({ url }) {
+    this.shell.showItemInFolder(url);
   }
 }
 
