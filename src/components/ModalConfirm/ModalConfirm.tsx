@@ -16,10 +16,10 @@ export const ModalConfirm: React.FC<IModalConfirm> = ({
       <BoxShadow className="modal-confirm">
         <p>{message}</p>
         <div className="modal-confirm__actions">
-          <Button isBig isRed onClick={onCancel}>
+          <Button isSecondary onClick={onCancel}>
             Hủy
           </Button>
-          <Button isBig onClick={onOK}>
+          <Button isPrimary onClick={onOK}>
             Đồng ý
           </Button>
         </div>

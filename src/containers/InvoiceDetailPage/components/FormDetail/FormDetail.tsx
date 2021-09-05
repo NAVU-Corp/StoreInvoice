@@ -2,7 +2,6 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
-
 import {
   Button,
   Input,
@@ -12,7 +11,7 @@ import {
 } from "../../../../components";
 import { optionTypeInvoid } from "../../../../constants/selections";
 import "./FormDetail.scss";
-import { InvoiceEvent } from "../../../../constants/event";
+import { InvoiceEvent, MediaEvent } from "../../../../constants/event";
 
 export const FromDetail: React.FC<IFromDetail> = ({
   invoice,
@@ -30,6 +29,8 @@ export const FromDetail: React.FC<IFromDetail> = ({
     status,
     invoicesymbol,
     nameseller,
+    datechoose,
+    linkpdf,
   } = invoice;
 
   const formik = useFormik({
@@ -44,25 +45,40 @@ export const FromDetail: React.FC<IFromDetail> = ({
       status: status || 0,
       invoicesymbol: invoicesymbol || "",
       nameseller: nameseller || "",
+      datechoose: moment(
+        datechoose ? new Date(datechoose) : new Date()
+      ).format("YYYY-MM-DD"),
     },
-
     enableReinitialize: true,
     onSubmit: (values: any) => {
       values.invoicedate = new Date(values.invoicedate);
+      values.datechoose = new Date(values.datechoose);
       return handleSubmit(values);
     },
   });
 
   // handleResultDeleteOneInvoice
   const handleResultDeleteOneInvoice = (_: any, data: { result: number }) => {
-    console.log("handleResultDeleteOneInvoice");
-
     if (data && data.result) {
       history.replace("/");
     } else {
-      alert("Đã có lỗi xảy ra");
+      alert("Đã có lỗi xảy ra. Vui lòng thử lại.");
     }
   };
+
+  const handleOpenFile = (url: string) => {
+    apiElectron.sendMessages(
+      MediaEvent.OPEN_FILE_MEDIA,
+      { url: url },
+    );
+  }
+
+  const handleOpenFolder = (url: string) => {
+    apiElectron.sendMessages(
+      MediaEvent.OPEN_FOLDER_MEDIA,
+      { url: url },
+    );
+  }
 
   useEffect(() => {
     apiElectron.on(
@@ -90,29 +106,30 @@ export const FromDetail: React.FC<IFromDetail> = ({
             className="form-detail__input"
           />
           <Input
-            placeholder="Kí hiệu HĐ"
-            label="Kí hiệu HĐ"
+            placeholder="Ngày nhập hóa đơn"
+            label="Ngày nhập hóa đơn"
+            className="form-detail__input"
             marginLeft={8}
+            id="datechoose"
+            name="datechoose"
+            onChange={formik.handleChange}
+            value={formik.values.datechoose}
+            type="date"
+          />
+        </div>
+        <div className="form-detail__block">
+          <Input
+            placeholder="Mẫu số hóa đơn"
+            label="Mẫu số hóa đơn"
             id="invoicesymbol"
             name="invoicesymbol"
             onChange={formik.handleChange}
             value={formik.values.invoicesymbol}
             className="form-detail__input"
           />
-        </div>
-        <div className="form-detail__block">
           <Input
-            placeholder="Mã HĐ"
-            label="Kí hiệu HD"
-            id="invoicenumber"
-            name="invoicenumber"
-            onChange={formik.handleChange}
-            value={formik.values.invoicenumber}
-            className="form-detail__input"
-          />
-          <Input
-            placeholder="Số HĐ"
-            label="Số HĐ"
+            placeholder="Ký hiệu hóa đơn"
+            label="Ký hiệu hóa đơn"
             marginLeft={8}
             id="invoicetemplate"
             name="invoicetemplate"
@@ -121,16 +138,37 @@ export const FromDetail: React.FC<IFromDetail> = ({
             className="form-detail__input"
           />
         </div>
+        <div className="form-detail__block">
+          <Input
+            placeholder="Số hóa đơn"
+            label="Số hóa đơn"
+            id="invoicenumber"
+            name="invoicenumber"
+            onChange={formik.handleChange}
+            value={formik.values.invoicenumber}
+            className="form-detail__input"
+          />
+          <Input
+            placeholder="Ngày hoá đơn"
+            label="Ngày hoá đơn"
+            marginLeft={8}
+            className="form-detail__input"
+            id="invoicedate"
+            name="invoicedate"
+            onChange={formik.handleChange}
+            value={formik.values.invoicedate}
+            type="date"
+          />
+        </div>
         <Input
-          placeholder="Ngày hoá đơn"
-          label="Ngày hoá đơn"
+          placeholder="Nhà cung cấp"
+          label="Nhà cung cấp"
           marginBottom={32}
           className="form-detail__input"
-          id="invoicedate"
-          name="invoicedate"
+          id="nameseller"
+          name="nameseller"
           onChange={formik.handleChange}
-          value={formik.values.invoicedate}
-          type="date"
+          value={formik.values.nameseller}
         />
         <Input
           placeholder="Khách hàng"
@@ -142,16 +180,6 @@ export const FromDetail: React.FC<IFromDetail> = ({
           onChange={formik.handleChange}
           value={formik.values.namebuyer}
         />
-        <Input
-          placeholder="Người bán"
-          label="Người bán"
-          marginBottom={32}
-          className="form-detail__input"
-          id="nameseller"
-          name="nameseller"
-          onChange={formik.handleChange}
-          value={formik.values.nameseller}
-        />
         <Textarea
           placeholder="Ghi chú"
           label="Ghi chú"
@@ -162,18 +190,39 @@ export const FromDetail: React.FC<IFromDetail> = ({
         />
         <div className="form-detail__actions">
           <Button
-            isBig
-            isRed
+            isDark
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              setMessage("Bạn có chắc muốn xóa hóa đơn này không?");
+              setMessage("Bạn có muốn xóa hóa đơn này không?");
             }}
             type="button"
           >
             Xóa HĐ
           </Button>
-          <Button isBig type="submit">
+          <Button
+            isSuccess
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleOpenFile(linkpdf);
+            }}
+            type="button"
+          >
+            Xem HĐ
+          </Button>
+          <Button
+            isSuccess
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleOpenFolder(linkpdf);
+            }}
+            type="button"
+          >
+            Xem trong thư mục
+          </Button>
+          <Button isPrimary type="submit">
             Lưu
           </Button>
         </div>

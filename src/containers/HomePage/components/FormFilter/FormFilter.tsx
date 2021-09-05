@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-
 import { Button, Input, LabelTitle, Select } from "../../../../components";
-
 import "./FormFilter.scss";
 import {
   optionGroupMonth,
@@ -44,9 +42,7 @@ export const FormFilter: React.FC<IFormFilter> = ({
         title="Tìm kiếm"
         hasBottomLine
         secondContent={
-          <Button isBig type="submit">
-            Tìm kiếm
-          </Button>
+          <Button isPrimary type="submit">Tìm kiếm</Button>
         }
         className="form-filter__title"
       />
@@ -102,28 +98,36 @@ export const FormFilter: React.FC<IFormFilter> = ({
           id="namebuyer"
           name="namebuyer"
         />
-        <Select
+        {/* <Select
           placeholder="Chọn kì"
           label="Chọn kì"
           className="form-filter__input"
           options={optionTypeStore}
           value={typeStore}
           onSelect={(item) => setTypeStore(item.id)}
-        />
-        <Select
-          placeholder="Chọn tháng/quý"
-          label="Chọn tháng/quý"
-          className="form-filter__input"
-          options={typeStore === 1 ? optionMonths : optionGroupMonth}
-        />
-        <Select
+        /> */}
+        {/* <Select
           placeholder="Chọn năm"
           label="Chọn năm"
           className="form-filter__input"
           options={optionYears}
           value={formik.values.year}
           onSelect={(item) => formik.setFieldValue("year", item.id)}
-        />
+        /> */}
+        {typeStore === 2 ? (
+          <>
+            <Select
+              placeholder="Chọn tháng"
+              label="Chọn tháng"
+              className="form-filter__input"
+              options={optionMonths}
+            />
+          </>
+        ) : (
+          <div className="form-filter__input" style={{ width: '300px' }}></div>
+        )}
+        <div className="form-filter__input" style={{ width: '300px' }}></div>
+        <div className="form-filter__input" style={{ width: '300px' }}></div>
       </div>
     </form>
   );

@@ -185,7 +185,7 @@ class InvoiceRepository {
         strftime('%m ', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) month 
       FROM invoice 
       WHERE status != 90 ${condition} 
-      ORDER BY invoicedate desc
+      ORDER BY datechoose desc
       limit $page, $pagesize;`;
 
     return this.utilsDB.all(query, {
@@ -205,7 +205,7 @@ class InvoiceRepository {
         ? `%${filter.invoicenumber}%`
         : undefined,
       $month: filter.month ? filter.month : undefined,
-      $year: filter.year ? filter.month : undefined,
+      $year: filter.year ? filter.year : undefined,
       $page: filter.page * filter.pagesize,
       $pagesize: filter.pagesize,
     });
@@ -236,7 +236,7 @@ class InvoiceRepository {
         ? `%${filter.invoicenumber}%`
         : undefined,
       $month: filter.month ? filter.month : undefined,
-      $year: filter.year ? filter.month : undefined,
+      $year: filter.year ? filter.year : undefined,
     });
   }
 
@@ -247,64 +247,66 @@ class InvoiceRepository {
 
     let condition = ``;
 
-    if (filter.companyid) {
+    if (filter.companyid && filter.companyid > 0) {
       condition += ` and ifnull(companyid, 0) = $companyid `;
     }
 
-    if (filter.typeinvoice) {
+    if (filter.typeinvoice && filter.typeinvoice > 0) {
       condition += ` and IFNULL(typeinvoice, 10) = $typeinvoice `;
     }
 
-    if (filter.namebuyer) {
+    if (filter.namebuyer && filter.namebuyer.trim().length > 0) {
       condition += ` and IFNULL(namebuyer, 10) like $namebuyer `;
     }
 
-    if (filter.nameseller) {
+    if (filter.nameseller && filter.nameseller.trim().length > 0) {
       condition += ` and IFNULL(nameseller, 10) like $nameseller `;
     }
 
-    if (filter.frominvoicedate) {
+    if (filter.frominvoicedate && filter.frominvoicedate.trim().length > 0) {
       condition += ` and invoicedate >= $frominvoicedate `;
     }
 
-    if (filter.toinvoicedate) {
+    if (filter.toinvoicedate && filter.toinvoicedate.trim().length > 0) {
       condition += ` and invoicedate <= $toinvoicedate `;
     }
 
-    if (filter.invoicesymbol) {
+    if (filter.invoicesymbol && filter.invoicesymbol.trim().length > 0) {
       condition += ` and ifnull(invoicesymbol, '') like $invoicesymbol `;
     }
 
-    if (filter.invoicetemplate) {
+    if (filter.invoicetemplate && filter.invoicetemplate.trim().length > 0) {
       condition += ` and ifnull(invoicetemplate, '') like $invoicetemplate `;
     }
 
-    if (filter.invoicenumber) {
+    if (filter.invoicenumber && filter.invoicenumber.trim().length > 0) {
       condition += ` and ifnull(invoicenumber, '') like $invoicenumber `;
     }
 
-    if (filter.month) {
-      condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) = $month `;
-    }
-
-    if (filter.groupmonth) {
-      if (filter.groupmonth === 10) {
-        // Quý 1
-        condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) in (1, 2, 3) `;
-      } else if (filter.groupmonth === 20) {
-        // Quý 2
-        condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) in (4, 5, 6) `;
-      } else if (filter.groupmonth === 30) {
-        // Quý 3
-        condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) in (7, 8, 9) `;
-      } else if (filter.groupmonth === 40) {
-        // Quý 4
-        condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) in (10, 11, 12) `;
+    if(filter.valueType && filter.valueType === 2) {
+      if (filter.groupmonth && filter.groupmonth > 0) {
+        if (filter.groupmonth === 10) {
+          // Quý 1
+          condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) in (1, 2, 3) `;
+        } else if (filter.groupmonth === 20) {
+          // Quý 2
+          condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) in (4, 5, 6) `;
+        } else if (filter.groupmonth === 30) {
+          // Quý 3
+          condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) in (7, 8, 9) `;
+        } else if (filter.groupmonth === 40) {
+          // Quý 4
+          condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) in (10, 11, 12) `;
+        }
       }
-    }
+    } else {
+      if (filter.month && filter.month > 0) {
+        condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) = $month `;
+      }
+    }    
 
-    if (filter.year) {
-      condition += ` and CAST(strftime('%y', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) = $year `;
+    if (filter.year && filter.year > 0) {
+      condition += ` and CAST(strftime('%Y', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) = $year `;
     }
 
     return condition;

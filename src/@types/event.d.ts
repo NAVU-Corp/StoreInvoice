@@ -13,6 +13,14 @@ interface IResCompany {
   updatedate: number;
 }
 
+interface IResStepFilter {
+  valueType: number;
+  groupMonth: number;
+  month: number;
+  year: number;
+  typeInvoice: number;
+}
+
 interface IResInvoice {
   createdate: number;
   id: number;
@@ -29,6 +37,7 @@ interface IResInvoice {
   status: number;
   typeinvoice: number;
   updatedate: number;
+  datechoose: number;
 }
 
 interface IResConfig {
@@ -58,6 +67,11 @@ interface IResGetAllCompanies {
   content: {
     companies: Array<IResCompany>;
   };
+  result: number;
+}
+
+interface IResDeleteCompanies {
+  message: string;
   result: number;
 }
 

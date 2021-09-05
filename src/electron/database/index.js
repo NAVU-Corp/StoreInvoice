@@ -3,7 +3,7 @@ const path = require("path");
 const { app } = require("electron");
 const uuid = require('uuid');
 const pdf = require("pdf-parse");
-const { dialog } = require('electron');
+const { dialog, shell } = require('electron');
 
 const { UtilsDB } = require('./ultilsdb');
 
@@ -33,7 +33,7 @@ const companyService = new CompanyService({ companyRepository });
 const invoiceService = new InvoiceService({ invoiceRepository });
 const configService = new ConfigService({ configRepository });
 
-const mediaService = new MediaService({ storePdfPath, fs, path, uuid, pdf, configRepository, dialog, invoiceRepository });
+const mediaService = new MediaService({ storePdfPath, fs, path, uuid, pdf, configRepository, dialog, invoiceRepository, shell });
 
 companyRepository.createTable();
 invoiceRepository.createTable();

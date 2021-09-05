@@ -27,3 +27,13 @@ ipcMain.on(MediaEvent.STORE_MEDIA, async (event, { typeinvoice, companyid, datec
     result: resultStore,
   });
 });
+
+// open link url
+ipcMain.on(MediaEvent.OPEN_FILE_MEDIA, async (event, { url }) => {
+  mediaService.openFile({ url });
+});
+
+// open link url
+ipcMain.on(MediaEvent.OPEN_FOLDER_MEDIA, async (event, { url }) => {
+  mediaService.openFolderFile({ url });
+});

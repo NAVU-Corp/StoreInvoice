@@ -4,16 +4,22 @@ import { Button } from "../Button/Button";
 import { Modal } from "../Modal/Modal";
 import "./Alert.scss";
 
-export const Alert: React.FC<IAlert> = ({ isOpen, setOpen, messages }) => {
+export const Alert: React.FC<IAlert> = ({ 
+  isOpen, 
+  setOpen, 
+  messages,
+  actionMore,
+}) => {
   return (
     <Modal isOpen={isOpen} setOpen={setOpen}>
       <BoxShadow className="alert">
         <p>{messages}</p>
         <Button
-          isBig
+          isPrimary
           onClick={() => {
             if (setOpen) {
               setOpen(false);
+              actionMore();
             }
           }}
         >

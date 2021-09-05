@@ -14,4 +14,10 @@
     align-items: center;
     width: 100%;
   }
+  &__btn-cancel {
+    min-width: 100px;
+  }
+  &__btn-accept {
+    min-width: 100px;
+  }
 }

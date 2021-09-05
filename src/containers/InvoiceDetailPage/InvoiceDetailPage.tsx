@@ -27,6 +27,7 @@ export const InvoiceDetailPage = () => {
     status: 0,
     typeinvoice: 0,
     updatedate: 0,
+    datechoose: 0,
   });
 
   //handleResultGetOneInvoice
@@ -70,12 +71,10 @@ export const InvoiceDetailPage = () => {
 
   //handleResultUpdateInvoice
   const handleResultUpdateInvoice = (_: any, data: any) => {
-    console.log("handleResultUpdateInvoice");
-
     if (data && data.result) {
       handleGetOneInvoice();
       let time = setTimeout(() => {
-        setMessage("Cập nhật hóa đơn thành công.");
+        setMessage("Cập nhật hóa đơn thành công");
         clearTimeout(time);
       }, 100);
     }
@@ -98,12 +97,12 @@ export const InvoiceDetailPage = () => {
   return (
     <div className="invoice-detail">
       <div className="invoice-detail__form">
-        <h3>THÔNG TIN</h3>
+        <h3>Thông tin hóa đơn</h3>
         <FromDetail invoice={invoice} handleSubmit={handleUpdateInvoice} />
       </div>
 
       <div className="invoice-detail__preview">
-        <h3>XEM HÓA ĐƠN</h3>
+        <h3>Hóa đơn gốc</h3>
         <InvoicePreview link={invoice.linkpdf} />
       </div>
       <Alert isOpen={message} messages={message} setOpen={setMessage} />

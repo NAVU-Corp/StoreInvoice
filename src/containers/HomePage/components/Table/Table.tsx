@@ -8,9 +8,12 @@ import { ImageNoDataTable } from "../../../../constants/images";
 import "./Table.scss";
 
 export const Table: React.FC<ITable> = ({
+  typeInvoice,
   dataTable,
   handleDeleteInvoice,
   handlePreviewPDF,
+  handleOpenFile,
+  handleOpenFolder,
 }) => {
   const history = useHistory();
 
@@ -20,12 +23,14 @@ export const Table: React.FC<ITable> = ({
         <thead>
           <tr>
             <th>STT</th>
+            <th>Ngày nhập</th>
             <th>Ký hiệu HĐ</th>
             <th>Mã HĐ</th>
             <th>Số HĐ</th>
             <th>Ngày hóa đơn</th>
-            <th>Khách hàng</th>
+            <th>{typeInvoice === 20 ? `Khách hàng` : `Nhà cung cấp`}</th>
             <th>Ghi chú</th>
+            <th>Sửa</th>
             <th>Xem HĐ</th>
             <th>Xóa</th>
           </tr>
@@ -36,9 +41,10 @@ export const Table: React.FC<ITable> = ({
               <tr
                 key={i}
                 className="table__row"
-                onClick={() => history.push(`/invoice-detail/${item.id}`)}
+                // onClick={() => history.push(`/invoice-detail/${item.id}`)}
               >
                 <td align="center">{i + 1}</td>
+                <td align="center">{item.datechoose ? moment(item.datechoose).format("DD/MM/YYYY") : ""}</td>
                 <td
                   align="center"
                   style={{ fontWeight: "bold", color: "#262626" }}
@@ -50,15 +56,28 @@ export const Table: React.FC<ITable> = ({
                 <td align="center">
                   {moment(item.invoicedate).format("DD/MM/YYYY")}
                 </td>
-                <td align="center">{item.namebuyer}</td>
+                <td align="center">{typeInvoice === 20 ? item.nameseller : item.namebuyer}</td>
                 <td align="center">{item.note}</td>
                 <td align="center">
                   <Button
+                    isPrimary
                     className="table__btn"
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (handlePreviewPDF) {
-                        return handlePreviewPDF(item.linkpdf);
+                      history.push(`/invoice-detail/${item.id}`);
+                    }}
+                  >
+                    Sửa
+                  </Button>
+                </td>
+                <td align="center">
+                  <Button
+                    isSuccess
+                    className="table__btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (handleOpenFile) {
+                        return handleOpenFile(item.linkpdf);
                       }
                     }}
                   >
@@ -67,7 +86,8 @@ export const Table: React.FC<ITable> = ({
                 </td>
                 <td align="center">
                   <Button
-                    isRed
+                    isDanger
+                    className="table__btn"
                     onClick={(e) => {
                       e.stopPropagation();
                       if (handleDeleteInvoice) {
@@ -75,7 +95,7 @@ export const Table: React.FC<ITable> = ({
                       }
                     }}
                   >
-                    <SvgDelete />
+                    Xóa
                   </Button>
                 </td>
               </tr>
@@ -85,7 +105,7 @@ export const Table: React.FC<ITable> = ({
       </table>
       {dataTable?.length === 0 && (
         <div className="table__nodata">
-          <h4>Không có dữ liệu</h4>
+          <h4>Không có dữ liệu hóa đơn</h4>
           <img src={ImageNoDataTable} className="table__img" />
         </div>
       )}

@@ -13,7 +13,7 @@ export const App = () => {
 
   return (
     <CompanyContext.Provider value={{ state, dispatch }}>
-      <AutoUpdate />
+      {/* <AutoUpdate /> */}
       <Routers />
     </CompanyContext.Provider>
   );
