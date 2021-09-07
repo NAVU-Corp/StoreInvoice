@@ -14,5 +14,6 @@ export * from "./ModalConfirm/ModalConfirm";
 export * from "./Pagination/Pagination";
 export * from "./InvoicePreview/InvoicePreview";
 export * from "./Footer/Footer";
+export * from "./Loader/Loader";
 
 export * from "./Nav/Nav";

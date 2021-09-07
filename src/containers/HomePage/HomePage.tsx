@@ -29,8 +29,9 @@ export const HomePage = () => {
   const [totalPage, setTotalPage] = useState(1);
   const [messageConfirm, setMessageConfirm] = useState("");
   const [invoiceId, setInvoiceId] = useState(0);
-  const [linkPDF, setLinkPDF] = useState("");
+  // const [linkPDF, setLinkPDF] = useState("");
   const [isOpenFile, setIsOpenFile] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   //handleAddFilePDF
   const handleAddFilePDF = (date: any) => {
@@ -39,6 +40,7 @@ export const HomePage = () => {
       companyid: companyData.id,
       datechoose: date ? new Date(date) : new Date(),
     });
+    setLoading(true);
   };
 
   //handleListenerGetInvoice
@@ -69,7 +71,8 @@ export const HomePage = () => {
         handleGetAllInvoices();
         clearTimeout(time);
         setIsOpenFile(false);
-      }, 1000);
+        setLoading(false);
+      }, 100);
     }
   };
   useEffect(() => {
@@ -129,18 +132,12 @@ export const HomePage = () => {
   };
 
   const handleOpenFile = (url: string) => {
-    apiElectron.sendMessages(
-      MediaEvent.OPEN_FILE_MEDIA,
-      { url: url },
-    );
-  }
+    apiElectron.sendMessages(MediaEvent.OPEN_FILE_MEDIA, { url: url });
+  };
 
   const handleOpenFolder = (url: string) => {
-    apiElectron.sendMessages(
-      MediaEvent.OPEN_FOLDER_MEDIA,
-      { url: url },
-    );
-  }
+    apiElectron.sendMessages(MediaEvent.OPEN_FOLDER_MEDIA, { url: url });
+  };
 
   //handleFilterVoice
   const handleFilterVoice = (values: ISubmitFilter) => {
@@ -159,8 +156,14 @@ export const HomePage = () => {
       companyid: companyData.id,
       page,
       typeinvoice: filterData ? filterData.typeInvoice : 10,
-      groupmonth: filterData.valueType === 2 ? ((filterData && filterData.groupMonth) || undefined) : undefined,
-      month: filterData.valueType === 1 ? ((filterData && filterData.month) || undefined) : undefined,
+      groupmonth:
+        filterData.valueType === 2
+          ? (filterData && filterData.groupMonth) || undefined
+          : undefined,
+      month:
+        filterData.valueType === 1
+          ? (filterData && filterData.month) || undefined
+          : undefined,
       year: (filterData && filterData.year) || undefined,
       invoicedate: invoicedate || undefined,
       invoicenumber: invoicenumber || undefined,
@@ -196,9 +199,9 @@ export const HomePage = () => {
             setMessageConfirm("Bạn có muốn xóa hóa đơn này không?");
             setInvoiceId(id);
           }}
-          handlePreviewPDF={(link) => setLinkPDF(link)}
-          handleOpenFile={((link) => handleOpenFile(link))}
-          handleOpenFolder={((link) => handleOpenFolder(link))}
+          // handlePreviewPDF={(link) => setLinkPDF(link)}
+          handleOpenFile={(link) => handleOpenFile(link)}
+          handleOpenFolder={(link) => handleOpenFolder(link)}
         />
         {totalPage !== 1 && (
           <Pagination
@@ -240,16 +243,17 @@ export const HomePage = () => {
         onCancel={() => setMessageConfirm("")}
         onOK={handleConfirmDeleteInvoice}
       />
-      <ModalPreviewInvoice
+      {/* <ModalPreviewInvoice
         isOpen={linkPDF}
         link={linkPDF}
         setOpen={setLinkPDF}
-      />
+      /> */}
       <ModalDate
         onChoosePDF={handleAddFilePDF}
         isOpen={isOpenFile}
         setOpen={setIsOpenFile}
         onClose={() => setIsOpenFile(false)}
+        loading={loading}
       />
     </div>
   );
