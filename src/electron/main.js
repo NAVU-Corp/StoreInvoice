@@ -66,26 +66,18 @@ app
     createWindow();
   })
   .then(() => {
-    autoUpdater
-      .checkForUpdatesAndNotify()
-      .then((res) => {
-        new Notification({ title: JSON.stringify(res) }).show();
-      })
-      .catch((err) => {
-        new Notification({ title: JSON.stringify(err) }).show();
-      });
+    autoUpdater.checkForUpdatesAndNotify();
   });
 
 //UPDATE_AVAILABLE
 autoUpdater.on("update-available", () => {
   mainWindow.webContents.send(AutoUpdateEvent.UPDATE_AVAILABLE);
-  new Notification({ title: "update-available" }).show();
 });
 
 //DOWNLOAD_PROGRESS
 autoUpdater.on("download-progress", (progressInfo) => {
   const { percent, bytesPerSecond } = progressInfo;
-  new Notification({ title: "download-progress" }).show();
+  mainWindow.setProgressBar(percent);
 
   mainWindow.webContents.send(AutoUpdateEvent.DOWNLOAD_PROGRESS, {
     percent,
@@ -96,7 +88,6 @@ autoUpdater.on("download-progress", (progressInfo) => {
 //UPDATE_DOWNLOADED
 autoUpdater.on("update-downloaded", () => {
   mainWindow.webContents.send(AutoUpdateEvent.UPDATE_DOWNLOADED);
-  new Notification({ title: "UPDATE_DOWNLOADED" }).show();
 });
 
 //GET_VERSION
