@@ -5,7 +5,7 @@ require("./events/invoice_event");
 require("./events/media_event");
 require("./events/config_event");
 
-const { BrowserWindow, app, ipcMain, Notification } = require("electron");
+const { BrowserWindow, app, ipcMain } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const path = require("path");
 const isDev = require("electron-is-dev");
@@ -67,13 +67,6 @@ app
   })
   .then(() => {
     autoUpdater.checkForUpdatesAndNotify();
-    new Notification({
-      title: JSON.stringify(
-        isDev
-          ? __dirname + "/app.db"
-          : process.env.LOCALAPPDATA + "/production.db"
-      ),
-    }).show();
   });
 
 //UPDATE_AVAILABLE
