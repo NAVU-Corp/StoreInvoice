@@ -1,12 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-import { Alert, BoxShadow, Button, Input, ModalConfirm } from "../../components";
+import {
+  Alert,
+  BoxShadow,
+  Button,
+  Input,
+  ModalConfirm,
+} from "../../components";
 import { CompanyEvent } from "../../constants/event";
-import { ImageLogin } from "../../constants/images";
 import { doSaveCompanyData } from "../../store/actions";
 import { CompanyContext } from "../../store/reducers";
-import { CompanyCard } from "./components";
 
 import "./LoginPage.scss";
 
@@ -17,7 +21,6 @@ export const LoginPage = () => {
   const [error, setError] = useState("");
   const [messageAlert, setMessageAlert] = useState("");
   const [messageConfirm, setMessageConfirm] = useState<any>(null);
-  const [listCompanies, setListCompanies] = useState<Array<IResCompany>>([]);
 
   const { dispatch } = useContext(CompanyContext);
 
@@ -41,26 +44,19 @@ export const LoginPage = () => {
       setMessageAlert("Không có công ty tương ứng mới MST này");
     }
   };
-  
+
   // get all company
   const handleGetAllCompany = () => {
     apiElectron.sendMessages(CompanyEvent.GET_ALL_COMPANIES);
   };
 
   // result get all comapany
-  const handleResultGetAllCompany = (_: any, data: IResGetAllCompanies) => {
-    if (data && data.content && data.content.companies) {
-      setListCompanies(data.content.companies);
-    }
-  };
-
-  // result get all comapany
   const handleResultDeleteCompany = (_: any, data: IResDeleteCompanies) => {
     if (data && data.result) {
       setMessageAlert("Xóa công ty với MST này thành công");
-      setTaxCode('');
+      setTaxCode("");
     } else {
-      if(data?.message) {
+      if (data?.message) {
         setMessageAlert(data?.message);
       }
     }
@@ -68,26 +64,20 @@ export const LoginPage = () => {
 
   //delele company
   const handleDeleteCompany = () => {
-    if(taxCode) {
+    if (taxCode) {
       apiElectron.sendMessages(CompanyEvent.DELETE_ONE_COMPANY, {
         taxcode: taxCode,
       });
-      setError('');
+      setError("");
     } else {
       setError("Vui lòng điền mã số thuế");
     }
-  }
+  };
 
   useEffect(() => {
     handleGetAllCompany();
     //RESULT_GET_ONE_COMPANY
     apiElectron.on(CompanyEvent.RESULT_GET_ONE_COMPANY, handleCallback);
-
-    //RESULT_GET_ALL_COMPANIES
-    apiElectron.on(
-      CompanyEvent.RESULT_GET_ALL_COMPANIES,
-      handleResultGetAllCompany
-    );
 
     //RESULT_DELETE_ONE_COMPANY
     apiElectron.on(
@@ -100,10 +90,7 @@ export const LoginPage = () => {
         CompanyEvent.RESULT_GET_ONE_COMPANY,
         handleCallback
       );
-      apiElectron.removeListener(
-        CompanyEvent.RESULT_GET_ALL_COMPANIES,
-        handleResultGetAllCompany
-      );
+
       apiElectron.removeListener(
         CompanyEvent.RESULT_DELETE_ONE_COMPANY,
         handleResultDeleteCompany
@@ -115,7 +102,7 @@ export const LoginPage = () => {
     <div className="login-page">
       <div className="login-page__container">
         <BoxShadow className="login-page__form">
-          <form  onSubmit={handleLogin}>
+          <form onSubmit={handleLogin}>
             <h3>Đăng nhập</h3>
             <Input
               label="MST:"
@@ -126,21 +113,33 @@ export const LoginPage = () => {
               error={error}
             />
             <div className="login-page__btn-group">
-              <Button isPrimary onClick={handleLogin} className="login-page__btn" type="submit">
+              <Button isPrimary className="login-page__btn" type="submit">
                 Đăng nhập
               </Button>
             </div>
             <div className="login-page__actions">
-              <Button isSecondary className="login-page__sm-btn" onClick={() => {
-                if(taxCode) {
-                  setMessageConfirm(`Bạn có chắc muốn xóa công ty có MST này không?`);
-                } else {
-                  setError("Vui lòng điền mã số thuế");
-                }
-              }}>
+              <Button
+                isSecondary
+                className="login-page__sm-btn"
+                type="button"
+                onClick={() => {
+                  if (taxCode) {
+                    setMessageConfirm(
+                      `Bạn có chắc muốn xóa công ty có MST này không?`
+                    );
+                  } else {
+                    setError("Vui lòng điền mã số thuế");
+                  }
+                }}
+              >
                 Xóa mã
               </Button>
-              <Button isSuccess className="login-page__sm-btn" onClick={() => history.push("/register")}>
+              <Button
+                isSuccess
+                className="login-page__sm-btn"
+                onClick={() => history.push("/register")}
+                type="button"
+              >
                 Mã mới
               </Button>
             </div>
