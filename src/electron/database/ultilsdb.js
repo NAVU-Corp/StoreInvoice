@@ -6,7 +6,7 @@ class UtilsDB {
     this.db = new sqlite3.Database(
       isDev
         ? __dirname + "/app.db"
-        : process.env.LOCALAPPDATA + "/app-pdf-ts/production.db",
+        : process.env.LOCALAPPDATA + "/production.db",
       (err) => {
         if (err) {
           console.log("Could not connect to database:", err);
