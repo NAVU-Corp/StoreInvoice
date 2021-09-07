@@ -102,48 +102,53 @@ export const LoginPage = () => {
     <div className="login-page">
       <div className="login-page__container">
         <BoxShadow className="login-page__form">
-          <form onSubmit={handleLogin}>
-            <h3>Đăng nhập</h3>
-            <Input
-              label="MST:"
-              placeholder="MST"
-              className="login-page__input"
-              value={taxCode}
-              onChange={(e) => setTaxCode(e.target.value)}
-              error={error}
-            />
-            <div className="login-page__btn-group">
-              <Button isPrimary className="login-page__btn" type="submit">
-                Đăng nhập
-              </Button>
-            </div>
-            <div className="login-page__actions">
-              <Button
-                isSecondary
-                className="login-page__sm-btn"
-                type="button"
-                onClick={() => {
-                  if (taxCode) {
-                    setMessageConfirm(
-                      `Bạn có chắc muốn xóa công ty có MST này không?`
-                    );
-                  } else {
-                    setError("Vui lòng điền mã số thuế");
-                  }
-                }}
-              >
-                Xóa mã
-              </Button>
-              <Button
-                isSuccess
-                className="login-page__sm-btn"
-                onClick={() => history.push("/register")}
-                type="button"
-              >
-                Mã mới
-              </Button>
-            </div>
-          </form>
+          <h3>Đăng nhập</h3>
+          <Input
+            label="MST:"
+            placeholder="MST"
+            className="login-page__input"
+            value={taxCode}
+            onChange={(e) => setTaxCode(e.target.value)}
+            error={error}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                const target = e.target as HTMLInputElement;
+                setTaxCode(target.value);
+                handleLogin();
+              }
+            }}
+          />
+          <div className="login-page__btn-group">
+            <Button isPrimary className="login-page__btn" onClick={handleLogin}>
+              Đăng nhập
+            </Button>
+          </div>
+          <div className="login-page__actions">
+            <Button
+              isSecondary
+              className="login-page__sm-btn"
+              type="button"
+              onClick={() => {
+                if (taxCode) {
+                  setMessageConfirm(
+                    `Bạn có chắc muốn xóa công ty có MST này không?`
+                  );
+                } else {
+                  setError("Vui lòng điền mã số thuế");
+                }
+              }}
+            >
+              Xóa mã
+            </Button>
+            <Button
+              isSuccess
+              className="login-page__sm-btn"
+              onClick={() => history.push("/register")}
+              type="button"
+            >
+              Mã mới
+            </Button>
+          </div>
         </BoxShadow>
         {/* <img src={ImageLogin} className="login-page__img" /> */}
       </div>
