@@ -80,7 +80,7 @@
     ],
     "extraFiles": [
       {
-        "from": "./src/electron/database/production.db",
+        "from": "./src/electron/databaseapp.db",
         "to": "."
       }
     ],

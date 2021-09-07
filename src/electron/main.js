@@ -35,7 +35,6 @@ const createWindow = () => {
   if (isDev) {
     mainWindow.webContents.openDevTools();
   }
-  mainWindow.webContents.openDevTools();
 
   // linster close windows
   ipcMain.on(WinEvent.WIN_CLOSE, () => {

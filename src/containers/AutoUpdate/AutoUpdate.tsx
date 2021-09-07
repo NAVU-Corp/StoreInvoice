@@ -4,7 +4,7 @@ import { AutoUpdateEvent } from "../../constants/event";
 import "./AutoUpdate.scss";
 
 export const AutoUpdate = () => {
-  const [isOper, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   //handleUpdateDownloaded
   const handleUpdateDownloaded = () => {
@@ -23,7 +23,7 @@ export const AutoUpdate = () => {
   }, []);
 
   return (
-    <Modal isOpen={isOper}>
+    <Modal isOpen={isOpen}>
       <BoxShadow className="auto-update">
         <p>
           Đã tải thành công bản cập nhập mới. Bạn có muốn cập nhận ngay không?
