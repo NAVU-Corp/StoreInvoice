@@ -72,7 +72,7 @@ export const HomePage = () => {
         clearTimeout(time);
         setIsOpenFile(false);
         setLoading(false);
-      }, 100);
+      }, 1000);
     }
   };
   useEffect(() => {
