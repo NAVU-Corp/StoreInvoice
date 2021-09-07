@@ -5,7 +5,7 @@ require("./events/invoice_event");
 require("./events/media_event");
 require("./events/config_event");
 
-const { BrowserWindow, app, ipcMain } = require("electron");
+const { BrowserWindow, app, ipcMain, Notification } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const path = require("path");
 const isDev = require("electron-is-dev");
@@ -66,17 +66,26 @@ app
     createWindow();
   })
   .then(() => {
-    autoUpdater.checkForUpdatesAndNotify();
+    autoUpdater
+      .checkForUpdatesAndNotify()
+      .then((res) => {
+        new Notification({ title: JSON.stringify(res) }).show();
+      })
+      .catch((err) => {
+        new Notification({ title: JSON.stringify(err) }).show();
+      });
   });
 
 //UPDATE_AVAILABLE
 autoUpdater.on("update-available", () => {
   mainWindow.webContents.send(AutoUpdateEvent.UPDATE_AVAILABLE);
+  new Notification({ title: "update-available" }).show();
 });
 
 //DOWNLOAD_PROGRESS
 autoUpdater.on("download-progress", (progressInfo) => {
   const { percent, bytesPerSecond } = progressInfo;
+  new Notification({ title: "download-progress" }).show();
 
   mainWindow.webContents.send(AutoUpdateEvent.DOWNLOAD_PROGRESS, {
     percent,
@@ -87,6 +96,7 @@ autoUpdater.on("download-progress", (progressInfo) => {
 //UPDATE_DOWNLOADED
 autoUpdater.on("update-downloaded", () => {
   mainWindow.webContents.send(AutoUpdateEvent.UPDATE_DOWNLOADED);
+  new Notification({ title: "UPDATE_DOWNLOADED" }).show();
 });
 
 //GET_VERSION
