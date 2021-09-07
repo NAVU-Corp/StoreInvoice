@@ -13,5 +13,6 @@ export * from "./Modal/Modal";
 export * from "./ModalConfirm/ModalConfirm";
 export * from "./Pagination/Pagination";
 export * from "./InvoicePreview/InvoicePreview";
+export * from "./Footer/Footer";
 
 export * from "./Nav/Nav";

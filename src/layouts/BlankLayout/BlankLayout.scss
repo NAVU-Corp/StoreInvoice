@@ -1,7 +1,8 @@
 .blank-layout {
   min-height: 100vh;
   &__center {
-    min-height: 100vh;
+    min-height: calc(100vh - 100px);
     margin-top: 16px;
+    position: relative;
   }
 }

@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "./src/electron/main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NAVU-Corp/StoreInvoice.git"
+  },
   "scripts": {
     "jsbuild": "tsc",
     "electron": "electron .",
@@ -67,13 +71,30 @@
   "build": {
     "productName": "Store Invoice",
     "appId": "com.app.StoreInvoice",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "NAVU-Corp",
+        "repo": "StoreInvoice"
+      }
+    ],
+    "extraFiles": [
+      {
+        "from": "./src/electron/database/production.db",
+        "to": "."
+      }
+    ],
     "win": {
       "target": [
         "nsis"
+      ],
+      "publish": [
+        "github"
       ]
     },
     "nsis": {
-      "oneClick": false
+      "oneClick": false,
+      "include": "build/installer.nsh"
     },
     "directories": {
       "output": "release"
