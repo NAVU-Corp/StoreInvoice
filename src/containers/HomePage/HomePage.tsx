@@ -69,9 +69,9 @@ export const HomePage = () => {
     if (data.result) {
       let time = setTimeout(() => {
         handleGetAllInvoices();
-        clearTimeout(time);
         setIsOpenFile(false);
         setLoading(false);
+        clearTimeout(time);
       }, 1000);
     }
   };
