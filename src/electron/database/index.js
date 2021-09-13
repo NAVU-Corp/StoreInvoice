@@ -30,7 +30,7 @@ const invoiceRepository = new InvoiceRepository({ utilsDB, storePdfPath });
 const configRepository = new ConfigRepository({ utilsDB });
 
 const companyService = new CompanyService({ companyRepository });
-const invoiceService = new InvoiceService({ invoiceRepository });
+const invoiceService = new InvoiceService({ invoiceRepository, fs });
 const configService = new ConfigService({ configRepository });
 
 const mediaService = new MediaService({ storePdfPath, fs, path, uuid, pdf, configRepository, dialog, invoiceRepository, shell });
