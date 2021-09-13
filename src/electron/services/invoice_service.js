@@ -1,8 +1,9 @@
 
 
 class InvoiceService {
-  constructor({ invoiceRepository }) {
+  constructor({ invoiceRepository, fs }) {
     this.invoiceRepository = invoiceRepository;
+    this.fs = fs;
   }
 
   createInvoice(invoice, { 
@@ -17,9 +18,16 @@ class InvoiceService {
     return this.invoiceRepository.update(invoice, { dateNow });
   }
 
-  deleteInvoice(id, { 
+  async deleteInvoice(id, { 
     dateNow,
   }) {
+    let invoice = await this.invoiceRepository.getById(id);
+    if (this.fs.existsSync(invoice.linkpdf)) {
+      this.fs.unlink(invoice.linkpdf, (err) => {
+        // console.log("File succesfully deleted: " + invoice.linkpdf);
+      });
+    }
+
     return this.invoiceRepository.delete(id, { dateNow });
   }
 

@@ -150,6 +150,26 @@ export const LoginPage = () => {
         </BoxShadow>
         {/* <img src={ImageLogin} className="login-page__img" /> */}
       </div>
+      <div className="login-page__brand">
+        <div className="login-page__brand-box">
+          <div className="login-page__brand-text">V</div>
+        </div>
+        <div className="login-page__brand-box">
+          <div className="login-page__brand-text">I</div>
+        </div>
+        <div className="login-page__brand-box">
+          <div className="login-page__brand-text">N</div>
+        </div>
+        <div className="login-page__brand-box">
+          <div className="login-page__brand-text">A</div>
+        </div>
+        <div className="login-page__brand-box">
+          <div className="login-page__brand-text">S</div>
+        </div>
+        <div className="login-page__brand-box">
+          <div className="login-page__brand-text">C</div>
+        </div>
+      </div>
       {/* <div className="login-page__companys">
         {listCompanies.map((item, i) => {
           return (

@@ -22,6 +22,7 @@
   --tw-border-opacity: 1;
   --tw-bg-opacity: 1;
   --tw-text-opacity: 1;
+  box-shadow: 2px 2px 10px 0 rgb(0 0 0 / 25%);
 
   &--primary {
     --tw-bg-opacity: 1;
@@ -92,6 +93,7 @@
     border-color: rgba(28,63,170,var(--tw-border-opacity));
     --tw-text-opacity: 1;
     color: rgba(28,63,170,var(--tw-text-opacity));
+    box-shadow: 0 3px 20px rgb(0 0 0 / 4%);
   }
 
   &--outline-primary:hover {
@@ -99,6 +101,7 @@
     border-color: rgba(28,63,170,var(--tw-border-opacity));
     --tw-text-opacity: 1;
     color: rgba(28,63,170,var(--tw-text-opacity));
+    box-shadow: 0 3px 20px rgb(0 0 0 / 4%);
   }
 
   &--outline-secondary {
@@ -113,6 +116,7 @@
     border-color: rgba(226,232,240,var(--tw-border-opacity));
     --tw-text-opacity: 1;
     color: rgba(74,85,104,var(--tw-text-opacity));
+    box-shadow: 0 3px 20px rgb(0 0 0 / 4%);
   }
 
   &--outline-dark {
@@ -127,6 +131,7 @@
     border-color: rgba($dark-color,var(--tw-border-opacity));
     --tw-text-opacity: 1;
     color: rgba($dark-color,var(--tw-text-opacity));
+    box-shadow: 0 3px 20px rgb(0 0 0 / 4%);
   }
 
   &--red {
