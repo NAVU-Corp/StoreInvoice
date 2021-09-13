@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import {
   Alert,
@@ -41,7 +41,7 @@ export const LoginPage = () => {
       dispatch(doSaveCompanyData(data.content.company));
       history.push("/choose-type-store");
     } else {
-      setMessageAlert("Không có công ty tương ứng mới MST này");
+      setMessageAlert("Không có công ty tương ứng với MST này");
     }
   };
 
@@ -124,19 +124,17 @@ export const LoginPage = () => {
             </Button>
           </div>
           <div className="login-page__actions">
-            <Button
+            <Link to={{
+              pathname: "/remove-company"
+            }} className="login-page__link-btn">Xóa công ty</Link>
+            <Link to={{
+              pathname: "/register"
+            }} className="login-page__link-btn">Tạo công ty</Link>
+            {/* <Button
               isSecondary
               className="login-page__sm-btn"
               type="button"
-              onClick={() => {
-                if (taxCode) {
-                  setMessageConfirm(
-                    `Bạn có chắc muốn xóa công ty có MST này không?`
-                  );
-                } else {
-                  setError("Vui lòng điền mã số thuế");
-                }
-              }}
+              onClick={() => history.push("/remove-company")}
             >
               Xóa mã
             </Button>
@@ -147,7 +145,7 @@ export const LoginPage = () => {
               type="button"
             >
               Mã mới
-            </Button>
+            </Button> */}
           </div>
         </BoxShadow>
         {/* <img src={ImageLogin} className="login-page__img" /> */}

@@ -27,7 +27,15 @@ class CompanyService {
     return this.companyRepository.update(company, { dateNow });
   }
 
-  deleteCompany(id, { taxcode, dateNow }) {
+  async deleteCompany(id, { taxcode, dateNow }) {
+    let exists = await this.checkExitsTaxCode(taxcode);
+    if (!exists) {
+      throw {
+        result: 0,
+        message: `Mã số thuế chưa được đăng ký trong hệ thống`,
+      };
+    }
+
     return this.companyRepository.delete(id, { taxcode, dateNow });
   }
 
@@ -44,6 +52,7 @@ class CompanyService {
       company.taxcode,
       company.id || 0
     );
+
     if (
       resultTaxCodeChacker &&
       resultTaxCodeChacker.numExists &&
@@ -56,6 +65,7 @@ class CompanyService {
       company.name,
       company.id || 0
     );
+
     if (
       resultNameChecker &&
       resultNameChecker.numExists &&
@@ -65,6 +75,23 @@ class CompanyService {
     }
 
     return "";
+  }
+
+  async checkExitsTaxCode(taxcode) {
+    let resultTaxCodeChacker = await this.companyRepository.checkExitsTaxCode(
+      taxcode,
+      0
+    );
+      console.log(resultTaxCodeChacker);
+    if (
+      resultTaxCodeChacker &&
+      resultTaxCodeChacker.numExists &&
+      resultTaxCodeChacker.numExists > 0
+    ) {
+      return true;
+    }
+
+    return false;
   }
 }
 

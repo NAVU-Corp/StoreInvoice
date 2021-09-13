@@ -12,6 +12,7 @@ import {
   TestPage,
   CompanyProfilePage,
 } from "../containers";
+import { RemoveCompanyPage } from "../containers/RemoveCompanyPage/RemoveCompanyPage";
 import { BlankLayout } from "../layouts";
 import { PrivateRouter } from "./PrivateRouter";
 import { PublicRouter } from "./PublicRouter";
@@ -81,6 +82,13 @@ export const Routers = () => {
         component={TestPage}
         layout={BlankLayout}
         title="TEST API"
+      />
+      <PublicRouter
+        exact
+        path="/remove-company"
+        component={RemoveCompanyPage}
+        layout={BlankLayout}
+        title={"XÓA CÔNG TY"}
       />
     </Switch>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { Button, Input, LabelTitle, Select } from "../../../../components";
 import "./FormFilter.scss";
@@ -8,6 +8,8 @@ import {
   optionTypeStore,
   optionYears,
 } from "../../../../constants/selections";
+import { CompanyContext } from "../../../../store/reducers";
+import { DetectMonthInGroupMonth } from "../../../../constants/month-valid";
 
 export const FormFilter: React.FC<IFormFilter> = ({
   groupmonth,
@@ -16,25 +18,42 @@ export const FormFilter: React.FC<IFormFilter> = ({
   handleSubmitForm,
 }) => {
   const [typeStore, setTypeStore] = useState(1);
+  const { dispatch, state: { filterData }, } = useContext(CompanyContext);
+  const [optionValidMonths, setOptionValidMonth] = useState<any>([]);
+
   const formik = useFormik({
     initialValues: {
       invoicesymbol: "",
       invoicetemplate: "",
       invoicenumber: "",
       invoicedate: "",
+      invoicedateview: "",
       namebuyer: "",
+      nameseller: "",
       month: month || 0,
       groupmonth: groupmonth || 0,
       year: year || 0,
+      monthfilter: 0,
     },
     enableReinitialize: true,
     onSubmit: (values: any) => {
-      if (values.invoicedate) {
-        values.invoicedate = new Date(values.invoicedate);
+      if (values.invoicedateview) {
+        values.invoicedate = new Date(values.invoicedateview);
       }
       return handleSubmitForm(values);
     },
   });
+
+  const handleClearForm = () => {
+    formik.resetForm();
+    formik.submitForm();
+  }
+
+  useEffect(() => {
+    if(filterData && filterData.valueType == 2 && filterData.groupMonth) {
+      setOptionValidMonth(DetectMonthInGroupMonth(filterData.groupMonth));
+    }
+  }, [filterData]);
 
   return (
     <form className="form-filter" onSubmit={formik.handleSubmit}>
@@ -42,15 +61,18 @@ export const FormFilter: React.FC<IFormFilter> = ({
         title="Tìm kiếm"
         hasBottomLine
         secondContent={
-          <Button isPrimary type="submit">Tìm kiếm</Button>
+          <div>
+            <Button isPrimary type="submit" style={{ marginRight: '5px' }}>Tìm kiếm</Button>
+            <Button isSecondary type="button" onClick={handleClearForm}>Nhập lại</Button>
+          </div>
         }
         className="form-filter__title"
       />
 
       <div className="form-filter__container">
         <Input
-          placeholder="Kí hiệu hóa đơn"
-          label="Kí hiệu hóa đơn"
+          placeholder="Mẫu số hóa đơn"
+          label="Mẫu số hóa đơn"
           hasIconSearch
           className="form-filter__input"
           value={formik.values.invoicesymbol}
@@ -59,8 +81,8 @@ export const FormFilter: React.FC<IFormFilter> = ({
           name="invoicesymbol"
         />
         <Input
-          placeholder="Mã hóa đơn"
-          label="Mã hóa đơn"
+          placeholder="Ký hiệu hóa đơn"
+          label="Ký hiệu hóa đơn"
           hasIconSearch
           className="form-filter__input"
           value={formik.values.invoicetemplate}
@@ -83,21 +105,35 @@ export const FormFilter: React.FC<IFormFilter> = ({
           label="Ngày hóa đơn"
           type="date"
           className="form-filter__input"
-          value={formik.values.invoicedate}
+          value={formik.values.invoicedateview}
           onChange={formik.handleChange}
-          id="invoicedate"
-          name="invoicedate"
+          id="invoicedateview"
+          name="invoicedateview"
         />
-        <Input
-          placeholder="Khách hàng"
-          label="Khách hàng"
-          hasIconSearch
-          className="form-filter__input"
-          value={formik.values.namebuyer}
-          onChange={formik.handleChange}
-          id="namebuyer"
-          name="namebuyer"
-        />
+        { filterData.typeInvoice === 10 ? (
+          <Input
+            placeholder="Khách hàng"
+            label="Khách hàng"
+            hasIconSearch
+            className="form-filter__input"
+            value={formik.values.namebuyer}
+            onChange={formik.handleChange}
+            id="namebuyer"
+            name="namebuyer"
+          />
+        ) : (
+          <Input
+            placeholder="Nhà cung cấp"
+            label="Nhà cung cấp"
+            hasIconSearch
+            className="form-filter__input"
+            value={formik.values.nameseller}
+            onChange={formik.handleChange}
+            id="nameseller"
+            name="nameseller"
+          />
+        ) }
+        
         {/* <Select
           placeholder="Chọn kì"
           label="Chọn kì"
@@ -114,13 +150,15 @@ export const FormFilter: React.FC<IFormFilter> = ({
           value={formik.values.year}
           onSelect={(item) => formik.setFieldValue("year", item.id)}
         /> */}
-        {typeStore === 2 ? (
+        {filterData.valueType === 2 ? (
           <>
             <Select
               placeholder="Chọn tháng"
               label="Chọn tháng"
               className="form-filter__input"
-              options={optionMonths}
+              options={optionValidMonths}
+              value={formik.values.monthfilter}
+              onSelect={(item) => formik.setFieldValue("monthfilter", item.id)}
             />
           </>
         ) : (

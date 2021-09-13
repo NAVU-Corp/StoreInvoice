@@ -44,6 +44,9 @@ invoiceRepository.alterNameSeller();
 invoiceRepository.alterTypeInvoice();
 invoiceRepository.alterDateChoose();
 
+configRepository.createDefaultConfigCustomer();
+configRepository.createDefaultConfigBuyer();
+
 module.exports = {
   companyService,
   invoiceService,

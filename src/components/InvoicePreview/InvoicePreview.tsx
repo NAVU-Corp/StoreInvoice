@@ -18,7 +18,7 @@ export const InvoicePreview: React.FC<IInvoicePreview> = ({ link }) => {
         <Document file={link} onLoadSuccess={onDocumentLoadSuccess}>
           <Page pageNumber={page} />
         </Document>
-        {numPages !== 1 && (
+        {numPages > 1 ? (
           <Pagination
             page={page}
             totalPage={numPages}
@@ -34,7 +34,7 @@ export const InvoicePreview: React.FC<IInvoicePreview> = ({ link }) => {
               }
             }}
           />
-        )}
+        ) : <></>}
       </BoxShadow>
     </div>
   );

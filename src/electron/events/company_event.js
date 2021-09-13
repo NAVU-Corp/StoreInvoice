@@ -88,6 +88,9 @@ ipcMain.on(CompanyEvent.DELETE_ONE_COMPANY, (event, { id, taxcode }) => {
   })
     .then((data) => event.reply(CompanyEvent.RESULT_DELETE_ONE_COMPANY, {
       result: 1,
+      content: {
+        taxcode
+      }
     }))
     .catch((err) => event.reply(CompanyEvent.RESULT_DELETE_ONE_COMPANY, err));;
 });

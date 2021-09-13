@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { BoxShadow, Button } from "../../components";
 import "./TypeInvoicePage.scss";
-import { ImageInvoice, ImageLogin, ImageReceipt } from "../../constants/images";
+import { ImageInvoiceBill, ImageReceiptBill } from "../../constants/images";
 import { CompanyContext } from "../../store/reducers";
 import { doSaveStepFilter } from "../../store/actions";
 
@@ -33,10 +33,10 @@ export const TypeInvoicePage = () => {
             }}
           >
             Hóa đơn mua vào
-            <img src={ImageReceipt} className="type-invoice__btn-img" />
+            <img src={ImageInvoiceBill} className="type-invoice__btn-img" />
           </Button>
           <Button
-            isOutlineDark
+            isOutlinePrimary
             isWithImage
             onClick={() => {
               history.push({
@@ -52,7 +52,7 @@ export const TypeInvoicePage = () => {
             }}
           >
             Hóa đơn bán ra
-            <img src={ImageInvoice} className="type-invoice__btn-img" />
+            <img src={ImageReceiptBill} className="type-invoice__btn-img" />
           </Button>
         </div>
       </BoxShadow>

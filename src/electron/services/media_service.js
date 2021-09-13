@@ -76,8 +76,8 @@ class MediaService {
             invoicetemplate:
               queue.find((a) => a.key === "Ký hiệu")?.value || "",
             invoicenumber: queue.find((a) => a.key === "Số")?.value || "",
-            namebuyer: queue.find((a) => a.type === 10)?.value || "",
-            nameseller: queue.find((a) => a.type === 20)?.value || "",
+            namebuyer: queue.find((a) => a.type === 20)?.value || "",
+            nameseller: queue.find((a) => a.type === 10)?.value || "",
             typeinvoice: typeinvoice,
             namepdf: fileNameBuilder,
           },

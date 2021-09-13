@@ -17,7 +17,6 @@ export const doSaveCompanyData = (data: IResCompany): Action => {
 };
 
 export const doSaveStepFilter = (data: IResStepFilter): Action => {
-  console.log(data);
   return {
     type: ActionKind.SAVE_STEP_FILTER,
     payload: data,

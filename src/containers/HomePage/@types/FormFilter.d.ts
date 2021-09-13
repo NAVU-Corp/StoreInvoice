@@ -11,7 +11,9 @@ interface ISubmitFilter {
   invoicenumber: string;
   invoicedate: string;
   namebuyer: string;
+  nameseller: string;
   month: number;
   groupmonth: number;
   year: number;
+  monthfilter: number;
 }

@@ -190,7 +190,7 @@ export const FromDetail: React.FC<IFromDetail> = ({
         />
         <div className="form-detail__actions">
           <Button
-            isDark
+            isDanger
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
