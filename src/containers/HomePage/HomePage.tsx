@@ -47,11 +47,17 @@ export const HomePage = () => {
   const handleGetAllInvoices = () => {
     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
       companyid: companyData.id,
+      valueType: filterData ? filterData.valueType : 1,
       page,
       typeinvoice: filterData ? filterData.typeInvoice : 10,
-      groupmonth: (filterData && filterData.groupMonth) || undefined,
-      month: (filterData && filterData.month) || undefined,
-      year: (filterData && filterData.year) || undefined,
+      groupmonth:
+        filterData.valueType === 2
+          ? (filterData && filterData.groupMonth) || undefined
+          : undefined,
+      month:
+        filterData.valueType === 1
+          ? (filterData && filterData.month) || undefined
+          : undefined,
     });
   };
 
@@ -149,11 +155,14 @@ export const HomePage = () => {
       invoicetemplate,
       month,
       namebuyer,
+      nameseller,
       year,
+      monthfilter,
     } = values;
     // Khong filter được ở đây?
     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
       companyid: companyData.id,
+      valueType: filterData ? filterData.valueType : 1,
       page,
       typeinvoice: filterData ? filterData.typeInvoice : 10,
       groupmonth:
@@ -164,12 +173,14 @@ export const HomePage = () => {
         filterData.valueType === 1
           ? (filterData && filterData.month) || undefined
           : undefined,
+      monthfilter: monthfilter || undefined,
       year: (filterData && filterData.year) || undefined,
       invoicedate: invoicedate || undefined,
       invoicenumber: invoicenumber || undefined,
       invoicesymbol: invoicesymbol || undefined,
       invoicetemplate: invoicetemplate || undefined,
       namebuyer: namebuyer || undefined,
+      nameseller: nameseller || undefined,
     });
   };
 

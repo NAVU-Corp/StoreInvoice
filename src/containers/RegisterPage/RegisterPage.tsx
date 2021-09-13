@@ -49,7 +49,6 @@ export const RegisterPage = () => {
   ) => {
     if (data && data.id) {
       let company = data.company;
-      console.log(company);
       setMessageSuccess(
         <>
           <span>Bạn đã đăng ký tài khoản công ty thành công:</span><br></br>

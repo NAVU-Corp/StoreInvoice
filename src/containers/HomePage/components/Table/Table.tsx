@@ -1,8 +1,6 @@
 import React, { Fragment } from "react";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
-
-import { SvgDelete } from "../../../../assets/svg";
 import { Button } from "../../../../components";
 import { ImageNoDataTable } from "../../../../constants/images";
 import "./Table.scss";
@@ -24,11 +22,11 @@ export const Table: React.FC<ITable> = ({
           <tr>
             <th>STT</th>
             <th>Ngày nhập</th>
-            <th>Ký hiệu HĐ</th>
-            <th>Mã HĐ</th>
+            <th>Mẫu số</th>
+            <th>Ký hiệu</th>
             <th>Số HĐ</th>
             <th>Ngày hóa đơn</th>
-            <th>{typeInvoice === 20 ? `Khách hàng` : `Nhà cung cấp`}</th>
+            <th>{typeInvoice === 10 ? `Khách hàng` : `Nhà cung cấp`}</th>
             <th>Ghi chú</th>
             <th>Sửa</th>
             <th>Xem HĐ</th>
@@ -51,8 +49,8 @@ export const Table: React.FC<ITable> = ({
                 >
                   {item.invoicesymbol}
                 </td>
-                <td align="center">{item.invoicenumber}</td>
                 <td align="center">{item.invoicetemplate}</td>
+                <td align="center">{item.invoicenumber}</td>
                 <td align="center">
                   {moment(item.invoicedate).format("DD/MM/YYYY")}
                 </td>

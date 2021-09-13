@@ -2,6 +2,17 @@ class InvoiceRepository {
   constructor({ utilsDB, storePdfPath }) {
     this.utilsDB = utilsDB;
     this.storePdfPath = storePdfPath;
+
+    var opsys = process.platform;
+    if (opsys == "darwin") {
+        opsys = "MacOS";
+    } else if (opsys == "win32" || opsys == "win64") {
+        opsys = "Windows";
+    } else if (opsys == "linux") {
+        opsys = "Linux";
+    }
+
+    this.opsys = opsys;
   }
 
   //typeinvoice: 10 - Hóa đơn bán ra, 20 - Hóa đơn mua vào
@@ -160,9 +171,16 @@ class InvoiceRepository {
   }
 
   getById(id) {
+    let devideFile;
+    if(this.opsys === 'Windows') {
+      devideFile = '\\';
+    } else {
+      devideFile = '/';
+    }
+
     return this.utilsDB.get(
       `SELECT id, ifnull(companyid, 0) companyid, invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf,
-        '${this.storePdfPath}' || '\\' || ifnull(namepdf, '') linkpdf, datechoose, 
+        '${this.storePdfPath}' || '${devideFile}' || ifnull(namepdf, '') linkpdf, datechoose, 
         IFNULL(namebuyer, '') namebuyer, IFNULL(nameseller, '') nameseller, IFNULL(typeinvoice, 10) typeinvoice, 
         status, createdate, updatedate
       FROM invoice 
@@ -176,16 +194,23 @@ class InvoiceRepository {
   getList(filter) {
     let condition = this.buildCondition(filter);
 
+    let devideFile;
+    if(this.opsys === 'Windows') {
+      devideFile = '\\';
+    } else {
+      devideFile = '/';
+    }
+
     let query = 
       `SELECT id, ifnull(companyid, 0) companyid, IFNULL(invoicesymbol, '') invoicesymbol, ifnull(invoicetemplate, '') invoicetemplate, 
         ifnull(invoicenumber, '') invoicenumber, ifnull(invoicedate, 0) invoicedate, ifnull(note, '') note, 
         ifnull(namepdf, '') namepdf, IFNULL(namebuyer, '') namebuyer, IFNULL(nameseller, '') nameseller, 
         IFNULL(typeinvoice, 10) typeinvoice, datechoose, status, createdate, updatedate, 
-        '${this.storePdfPath}' || '\\' || ifnull(namepdf, '') linkpdf,
+        '${this.storePdfPath}' || '${devideFile}' || ifnull(namepdf, '') linkpdf,
         strftime('%m ', datetime(ifnull(invoicedate, 0) / 1000, 'unixepoch')) month 
       FROM invoice 
       WHERE status != 90 ${condition} 
-      ORDER BY datechoose desc
+      ORDER BY datechoose desc, createdate desc 
       limit $page, $pagesize;`;
 
     return this.utilsDB.all(query, {
@@ -195,6 +220,7 @@ class InvoiceRepository {
       $nameseller: filter.nameseller ? `%${filter.nameseller}%` : undefined,
       $frominvoicedate: filter.frominvoicedate,
       $toinvoicedate: filter.toinvoicedate,
+      $invoicedate: filter.invoicedate,
       $invoicesymbol: filter.invoicesymbol
         ? `%${filter.invoicesymbol}%`
         : undefined,
@@ -206,6 +232,7 @@ class InvoiceRepository {
         : undefined,
       $month: filter.month ? filter.month : undefined,
       $year: filter.year ? filter.year : undefined,
+      $monthfilter: filter.monthfilter ? filter.monthfilter : undefined,
       $page: filter.page * filter.pagesize,
       $pagesize: filter.pagesize,
     });
@@ -226,6 +253,7 @@ class InvoiceRepository {
       $nameseller: filter.nameseller ? `%${filter.nameseller}%` : undefined,
       $frominvoicedate: filter.frominvoicedate,
       $toinvoicedate: filter.toinvoicedate,
+      $invoicedate: filter.invoicedate,
       $invoicesymbol: filter.invoicesymbol
         ? `%${filter.invoicesymbol}%`
         : undefined,
@@ -237,6 +265,7 @@ class InvoiceRepository {
         : undefined,
       $month: filter.month ? filter.month : undefined,
       $year: filter.year ? filter.year : undefined,
+      $monthfilter: filter.monthfilter ? filter.monthfilter : undefined,
     });
   }
 
@@ -256,19 +285,23 @@ class InvoiceRepository {
     }
 
     if (filter.namebuyer && filter.namebuyer.trim().length > 0) {
-      condition += ` and IFNULL(namebuyer, 10) like $namebuyer `;
+      condition += ` and IFNULL(namebuyer, '') like $namebuyer `;
     }
 
     if (filter.nameseller && filter.nameseller.trim().length > 0) {
-      condition += ` and IFNULL(nameseller, 10) like $nameseller `;
+      condition += ` and IFNULL(nameseller, '') like $nameseller `;
     }
 
-    if (filter.frominvoicedate && filter.frominvoicedate.trim().length > 0) {
+    if (filter.frominvoicedate) {
       condition += ` and invoicedate >= $frominvoicedate `;
     }
 
-    if (filter.toinvoicedate && filter.toinvoicedate.trim().length > 0) {
+    if (filter.toinvoicedate) {
       condition += ` and invoicedate <= $toinvoicedate `;
+    }
+
+    if(filter.invoicedate) {
+      condition += ` and invoicedate = $invoicedate `;
     }
 
     if (filter.invoicesymbol && filter.invoicesymbol.trim().length > 0) {
@@ -297,6 +330,10 @@ class InvoiceRepository {
         } else if (filter.groupmonth === 40) {
           // Quý 4
           condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) in (10, 11, 12) `;
+        }
+
+        if (filter.monthfilter && filter.monthfilter > 0) {
+          condition += ` and CAST(strftime('%m', datetime(ifnull(datechoose, datetime('now')) / 1000, 'unixepoch')) as int) = $monthfilter `;
         }
       }
     } else {

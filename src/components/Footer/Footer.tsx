@@ -26,8 +26,8 @@ export const Footer = () => {
   // }, []);
   return (
     <div className="footer">
-      <p>Bản quyền thuộc Vinasc.group</p>
-      <p>Đơn vị sản xuất: AI Doomo</p>
+      <p>Bản quyền thuộc <span style={{ fontWeight: 'bold' }}>Vinasc.group</span></p>
+      <p>Đơn vị sản xuất: <span style={{ fontWeight: 'bold' }}>AI Doomo</span></p>
       {/* <p>{`Phiên bản: ${version}`}</p> */}
     </div>
   );

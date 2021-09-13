@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 
 import { Alert, BoxShadow, Button, Select } from "../../components";
 import { ImageTimeStore } from "../../constants/images";
+import { DetectGroupMonthByMonth } from "../../constants/month-valid";
 import {
   optionGroupMonth,
   optionMonths,
@@ -20,7 +21,8 @@ export const ChooseTypeStorePage = () => {
   const [valueType, setValueType] = useState(filterData?.valueType || 1);
   const [valueYear, setValueYear] = useState(filterData?.year || (new Date()).getFullYear());
   const [valueMonth, setValueMonth] = useState(filterData?.month || ((new Date()).getMonth() + 1));
-  const [valueRankMonth, setValueRankMonth] = useState(filterData?.groupMonth || 10);
+  const [valueRankMonth, setValueRankMonth] = 
+    useState(filterData?.groupMonth || DetectGroupMonthByMonth(((new Date()).getMonth() + 1)));
 
   const handleGoToInvoid = () => {
     history.push({
@@ -48,7 +50,7 @@ export const ChooseTypeStorePage = () => {
             if(item.id === 1) {
               setValueMonth((new Date()).getMonth() + 1);
             } else {
-              setValueRankMonth(10);
+              setValueRankMonth(DetectGroupMonthByMonth((new Date()).getMonth() + 1));
             }
             dispatch(doSaveStepFilter({
               ...filterData,

@@ -40,11 +40,13 @@ export const TitleBar: React.FC<ITitleBar> = ({ title }) => {
        
       </div> */}
       <div className="title-bar__logo">
-        <div className="title-bar__go-back" onClick={() => history.goBack()}>
-          <SvgArrowGoBack />
-        </div>
+        {pathname === "/login" || (
+          <div className="title-bar__go-back" onClick={() => history.goBack()}>
+            <SvgArrowGoBack />
+          </div>
+        )}
         <Logo />
-        {pathname === "/login" || pathname === "/register" || (
+        {pathname === "/login" || pathname === "/register" || pathname === "/remove-company" || (
           <div
             className="title-bar__avatar"
             onClick={() => setIsOpenMenu(!isOpenMenu)}

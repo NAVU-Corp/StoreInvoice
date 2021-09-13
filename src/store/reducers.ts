@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { DetectGroupMonthByMonth } from "../constants/month-valid";
 import { Action, ActionKind } from "./actions";
 
 type CompanyState = {
@@ -23,7 +24,7 @@ export const initialCompanyState: CompanyState = {
   },
   filterData: {
     valueType: 1,
-    groupMonth: 10,
+    groupMonth: DetectGroupMonthByMonth(((new Date()).getMonth() + 1)),
     month: (new Date()).getMonth() + 1,
     year: (new Date()).getFullYear(),
     typeInvoice: 10,
