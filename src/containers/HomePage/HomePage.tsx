@@ -33,6 +33,21 @@ export const HomePage = () => {
   const [isOpenFile, setIsOpenFile] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [objectFilter, setObjectFilter] = useState<any>({
+    companyid: companyData.id,
+    page,
+    valueType: filterData ? filterData.valueType : 1,
+    typeinvoice: filterData ? filterData.typeInvoice : 10,
+    groupmonth:
+      filterData.valueType === 2
+        ? (filterData && filterData.groupMonth) || undefined
+        : undefined,
+    month:
+      filterData.valueType === 1
+        ? (filterData && filterData.month) || undefined
+        : undefined,
+  });
+
   //handleAddFilePDF
   const handleAddFilePDF = (date: any) => {
     apiElectron.sendMessages(MediaEvent.STORE_MEDIA, {
@@ -45,20 +60,7 @@ export const HomePage = () => {
 
   //handleListenerGetInvoice
   const handleGetAllInvoices = () => {
-    apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
-      companyid: companyData.id,
-      valueType: filterData ? filterData.valueType : 1,
-      page,
-      typeinvoice: filterData ? filterData.typeInvoice : 10,
-      groupmonth:
-        filterData.valueType === 2
-          ? (filterData && filterData.groupMonth) || undefined
-          : undefined,
-      month:
-        filterData.valueType === 1
-          ? (filterData && filterData.month) || undefined
-          : undefined,
-    });
+    apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, objectFilter);
   };
 
   //handleListenerGetInvoice
@@ -81,8 +83,9 @@ export const HomePage = () => {
       }, 1000);
     }
   };
+
   useEffect(() => {
-    handleGetAllInvoices();
+    // handleGetAllInvoices();
     //RESULT_GET_ALL_INVOICES
     apiElectron.on(
       InvoiceEvent.RESULT_GET_ALL_INVOICES,
@@ -160,19 +163,9 @@ export const HomePage = () => {
       monthfilter,
     } = values;
     // Khong filter được ở đây?
-    apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
-      companyid: companyData.id,
-      valueType: filterData ? filterData.valueType : 1,
-      page,
-      typeinvoice: filterData ? filterData.typeInvoice : 10,
-      groupmonth:
-        filterData.valueType === 2
-          ? (filterData && filterData.groupMonth) || undefined
-          : undefined,
-      month:
-        filterData.valueType === 1
-          ? (filterData && filterData.month) || undefined
-          : undefined,
+
+    setObjectFilter({
+      ...objectFilter,
       monthfilter: monthfilter || undefined,
       year: (filterData && filterData.year) || undefined,
       invoicedate: invoicedate || undefined,
@@ -182,7 +175,50 @@ export const HomePage = () => {
       namebuyer: namebuyer || undefined,
       nameseller: nameseller || undefined,
     });
+
+    // apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
+    //   companyid: companyData.id,
+    //   valueType: filterData ? filterData.valueType : 1,
+    //   page,
+    //   typeinvoice: filterData ? filterData.typeInvoice : 10,
+    //   groupmonth:
+    //     filterData.valueType === 2
+    //       ? (filterData && filterData.groupMonth) || undefined
+    //       : undefined,
+    //   month:
+    //     filterData.valueType === 1
+    //       ? (filterData && filterData.month) || undefined
+    //       : undefined,
+    //   monthfilter: monthfilter || undefined,
+    //   year: (filterData && filterData.year) || undefined,
+    //   invoicedate: invoicedate || undefined,
+    //   invoicenumber: invoicenumber || undefined,
+    //   invoicesymbol: invoicesymbol || undefined,
+    //   invoicetemplate: invoicetemplate || undefined,
+    //   namebuyer: namebuyer || undefined,
+    //   nameseller: nameseller || undefined,
+    // });
   };
+
+  useEffect(() => {
+    apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, objectFilter);
+  }, [objectFilter]);
+
+  // useEffect(() => {
+  //   setObjectFilter({
+  //     ...objectFilter,
+  //     valueType: filterData ? filterData.valueType : 1,
+  //     typeinvoice: filterData ? filterData.typeInvoice : 10,
+  //     groupmonth:
+  //       filterData.valueType === 2
+  //         ? (filterData && filterData.groupMonth) || undefined
+  //         : undefined,
+  //     month:
+  //       filterData.valueType === 1
+  //         ? (filterData && filterData.month) || undefined
+  //         : undefined,
+  //   })
+  // }, [filterData]);
 
   return (
     <div className="home-page">
@@ -220,28 +256,42 @@ export const HomePage = () => {
             page={page}
             handleSelectNumber={(pageInside) => {
               setPage(pageInside);
-
-              apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
-                companyid: companyData.id,
+              setObjectFilter({
+                ...objectFilter,
                 page: pageInside,
               });
+
+              // apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
+              //   companyid: companyData.id,
+              //   page: pageInside,
+              // });
             }}
             onBack={() => {
               if (page > 0) {
                 setPage((page) => page - 1);
-                apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
-                  companyid: companyData.id,
+                setObjectFilter({
+                  ...objectFilter,
                   page: page - 1,
                 });
+
+                // apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
+                //   companyid: companyData.id,
+                //   page: page - 1,
+                // });
               }
             }}
             onNext={() => {
               if (page < totalPage) {
                 setPage((page) => page + 1);
-                apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
-                  companyid: companyData.id,
+                setObjectFilter({
+                  ...objectFilter,
                   page: page + 1,
                 });
+
+                // apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
+                //   companyid: companyData.id,
+                //   page: page + 1,
+                // });
               }
             }}
           />
