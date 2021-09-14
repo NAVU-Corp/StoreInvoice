@@ -29,11 +29,14 @@ export const AutoUpdate = () => {
           Đã tải thành công bản cập nhập mới. Bạn có muốn cập nhận ngay không?
         </p>
         <div className="auto-update__actions">
-          <Button isBig isRed onClick={() => setIsOpen(false)}>
+          <Button 
+            isSecondary 
+            style={{ marginRight: '30px' }}
+            onClick={() => setIsOpen(false)}>
             Hủy
           </Button>
           <Button
-            isBig
+            isPrimary
             onClick={() =>
               apiElectron.sendMessages(AutoUpdateEvent.REQUIRE_UPDATE)
             }
