@@ -26,15 +26,15 @@ export const AutoUpdate = () => {
     <Modal isOpen={isOpen}>
       <BoxShadow className="auto-update">
         <p>
-          Đã tải thành công bản cập nhập mới. Bạn có muốn cập nhận ngay không?
+          Đã có bản cập nhập mới. Vui lòng bạn cập nhật để trải nghiệm những tính năng mới nhất nhé.
         </p>
         <div className="auto-update__actions">
-          <Button 
+          {/* <Button 
             isSecondary 
             style={{ marginRight: '30px' }}
             onClick={() => setIsOpen(false)}>
             Hủy
-          </Button>
+          </Button> */}
           <Button
             isPrimary
             onClick={() =>
