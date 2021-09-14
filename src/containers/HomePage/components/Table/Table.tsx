@@ -56,7 +56,7 @@ export const Table: React.FC<ITable> = ({
                 </td>
                 <td align="center">{typeInvoice === 20 ? item.nameseller : item.namebuyer}</td>
                 <td align="center">{item.note}</td>
-                <td align="center">
+                <td align="center" className="table__col-btn">
                   <Button
                     isPrimary
                     className="table__btn"
@@ -68,7 +68,7 @@ export const Table: React.FC<ITable> = ({
                     Sửa
                   </Button>
                 </td>
-                <td align="center">
+                <td align="center" className="table__col-btn">
                   <Button
                     isSuccess
                     className="table__btn"
@@ -82,7 +82,7 @@ export const Table: React.FC<ITable> = ({
                     Xem
                   </Button>
                 </td>
-                <td align="center">
+                <td align="center" className="table__col-btn">
                   <Button
                     isDanger
                     className="table__btn"
