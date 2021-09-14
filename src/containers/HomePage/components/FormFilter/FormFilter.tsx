@@ -62,7 +62,7 @@ export const FormFilter: React.FC<IFormFilter> = ({
         hasBottomLine
         secondContent={
           <div>
-            <Button isPrimary type="submit" style={{ marginRight: '5px' }}>Tìm kiếm</Button>
+            <Button isPrimary type="submit" style={{ marginRight: '15px' }}>Tìm kiếm</Button>
             <Button isSecondary type="button" onClick={handleClearForm}>Nhập lại</Button>
           </div>
         }
