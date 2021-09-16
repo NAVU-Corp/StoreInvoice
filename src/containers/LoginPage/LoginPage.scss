@@ -43,7 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 15px;
+    margin-top: 5px;
   }
   &__companys {
     display: flex;
@@ -105,5 +105,10 @@
     font-weight: bold;
     margin-top: 23px;
     color: #fff;
+  }
+  &__link-btn {
+    font-size: 15px;
+    text-decoration: none;
+    color: #517FA4;
   }
 }
