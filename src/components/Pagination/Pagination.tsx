@@ -8,7 +8,24 @@ export const Pagination: React.FC<IPagination> = ({
   handleSelectNumber,
   onBack,
   onNext,
+  isPDF,
 }) => {
+  const checkFocus = (i: number) => {
+    if (isPDF) {
+      if (i + 1 === page) {
+        return "pagination__btn pagination__btn--blue";
+      } else {
+        return "pagination__btn";
+      }
+    } else {
+      if (i === page) {
+        return "pagination__btn pagination__btn--blue";
+      } else {
+        return "pagination__btn";
+      }
+    }
+  };
+
   return (
     <div className="pagination">
       <div className="pagination__btn" onClick={onBack}>
@@ -18,14 +35,10 @@ export const Pagination: React.FC<IPagination> = ({
         return (
           <div
             key={i}
-            className={
-              page === i
-                ? "pagination__btn pagination__btn--blue"
-                : "pagination__btn"
-            }
+            className={checkFocus(i)}
             onClick={() => {
               if (handleSelectNumber) {
-                return handleSelectNumber(i);
+                return handleSelectNumber(isPDF ? i + 1 : i);
               }
             }}
           >

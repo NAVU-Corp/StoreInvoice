@@ -12,6 +12,8 @@ export const InvoicePreview: React.FC<IInvoicePreview> = ({ link }) => {
   function onDocumentLoadSuccess(data: { numPages: any }) {
     setNumPages(data.numPages);
   }
+  console.log("numPages", numPages);
+
   return (
     <div className="invoice-preview">
       <BoxShadow className="invoice-preview__container">
@@ -24,7 +26,7 @@ export const InvoicePreview: React.FC<IInvoicePreview> = ({ link }) => {
             totalPage={numPages}
             handleSelectNumber={(pageInside) => setPage(pageInside)}
             onBack={() => {
-              if (page > 0) {
+              if (page > 1) {
                 setPage((page) => page - 1);
               }
             }}
@@ -33,8 +35,11 @@ export const InvoicePreview: React.FC<IInvoicePreview> = ({ link }) => {
                 setPage((page) => page + 1);
               }
             }}
+            isPDF
           />
-        ) : <></>}
+        ) : (
+          <></>
+        )}
       </BoxShadow>
     </div>
   );

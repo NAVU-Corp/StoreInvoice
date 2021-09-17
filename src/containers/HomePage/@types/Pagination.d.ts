@@ -4,4 +4,5 @@ interface IPagination {
   handleSelectNumber?: (page: number) => void;
   onBack?: React.MouseEventHandler<HTMLDivElement>;
   onNext?: React.MouseEventHandler<HTMLDivElement>;
+  isPDF?: boolean;
 }
