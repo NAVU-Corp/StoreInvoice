@@ -59,7 +59,7 @@ export const Table: React.FC<ITable> = ({
                 <td align="center" className="table__col-btn">
                   <Button
                     isPrimary
-                    className="table__btn"
+                    className="table__btn btn--sm-btn"
                     onClick={(e) => {
                       e.stopPropagation();
                       history.push(`/invoice-detail/${item.id}`);
@@ -71,7 +71,7 @@ export const Table: React.FC<ITable> = ({
                 <td align="center" className="table__col-btn">
                   <Button
                     isSuccess
-                    className="table__btn"
+                    className="table__btn btn--sm-btn"
                     onClick={(e) => {
                       e.stopPropagation();
                       if (handleOpenFile) {
@@ -85,7 +85,7 @@ export const Table: React.FC<ITable> = ({
                 <td align="center" className="table__col-btn">
                   <Button
                     isDanger
-                    className="table__btn"
+                    className="table__btn btn--sm-btn"
                     onClick={(e) => {
                       e.stopPropagation();
                       if (handleDeleteInvoice) {
