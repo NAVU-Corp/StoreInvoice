@@ -5,6 +5,7 @@ import {
   BoxShadow,
   ModalConfirm,
   Pagination,
+  Alert,
 } from "../../components";
 import { InvoiceEvent, MediaEvent } from "../../constants/event";
 import { CompanyContext } from "../../store/reducers";
@@ -32,6 +33,7 @@ export const HomePage = () => {
   // const [linkPDF, setLinkPDF] = useState("");
   const [isOpenFile, setIsOpenFile] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [messageAlert, setMessageAlert] = useState("");
 
   const [objectFilter, setObjectFilter] = useState<any>({
     companyid: companyData.id,
@@ -81,6 +83,9 @@ export const HomePage = () => {
         setLoading(false);
         clearTimeout(time);
       }, 1000);
+    } else {
+      setMessageAlert("Vui lòng chọn hóa đơn để tải lên");
+      setLoading(false);
     }
   };
 
@@ -230,7 +235,7 @@ export const HomePage = () => {
           handleSubmitForm={handleFilterVoice}
         />
       </BoxShadow>
-      <BoxShadow>
+      <BoxShadow className="home-page__box-table">
         <LabelTitle
           title={`Danh sách hoá đơn ${
             filterData && filterData.typeInvoice === 20 ? "mua vào" : "bán ra"
@@ -315,6 +320,11 @@ export const HomePage = () => {
         setOpen={setIsOpenFile}
         onClose={() => setIsOpenFile(false)}
         loading={loading}
+      />
+      <Alert
+        isOpen={messageAlert}
+        messages={messageAlert}
+        setOpen={setMessageAlert}
       />
     </div>
   );
