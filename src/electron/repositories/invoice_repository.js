@@ -97,7 +97,7 @@ class InvoiceRepository {
       typeinvoice,
       datechoose,
     } = invoice;
-    
+
     return this.utilsDB.run(
       `INSERT INTO invoice (companyid, invoicesymbol, invoicetemplate, invoicenumber, invoicedate, note, namepdf,
         namebuyer, nameseller, typeinvoice, datechoose, status, createdate, updatedate)
@@ -134,7 +134,7 @@ class InvoiceRepository {
       note,
       datechoose,
     } = invoice;
-
+    
     return this.utilsDB.run(
       `UPDATE invoice 
       SET invoicesymbol = $invoicesymbol, invoicetemplate = $invoicetemplate, invoicenumber = $invoicenumber, 

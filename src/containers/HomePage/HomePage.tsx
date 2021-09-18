@@ -49,6 +49,7 @@ export const HomePage = () => {
       filterData.valueType === 1
         ? (filterData && filterData.month) || undefined
         : undefined,
+    year: filterData.year || undefined,
   });
 
   //handleAddFilePDF
@@ -57,6 +58,7 @@ export const HomePage = () => {
       typeinvoice: filterData ? filterData.typeInvoice : 10,
       companyid: companyData.id,
       datechoose: date ? new Date(date) : new Date(),
+      filter: objectFilter,
     });
     setLoading(true);
   };
@@ -85,14 +87,15 @@ export const HomePage = () => {
   };
 
   //handleResultStoreMedia
-  const handleResultStoreMedia = (_: any, data: { result: number }) => {
+  const handleResultStoreMedia = (_: any, data: { result: number, content: any }) => {
     if (data.result) {
       let time = setTimeout(() => {
-        handleGetAllInvoices(undefined);
+        setObjectFilter(data.content.filter);
+        handleGetAllInvoices(data.content.filter);
         setIsOpenFile(false);
         setLoading(false);
         clearTimeout(time);
-      }, 1000);
+      }, 2000);
     } else {
       setMessageAlert("Vui lòng chọn hóa đơn để tải lên");
       setLoading(false);
