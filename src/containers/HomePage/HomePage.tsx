@@ -57,6 +57,7 @@ export const HomePage = () => {
       typeinvoice: filterData ? filterData.typeInvoice : 10,
       companyid: companyData.id,
       datechoose: date ? new Date(date) : new Date(),
+      filter: objectFilter,
     });
     setLoading(true);
   };
@@ -85,10 +86,10 @@ export const HomePage = () => {
   };
 
   //handleResultStoreMedia
-  const handleResultStoreMedia = (_: any, data: { result: number }) => {
+  const handleResultStoreMedia = (_: any, data: { result: number, content: any }) => {
     if (data.result) {
       let time = setTimeout(() => {
-        handleGetAllInvoices(undefined);
+        handleGetAllInvoices(data.content.filter);
         setIsOpenFile(false);
         setLoading(false);
         clearTimeout(time);

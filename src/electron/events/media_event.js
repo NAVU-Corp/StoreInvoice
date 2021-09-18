@@ -4,7 +4,7 @@ const { mediaService } = require("../database/index");
 const { ipcMain } = require("electron");
 
 // listener store media
-ipcMain.on(MediaEvent.STORE_MEDIA, async (event, { typeinvoice, companyid, datechoose }) => {
+ipcMain.on(MediaEvent.STORE_MEDIA, async (event, { typeinvoice, companyid, datechoose, filter }) => {
   if(!companyid || companyid < 1) {
     event.reply(MediaEvent.RESULT_STORE_MEDIA, {
       result: 0,
@@ -25,6 +25,9 @@ ipcMain.on(MediaEvent.STORE_MEDIA, async (event, { typeinvoice, companyid, datec
   var resultStore = await mediaService.storeFile({ typeinvoice, companyid, datechoose, dateNow });
   event.reply(MediaEvent.RESULT_STORE_MEDIA, {
     result: resultStore,
+    content: {
+      filter,
+    }
   });
 });
 
