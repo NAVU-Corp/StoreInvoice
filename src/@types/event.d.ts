@@ -79,6 +79,7 @@ interface IResGetAllInvoices {
   content: {
     invoices?: Array<IResInvoice>;
     pageconfig: IResPageconfig;
+    filter?: any;
   };
   result: number;
 }
