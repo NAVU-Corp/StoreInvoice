@@ -3,9 +3,9 @@
   height: calc(100vh - 100px);
   overflow: auto;
 
-  // &__box-table {
-  //   min-width: 12 00px;
-  // }
+  &__box-table {
+    min-width: fit-content;
+  }
 
   &__from {
     display: flex;

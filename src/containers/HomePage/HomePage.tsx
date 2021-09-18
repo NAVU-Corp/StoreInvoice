@@ -111,6 +111,11 @@ export const HomePage = () => {
         MediaEvent.RESULT_STORE_MEDIA,
         handleResultStoreMedia
       );
+
+      apiElectron.removeListener(
+        InvoiceEvent.RESULT_DELETE_ONE_INVOICE,
+        handleResultDeleteInvoice
+      );
     };
   }, []);
 
@@ -131,12 +136,12 @@ export const HomePage = () => {
       handleResultDeleteInvoice
     );
 
-    return () => {
-      apiElectron.removeListener(
-        InvoiceEvent.RESULT_DELETE_ONE_INVOICE,
-        handleResultDeleteInvoice
-      );
-    };
+    // return () => {
+    //   apiElectron.removeListener(
+    //     InvoiceEvent.RESULT_DELETE_ONE_INVOICE,
+    //     handleResultDeleteInvoice
+    //   );
+    // };
   }, [dataTable]);
 
   //handleConfirmDeleteInvoice
