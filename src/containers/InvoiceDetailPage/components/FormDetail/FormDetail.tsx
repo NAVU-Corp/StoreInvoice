@@ -12,6 +12,7 @@ import {
 import { optionTypeInvoid } from "../../../../constants/selections";
 import "./FormDetail.scss";
 import { InvoiceEvent, MediaEvent } from "../../../../constants/event";
+import { ImageFileView, ImageFolderOpen } from "../../../../constants/images";
 
 export const FromDetail: React.FC<IFromDetail> = ({
   invoice,
@@ -189,42 +190,50 @@ export const FromDetail: React.FC<IFromDetail> = ({
           id="note"
         />
         <div className="form-detail__actions">
-          <Button
-            isDanger
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              setMessage("Bạn có muốn xóa hóa đơn này không?");
-            }}
-            type="button"
-          >
-            Xóa HĐ
-          </Button>
-          <Button
-            isSuccess
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              handleOpenFile(linkpdf);
-            }}
-            type="button"
-          >
-            Xem HĐ
-          </Button>
-          <Button
-            isSuccess
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              handleOpenFolder(linkpdf);
-            }}
-            type="button"
-          >
-            Xem trong thư mục
-          </Button>
-          <Button isPrimary type="submit">
-            Lưu
-          </Button>
+          <div>
+            <Button
+              isDanger
+              style={{ marginRight: '10px' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setMessage("Bạn có muốn xóa hóa đơn này không?");
+              }}
+              type="button"
+            >
+              Xóa HĐ
+            </Button>
+            <Button isPrimary type="submit">
+              Lưu
+            </Button>
+          </div>
+          <div>
+            <Button
+              isSuccess
+              style={{ marginRight: '10px' }}
+              className="btn--sm-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                handleOpenFile(linkpdf);
+              }}
+              type="button"
+            >
+              <img src={ImageFileView} className="form-detail__icon-btn"></img>
+            </Button>
+            <Button
+              isSuccess
+              className="btn--sm-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                handleOpenFolder(linkpdf);
+              }}
+              type="button"
+            >
+              <img src={ImageFolderOpen} className="form-detail__icon-btn"></img>
+            </Button>
+          </div>
         </div>
       </form>
       <ModalConfirm

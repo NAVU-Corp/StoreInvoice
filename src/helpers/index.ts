@@ -25,3 +25,11 @@ export const formatDate = (date: any) => {
 
   return [year, month, day].join('-');
 }
+
+export const ReplaceSpaceInSpace = (input: string) => {
+  if(!input) {
+    return "";
+  }
+
+  return input.replace(/\u00a0/g, " ");
+}

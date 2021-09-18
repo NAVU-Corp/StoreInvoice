@@ -8,6 +8,8 @@ import ImageInvoice from "../assets/images/receipt_bill_invoice_icon.png";
 import ImageRemoveCompany from "../assets/images/image-remove-company.png";
 import ImageReceiptBill from "../assets/images/receipt-bill.png";
 import ImageInvoiceBill from "../assets/images/invoice-bill.png";
+import ImageFolderOpen from "../assets/images/folder-open.png";
+import ImageFileView from "../assets/images/file-view.png";
 
 export {
   ImageLogin,
@@ -20,4 +22,6 @@ export {
   ImageRemoveCompany,
   ImageReceiptBill,
   ImageInvoiceBill,
+  ImageFolderOpen,
+  ImageFileView,
 };

@@ -4,6 +4,7 @@ import moment from "moment";
 import { Button } from "../../../../components";
 import { ImageNoDataTable } from "../../../../constants/images";
 import "./Table.scss";
+import { ReplaceSpaceInSpace } from "../../../../helpers";
 
 export const Table: React.FC<ITable> = ({
   typeInvoice,
@@ -47,10 +48,10 @@ export const Table: React.FC<ITable> = ({
                   align="center"
                   style={{ fontWeight: "bold", color: "#262626" }}
                 >
-                  {item.invoicesymbol}
+                  {ReplaceSpaceInSpace(item.invoicesymbol)}
                 </td>
-                <td align="center">{item.invoicetemplate}</td>
-                <td align="center">{item.invoicenumber}</td>
+                <td align="center">{ReplaceSpaceInSpace(item.invoicetemplate)}</td>
+                <td align="center">{ReplaceSpaceInSpace(item.invoicenumber)}</td>
                 <td align="center">
                   {moment(item.invoicedate).format("DD/MM/YYYY")}
                 </td>
@@ -59,7 +60,7 @@ export const Table: React.FC<ITable> = ({
                 <td align="center" className="table__col-btn">
                   <Button
                     isPrimary
-                    className="table__btn"
+                    className="table__btn btn--sm-btn"
                     onClick={(e) => {
                       e.stopPropagation();
                       history.push(`/invoice-detail/${item.id}`);
@@ -71,7 +72,7 @@ export const Table: React.FC<ITable> = ({
                 <td align="center" className="table__col-btn">
                   <Button
                     isSuccess
-                    className="table__btn"
+                    className="table__btn btn--sm-btn"
                     onClick={(e) => {
                       e.stopPropagation();
                       if (handleOpenFile) {
@@ -85,7 +86,7 @@ export const Table: React.FC<ITable> = ({
                 <td align="center" className="table__col-btn">
                   <Button
                     isDanger
-                    className="table__btn"
+                    className="table__btn btn--sm-btn"
                     onClick={(e) => {
                       e.stopPropagation();
                       if (handleDeleteInvoice) {

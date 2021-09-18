@@ -5,6 +5,7 @@ import {
   BoxShadow,
   ModalConfirm,
   Pagination,
+  Alert,
 } from "../../components";
 import { InvoiceEvent, MediaEvent } from "../../constants/event";
 import { CompanyContext } from "../../store/reducers";
@@ -32,10 +33,12 @@ export const HomePage = () => {
   // const [linkPDF, setLinkPDF] = useState("");
   const [isOpenFile, setIsOpenFile] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [messageAlert, setMessageAlert] = useState("");
 
   const [objectFilter, setObjectFilter] = useState<any>({
     companyid: companyData.id,
     page,
+    pagesize: 20,
     valueType: filterData ? filterData.valueType : 1,
     typeinvoice: filterData ? filterData.typeInvoice : 10,
     groupmonth:
@@ -59,8 +62,17 @@ export const HomePage = () => {
   };
 
   //handleListenerGetInvoice
-  const handleGetAllInvoices = () => {
-    apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, objectFilter);
+  const handleGetAllInvoices = (filter: any) => {
+    let temp;
+    if(filter) {
+      temp = filter;
+    } else {
+      temp = objectFilter;
+    }
+   
+    if(objectFilter && objectFilter.companyid && objectFilter.companyid !== 0) {
+      apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, temp);
+    }
   };
 
   //handleListenerGetInvoice
@@ -76,16 +88,19 @@ export const HomePage = () => {
   const handleResultStoreMedia = (_: any, data: { result: number }) => {
     if (data.result) {
       let time = setTimeout(() => {
-        handleGetAllInvoices();
+        handleGetAllInvoices(undefined);
         setIsOpenFile(false);
         setLoading(false);
         clearTimeout(time);
       }, 1000);
+    } else {
+      setMessageAlert("Vui lòng chọn hóa đơn để tải lên");
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    // handleGetAllInvoices();
+    handleGetAllInvoices(undefined);
     //RESULT_GET_ALL_INVOICES
     apiElectron.on(
       InvoiceEvent.RESULT_GET_ALL_INVOICES,
@@ -104,6 +119,11 @@ export const HomePage = () => {
       apiElectron.removeListener(
         MediaEvent.RESULT_STORE_MEDIA,
         handleResultStoreMedia
+      );
+
+      apiElectron.removeListener(
+        InvoiceEvent.RESULT_DELETE_ONE_INVOICE,
+        handleResultDeleteInvoice
       );
     };
   }, []);
@@ -125,12 +145,12 @@ export const HomePage = () => {
       handleResultDeleteInvoice
     );
 
-    return () => {
-      apiElectron.removeListener(
-        InvoiceEvent.RESULT_DELETE_ONE_INVOICE,
-        handleResultDeleteInvoice
-      );
-    };
+    // return () => {
+    //   apiElectron.removeListener(
+    //     InvoiceEvent.RESULT_DELETE_ONE_INVOICE,
+    //     handleResultDeleteInvoice
+    //   );
+    // };
   }, [dataTable]);
 
   //handleConfirmDeleteInvoice
@@ -164,7 +184,7 @@ export const HomePage = () => {
     } = values;
     // Khong filter được ở đây?
 
-    setObjectFilter({
+    let filter = {
       ...objectFilter,
       monthfilter: monthfilter || undefined,
       year: (filterData && filterData.year) || undefined,
@@ -174,7 +194,10 @@ export const HomePage = () => {
       invoicetemplate: invoicetemplate || undefined,
       namebuyer: namebuyer || undefined,
       nameseller: nameseller || undefined,
-    });
+    };
+
+    setObjectFilter(filter);
+    handleGetAllInvoices(filter);
 
     // apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
     //   companyid: companyData.id,
@@ -200,9 +223,11 @@ export const HomePage = () => {
     // });
   };
 
-  useEffect(() => {
-    apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, objectFilter);
-  }, [objectFilter]);
+  // useEffect(() => {
+  //   if(objectFilter && objectFilter.companyid && objectFilter.companyid !== 0) {
+  //     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, objectFilter);
+  //   }
+  // }, [objectFilter]);
 
   // useEffect(() => {
   //   setObjectFilter({
@@ -230,7 +255,7 @@ export const HomePage = () => {
           handleSubmitForm={handleFilterVoice}
         />
       </BoxShadow>
-      <BoxShadow>
+      <BoxShadow className="home-page__box-table">
         <LabelTitle
           title={`Danh sách hoá đơn ${
             filterData && filterData.typeInvoice === 20 ? "mua vào" : "bán ra"
@@ -256,10 +281,14 @@ export const HomePage = () => {
             page={page}
             handleSelectNumber={(pageInside) => {
               setPage(pageInside);
-              setObjectFilter({
+
+              let filter = {
                 ...objectFilter,
                 page: pageInside,
-              });
+              };
+
+              setObjectFilter(filter);
+              handleGetAllInvoices(filter);
 
               // apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
               //   companyid: companyData.id,
@@ -269,10 +298,14 @@ export const HomePage = () => {
             onBack={() => {
               if (page > 0) {
                 setPage((page) => page - 1);
-                setObjectFilter({
+
+                let filter = {
                   ...objectFilter,
                   page: page - 1,
-                });
+                };
+
+                setObjectFilter(filter);
+                handleGetAllInvoices(filter);
 
                 // apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
                 //   companyid: companyData.id,
@@ -283,10 +316,14 @@ export const HomePage = () => {
             onNext={() => {
               if (page < totalPage) {
                 setPage((page) => page + 1);
-                setObjectFilter({
+
+                let filter = {
                   ...objectFilter,
                   page: page + 1,
-                });
+                };
+
+                setObjectFilter(filter);
+                handleGetAllInvoices(filter);
 
                 // apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
                 //   companyid: companyData.id,
@@ -315,6 +352,11 @@ export const HomePage = () => {
         setOpen={setIsOpenFile}
         onClose={() => setIsOpenFile(false)}
         loading={loading}
+      />
+      <Alert
+        isOpen={messageAlert}
+        messages={messageAlert}
+        setOpen={setMessageAlert}
       />
     </div>
   );

@@ -10,6 +10,6 @@ contextBridge.exposeInMainWorld("apiElectron", {
   },
 
   removeListener(event, callback) {
-    ipcRenderer.removeListener(event, callback);
+    ipcRenderer.removeAllListeners(event);
   },
 });
