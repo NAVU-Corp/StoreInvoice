@@ -70,7 +70,7 @@ export const HomePage = () => {
     } else {
       temp = objectFilter;
     }
-   
+
     if(objectFilter && objectFilter.companyid && objectFilter.companyid !== 0) {
       apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, temp);
     }
@@ -183,10 +183,10 @@ export const HomePage = () => {
       year,
       monthfilter,
     } = values;
-    // Khong filter được ở đây?
 
     let filter = {
       ...objectFilter,
+      page: 0,
       monthfilter: monthfilter || undefined,
       year: (filterData && filterData.year) || undefined,
       invoicedate: invoicedate || undefined,
