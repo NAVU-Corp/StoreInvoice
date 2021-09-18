@@ -25,9 +25,7 @@ export const AutoUpdate = () => {
   return (
     <Modal isOpen={isOpen}>
       <BoxShadow className="auto-update">
-        <p>
-          Đã có bản cập nhập mới. Vui lòng bạn cập nhật để trải nghiệm những tính năng mới nhất nhé.
-        </p>
+        <p>Đã có bản cập nhập mới. Vui lòng bạn cập nhật để trải nghiệm những tính năng mới nhất nhé.</p>
         <div className="auto-update__actions">
           {/* <Button 
             isSecondary 
