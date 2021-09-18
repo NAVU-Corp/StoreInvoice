@@ -62,6 +62,7 @@ export const HomePage = () => {
 
   //handleListenerGetInvoice
   const handleGetAllInvoices = () => {
+    console.log(objectFilter);
     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, objectFilter);
   };
 
@@ -206,6 +207,7 @@ export const HomePage = () => {
   };
 
   useEffect(() => {
+    console.log(objectFilter);
     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, objectFilter);
   }, [objectFilter]);
 
