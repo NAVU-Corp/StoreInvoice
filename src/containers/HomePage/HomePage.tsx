@@ -38,6 +38,7 @@ export const HomePage = () => {
   const [objectFilter, setObjectFilter] = useState<any>({
     companyid: companyData.id,
     page,
+    pagesize: 20,
     valueType: filterData ? filterData.valueType : 1,
     typeinvoice: filterData ? filterData.typeInvoice : 10,
     groupmonth:
@@ -61,9 +62,17 @@ export const HomePage = () => {
   };
 
   //handleListenerGetInvoice
-  const handleGetAllInvoices = () => {
-    console.log(objectFilter);
-    apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, objectFilter);
+  const handleGetAllInvoices = (filter: any) => {
+    let temp;
+    if(filter) {
+      temp = filter;
+    } else {
+      temp = objectFilter;
+    }
+   
+    if(objectFilter && objectFilter.companyid && objectFilter.companyid !== 0) {
+      apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, temp);
+    }
   };
 
   //handleListenerGetInvoice
@@ -79,7 +88,7 @@ export const HomePage = () => {
   const handleResultStoreMedia = (_: any, data: { result: number }) => {
     if (data.result) {
       let time = setTimeout(() => {
-        handleGetAllInvoices();
+        handleGetAllInvoices(undefined);
         setIsOpenFile(false);
         setLoading(false);
         clearTimeout(time);
@@ -91,7 +100,7 @@ export const HomePage = () => {
   };
 
   useEffect(() => {
-    // handleGetAllInvoices();
+    handleGetAllInvoices(undefined);
     //RESULT_GET_ALL_INVOICES
     apiElectron.on(
       InvoiceEvent.RESULT_GET_ALL_INVOICES,
@@ -175,7 +184,7 @@ export const HomePage = () => {
     } = values;
     // Khong filter được ở đây?
 
-    setObjectFilter({
+    let filter = {
       ...objectFilter,
       monthfilter: monthfilter || undefined,
       year: (filterData && filterData.year) || undefined,
@@ -185,7 +194,10 @@ export const HomePage = () => {
       invoicetemplate: invoicetemplate || undefined,
       namebuyer: namebuyer || undefined,
       nameseller: nameseller || undefined,
-    });
+    };
+
+    setObjectFilter(filter);
+    handleGetAllInvoices(filter);
 
     // apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
     //   companyid: companyData.id,
@@ -211,10 +223,11 @@ export const HomePage = () => {
     // });
   };
 
-  useEffect(() => {
-    console.log(objectFilter);
-    apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, objectFilter);
-  }, [objectFilter]);
+  // useEffect(() => {
+  //   if(objectFilter && objectFilter.companyid && objectFilter.companyid !== 0) {
+  //     apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, objectFilter);
+  //   }
+  // }, [objectFilter]);
 
   // useEffect(() => {
   //   setObjectFilter({
@@ -268,10 +281,14 @@ export const HomePage = () => {
             page={page}
             handleSelectNumber={(pageInside) => {
               setPage(pageInside);
-              setObjectFilter({
+
+              let filter = {
                 ...objectFilter,
                 page: pageInside,
-              });
+              };
+
+              setObjectFilter(filter);
+              handleGetAllInvoices(filter);
 
               // apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
               //   companyid: companyData.id,
@@ -281,10 +298,14 @@ export const HomePage = () => {
             onBack={() => {
               if (page > 0) {
                 setPage((page) => page - 1);
-                setObjectFilter({
+
+                let filter = {
                   ...objectFilter,
                   page: page - 1,
-                });
+                };
+
+                setObjectFilter(filter);
+                handleGetAllInvoices(filter);
 
                 // apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
                 //   companyid: companyData.id,
@@ -295,10 +316,14 @@ export const HomePage = () => {
             onNext={() => {
               if (page < totalPage) {
                 setPage((page) => page + 1);
-                setObjectFilter({
+
+                let filter = {
                   ...objectFilter,
                   page: page + 1,
-                });
+                };
+
+                setObjectFilter(filter);
+                handleGetAllInvoices(filter);
 
                 // apiElectron.sendMessages(InvoiceEvent.GET_ALL_INVOICES, {
                 //   companyid: companyData.id,
