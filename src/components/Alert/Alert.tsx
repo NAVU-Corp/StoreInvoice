@@ -19,7 +19,9 @@ export const Alert: React.FC<IAlert> = ({
           onClick={() => {
             if (setOpen) {
               setOpen(false);
-              actionMore();
+              if(actionMore) {
+                actionMore();
+              }
             }
           }}
         >
