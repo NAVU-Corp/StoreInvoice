@@ -49,6 +49,7 @@ export const HomePage = () => {
       filterData.valueType === 1
         ? (filterData && filterData.month) || undefined
         : undefined,
+    year: filterData.year || undefined,
   });
 
   //handleAddFilePDF
@@ -89,11 +90,12 @@ export const HomePage = () => {
   const handleResultStoreMedia = (_: any, data: { result: number, content: any }) => {
     if (data.result) {
       let time = setTimeout(() => {
+        setObjectFilter(data.content.filter);
         handleGetAllInvoices(data.content.filter);
         setIsOpenFile(false);
         setLoading(false);
         clearTimeout(time);
-      }, 1000);
+      }, 2000);
     } else {
       setMessageAlert("Vui lòng chọn hóa đơn để tải lên");
       setLoading(false);
