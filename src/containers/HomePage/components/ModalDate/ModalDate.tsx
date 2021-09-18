@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useState } from "react";
+import React, { FC, Fragment, useContext, useState } from "react";
 
 import {
   BoxShadow,
@@ -8,6 +8,7 @@ import {
   Modal,
 } from "../../../../components";
 import { formatDate } from "../../../../helpers";
+import { CompanyContext } from "../../../../store/reducers";
 import "./ModalDate.scss";
 
 export const ModalDate: FC<IModalDate> = ({
@@ -16,7 +17,8 @@ export const ModalDate: FC<IModalDate> = ({
   loading,
   ...props
 }) => {
-  const [date, setDate] = useState(formatDate(new Date()));
+  const { dispatch, state: { filterData }, } = useContext(CompanyContext);
+  const [date, setDate] = useState(formatDate(new Date(filterData.year, filterData.month - 1, 1)));
 
   return (
     <Modal {...props}>
