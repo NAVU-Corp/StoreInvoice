@@ -211,7 +211,7 @@ export const FromDetail: React.FC<IFromDetail> = ({
             <Button
               isSuccess
               style={{ marginRight: '10px' }}
-              className="btn--sm-btn"
+              className="btn--sm-btn tooltip"
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
@@ -220,10 +220,11 @@ export const FromDetail: React.FC<IFromDetail> = ({
               type="button"
             >
               <img src={ImageFileView} className="form-detail__icon-btn"></img>
+              <span className="tooltiptext tooltip-top">Xem file</span>
             </Button>
             <Button
               isSuccess
-              className="btn--sm-btn"
+              className="btn--sm-btn tooltip"
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
@@ -232,6 +233,7 @@ export const FromDetail: React.FC<IFromDetail> = ({
               type="button"
             >
               <img src={ImageFolderOpen} className="form-detail__icon-btn"></img>
+              <span className="tooltiptext tooltip-top">Mở trong thư mục</span>
             </Button>
           </div>
         </div>
