@@ -1,6 +1,6 @@
 {
   "name": "app-pdf-ts",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "",
   "main": "./src/electron/main.js",
   "repository": {
@@ -69,7 +69,7 @@
     "yup": "^0.32.9"
   },
   "build": {
-    "productName": "Store Invoice",
+    "productName": "VinaSC",
     "appId": "com.app.StoreInvoice",
     "publish": [
       {
