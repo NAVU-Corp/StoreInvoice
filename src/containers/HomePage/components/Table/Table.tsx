@@ -21,7 +21,7 @@ export const Table: React.FC<ITable> = ({
       <table className="table">
         <thead>
           <tr>
-            <th>STT</th>
+            <th>ID</th>
             <th>Ngày nhập</th>
             <th>Mẫu số</th>
             <th>Ký hiệu</th>
@@ -42,7 +42,7 @@ export const Table: React.FC<ITable> = ({
                 className="table__row"
                 // onClick={() => history.push(`/invoice-detail/${item.id}`)}
               >
-                <td align="center">{i + 1}</td>
+                <td align="center">{item.id}</td>
                 <td align="center">{item.datechoose ? moment(item.datechoose).format("DD/MM/YYYY") : ""}</td>
                 <td
                   align="center"
