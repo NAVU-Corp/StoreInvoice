@@ -28,8 +28,9 @@ export const LabelTitle: React.FC<ILabelTitle> = ({
     >
       <span>{title}</span>
       {hasBtnAdd && (
-        <Button isWhite className="label-title__btn" onClick={handleBtnAdd}>
+        <Button isWhite className="label-title__btn tooltip" onClick={handleBtnAdd}>
           <SvgPlus />
+          <span className="tooltiptext tooltip-top">Thêm hóa đơn</span>
         </Button>
       )}
       {secondContent}
